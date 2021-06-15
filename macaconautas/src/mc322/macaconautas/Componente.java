@@ -18,7 +18,7 @@ public class Componente extends Rectangle implements IComponente{
 	 * @param width largura do componente.
 	 * @param height altura do componente.
 	 */
-	public Componente(int x, int y, int width, int height) {
+	public Componente(int x, int y, int width, int height, SpriteSheet spriteSheet) {
 		super(x, y, width, height);
 		this.quantidadeSprites = 0;
 		this.sprites = null;

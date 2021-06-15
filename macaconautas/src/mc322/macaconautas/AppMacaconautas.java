@@ -19,6 +19,11 @@ public class AppMacaconautas extends Canvas {
 	public final static int WIDTH = 160;
 	public final static int HEIGHT = 120;
 	public final static int SCALE = 4;
+
+	private final static String SPRITE_SHEET_PATH = "/res/spritesheet.png";
+	private final static int SPRITE_WIDTH = 40;
+	private final static int SPRITE_HEIGHT = 40;
+
 	private static char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
 	private static boolean jogoCriado;
 	private static boolean lojaCriada;
@@ -29,8 +34,10 @@ public class AppMacaconautas extends Canvas {
 	private static int quantidadeBananas;
 	private static int recorde;
 	private static int[] skinsLiberadas;
+	private static SpriteSheet spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
 
 	public AppMacaconautas() {
+		spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
 		appState = 'M';
 		jogoCriado = false;
 		lojaCriada = false;
@@ -83,7 +90,7 @@ public class AppMacaconautas extends Canvas {
 	
 	public static void abrirJogo() throws InterruptedException {
 		if(!jogoCriado) {
-			jogo = new ControleJogo();
+			jogo = new ControleJogo(spriteSheet);
 			jogo.start();
 			jogoCriado = true;
 		}

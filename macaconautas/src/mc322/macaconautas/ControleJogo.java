@@ -18,6 +18,8 @@ import javax.swing.JFrame;
 public class ControleJogo extends Canvas implements Runnable, KeyListener, IModo {
 
 	private final static int TAMANHO_STRING_JOGO = 17;
+
+	private SpriteSheet spriteSheet;
 	private int lentidao;
 	private char jogoState; //N para normal, P para pausado (uso do pause) e O para Game Over
 	private boolean isRunning;
@@ -31,12 +33,13 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener, IModo
 	private long distancia;
 	private int contador;
 
-	public ControleJogo() throws InterruptedException {
+	public ControleJogo(SpriteSheet spriteSheet) throws InterruptedException {
 		this.setPreferredSize(new Dimension(AppMacaconautas.WIDTH * AppMacaconautas.SCALE, AppMacaconautas.HEIGHT * AppMacaconautas.SCALE)); //setar size do JFrame
 		initFrame();
 		this.addKeyListener(this);
-		macaco = new Macaco(15, 0);
-		espaco = new Espaco();
+		this.spriteSheet = spriteSheet;
+		macaco = new Macaco(15, 0, this.spriteSheet);
+		espaco = new Espaco(this.spriteSheet);
 		lasers = new ArrayList<Laser>();
 		jogoState = 'N';
 		isRunning = true;

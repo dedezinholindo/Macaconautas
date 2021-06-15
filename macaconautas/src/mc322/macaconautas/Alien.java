@@ -13,6 +13,7 @@ public class Alien extends PecaRegular {
 
 	private final static int MAX_DISTANCE_WITHOUT_SHOOTING = 120; // distância máxima que o alien pode percorrer sem disparar um laser.
 
+	private SpriteSheet spriteSheet;
 	private int distanceWithoutShooting; // distância percorrida pelo alien sem disparar um laser.
 
 	/**
@@ -20,8 +21,9 @@ public class Alien extends PecaRegular {
 	 * @param x coordenada x do alien.
 	 * @param y coordenada y do alien.
 	 */
-	public Alien(int x, int y) {
-		super(x, y, WIDTH, HEIGHT);
+	public Alien(int x, int y, SpriteSheet spriteSheet) {
+		super(x, y, WIDTH, HEIGHT, spriteSheet);
+		this.spriteSheet = spriteSheet;
 		this.distanceWithoutShooting = MAX_DISTANCE_WITHOUT_SHOOTING; // atira a partir do momento que chegar na tela
 	}
 
@@ -48,7 +50,7 @@ public class Alien extends PecaRegular {
 		super.tick();
 		if (this.x <= AppMacaconautas.WIDTH * AppMacaconautas.SCALE) {
 			if (this.distanceWithoutShooting == MAX_DISTANCE_WITHOUT_SHOOTING) { // atira um laser.
-				Laser laser = new Laser(this.x - this.width - this.speed, this.y + (this.height / 2));
+				Laser laser = new Laser(this.x - this.width - this.speed, this.y + (this.height / 2), this.spriteSheet);
 				ArrayList <Laser> l = ControleJogo.getLasers(); 
 				l.add(laser);
 				ControleJogo.setLasers(l);

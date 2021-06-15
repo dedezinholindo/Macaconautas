@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 //renderizar so o que esta aparecendo na tela
-public class Espaco {
+public class Espaco {	
 	//lembrar de apagar os dois depois de cada sessao (ou reiniciar)!! (laser ja apaga)
+	private SpriteSheet spriteSheet;
 	private static ArrayList<Obstaculo> obstaculos; 
 	private static ArrayList<Alien> aliens;
 	private static ArrayList<Banana> bananas;
@@ -19,7 +20,8 @@ public class Espaco {
 	private final static int BIGBOSS = 3000;
 
 	//ver se tem como diminuir ou evitar repeticao
-	public Espaco() {
+	public Espaco(SpriteSheet spriteSheet) {
+		this.spriteSheet = spriteSheet;
 		obstaculosNaSessao = 15;
 		aliensNaSessao = 15;
 		bananasNaSessao = 20;
@@ -33,28 +35,28 @@ public class Espaco {
 			Random aleatorioDois = new Random();
 			int valory = aleatorioDois.nextInt((AppMacaconautas.HEIGHT * AppMacaconautas.SCALE - 16) + 1);
 			int valorx = aleatorioDois.nextInt((AppMacaconautas.WIDTH * AppMacaconautas.SCALE - 16 + BIGBOSS) + 1) + AppMacaconautas.WIDTH * AppMacaconautas.SCALE; //aleatorio.nextInt((max - min) + 1) + min;
-			obstaculos.add(new Obstaculo(valorx, valory));
+			obstaculos.add(new Obstaculo(valorx, valory, this.spriteSheet));
 		}
 		aliens = new ArrayList<Alien>();
 		for (int i = 0; i < aliensNaSessao; i ++) {
 			Random aleatorioDois = new Random();
 			int valory = aleatorioDois.nextInt((AppMacaconautas.HEIGHT * AppMacaconautas.SCALE - 16) + 1);
 			int valorx = aleatorioDois.nextInt((AppMacaconautas.WIDTH * AppMacaconautas.SCALE - 16 + BIGBOSS) + 1) + AppMacaconautas.WIDTH * AppMacaconautas.SCALE; //aleatorio.nextInt((max - min) + 1) + min;
-			aliens.add(new Alien(valorx, valory));
+			aliens.add(new Alien(valorx, valory, this.spriteSheet));
 		}
 		bananas = new ArrayList<Banana>();
 		for (int i = 0; i < bananasNaSessao; i ++) {
 			Random aleatorioDois = new Random();
 			int valory = aleatorioDois.nextInt((AppMacaconautas.HEIGHT * AppMacaconautas.SCALE - 16) + 1);
 			int valorx = aleatorioDois.nextInt((AppMacaconautas.WIDTH * AppMacaconautas.SCALE - 16 + BIGBOSS) + 1) + AppMacaconautas.WIDTH * AppMacaconautas.SCALE; //aleatorio.nextInt((max - min) + 1) + min;
-			bananas.add(new Banana(valorx, valory));
+			bananas.add(new Banana(valorx, valory, this.spriteSheet));
 		}
 		whey = new ArrayList<WheyProtein>();
 		for (int i = 0; i < wheyNaSessao; i ++) {
 			Random aleatorioDois = new Random();
 			int valory = aleatorioDois.nextInt((AppMacaconautas.HEIGHT * AppMacaconautas.SCALE - 16) + 1);
 			int valorx = aleatorioDois.nextInt((AppMacaconautas.WIDTH * AppMacaconautas.SCALE - 16 + BIGBOSS) + 1) + AppMacaconautas.WIDTH * AppMacaconautas.SCALE; //aleatorio.nextInt((max - min) + 1) + min;
-			whey.add(new WheyProtein(valorx, valory)); 
+			whey.add(new WheyProtein(valorx, valory, this.spriteSheet)); 
 		}
 	}
 

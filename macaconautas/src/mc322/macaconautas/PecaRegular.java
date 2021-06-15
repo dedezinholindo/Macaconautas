@@ -13,8 +13,8 @@ public class PecaRegular extends Componente {
 	 * @param width largura da peça regular.
 	 * @param height altura da peça regular.
 	 */
-	public PecaRegular(int x, int y, int width, int height) {
-		super(x, y, width, height);
+	public PecaRegular(int x, int y, int width, int height, SpriteSheet spriteSheet) {
+		super(x, y, width, height, spriteSheet);
 		this.speed = PECA_REGULAR_SPEED;
 	}
 

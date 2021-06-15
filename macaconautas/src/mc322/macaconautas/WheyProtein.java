@@ -16,8 +16,8 @@ public class WheyProtein extends PecaRegular{
 	//private final static int SPRITE_HEIGHT = 40;
 	//private final static int QUANTIDADE_SPRITES = 1;
 	
-	public WheyProtein(int x, int y) {
-		super(x, y, WIDTH, HEIGHT);
+	public WheyProtein(int x, int y, SpriteSheet spriteSheet) {
+		super(x, y, WIDTH, HEIGHT, spriteSheet);
 		//this.quantidadeSprites = QUANTIDADE_SPRITES;
 		//this.sprites = new BufferedImage[this.quantidadeSprites];
 		//SpriteSheet spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH);
