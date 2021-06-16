@@ -1,6 +1,9 @@
-package mc322.macaconautas;
+package mc322.macaconautas.PecasRegulares;
 
 import java.awt.image.BufferedImage;
+
+import mc322.macaconautas.Componentes.Componente;
+import mc322.macaconautas.app.SpriteSheet;
 
 public class PecaRegular extends Componente {
 

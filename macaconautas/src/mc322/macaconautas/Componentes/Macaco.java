@@ -1,9 +1,12 @@
-package mc322.macaconautas;
+package mc322.macaconautas.Componentes;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle; //vai ter toda a colisão e todos os métodos necessários
 import java.awt.image.BufferedImage;
+
+import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.app.SpriteSheet;
 
 public class Macaco extends Componente {
 
@@ -57,11 +60,11 @@ public class Macaco extends Componente {
 		} else { 
 			this.y += GOING_DOWN_SPEED;
 		}
-		if (this.y + this.height > AppMacaconautas.HEIGHT * AppMacaconautas.SCALE) { // está no limite inferior (chão).
-			this.y = AppMacaconautas.HEIGHT * AppMacaconautas.SCALE - this.height;
+		if (this.y + this.height > Controle.HEIGHT * Controle.SCALE) { // está no limite inferior (chão).
+			this.y = Controle.HEIGHT * Controle.SCALE - this.height;
 			this.isWalking = true;
-		} else if (this.y <= 0) { // está no limite superior (teto).
-			this.y = 0;
+		} else if (this.y <= Controle.BORDA) { // está no limite superior (teto).
+			this.y = Controle.BORDA;
 		}
 	}
 

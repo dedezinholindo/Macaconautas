@@ -1,4 +1,6 @@
-package mc322.macaconautas;
+package mc322.macaconautas.Componentes;
+
+import mc322.macaconautas.app.SpriteSheet;
 
 public class FrotaAlien extends Componente{
 	private final static int WIDTH = 28;

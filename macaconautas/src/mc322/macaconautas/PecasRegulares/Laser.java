@@ -1,9 +1,13 @@
-package mc322.macaconautas;
+package mc322.macaconautas.PecasRegulares;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import mc322.macaconautas.Componentes.Componente;
+import mc322.macaconautas.Jogo.ControleJogo;
+import mc322.macaconautas.app.SpriteSheet;
 
 public class Laser extends Componente {
 

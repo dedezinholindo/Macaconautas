@@ -1,9 +1,13 @@
-package mc322.macaconautas;
+package mc322.macaconautas.PecasRegulares;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import mc322.macaconautas.Jogo.ControleJogo;
+import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.app.SpriteSheet;
 
 //lembrar de apagar ele quando ele sair da tela
 public class Alien extends PecaRegular {
@@ -48,7 +52,7 @@ public class Alien extends PecaRegular {
 	 */
 	public void tick() {
 		super.tick();
-		if (this.x <= AppMacaconautas.WIDTH * AppMacaconautas.SCALE) {
+		if (this.x <= Controle.WIDTH * Controle.SCALE) {
 			if (this.distanceWithoutShooting == MAX_DISTANCE_WITHOUT_SHOOTING) { // atira um laser.
 				Laser laser = new Laser(this.x - this.width - this.speed, this.y + (this.height / 2), this.spriteSheet);
 				ArrayList <Laser> l = ControleJogo.getLasers(); 

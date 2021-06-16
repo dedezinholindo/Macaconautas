@@ -1,9 +1,11 @@
-package mc322.macaconautas;
+package mc322.macaconautas.Componentes;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-public class Componente extends Rectangle implements IComponente{
+import mc322.macaconautas.app.SpriteSheet;
+
+public class Componente extends Rectangle{
 
 	protected int speed;
 	protected boolean isVisible;
