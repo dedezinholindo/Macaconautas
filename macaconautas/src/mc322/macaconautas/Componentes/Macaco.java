@@ -14,7 +14,7 @@ public class Macaco extends Componente {
 	private final static int HEIGHT = 32;
 
 	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 0;
+	private final static int SPRITE_Y = 5;
 	private final static int QUANTIDADE_SPRITES = 5;
 
 	private final static int PERIODO_ANIMACAO = 15; // quantidade de frames do jogo para cada frame da animação.

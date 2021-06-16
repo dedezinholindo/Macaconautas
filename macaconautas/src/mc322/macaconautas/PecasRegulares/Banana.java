@@ -12,7 +12,7 @@ public class Banana extends PecaRegular {
 	private final static int HEIGHT = 28;
 
 	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 2;
+	private final static int SPRITE_Y = 0;
 	private final static int QUANTIDADE_SPRITES = 1;
 
 	/**

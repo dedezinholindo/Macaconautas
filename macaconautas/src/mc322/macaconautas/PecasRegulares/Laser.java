@@ -12,10 +12,10 @@ import mc322.macaconautas.app.SpriteSheet;
 public class Laser extends Componente {
 
 	private final static int WIDTH = 36;
-	private final static int HEIGHT = 12;
+	private final static int HEIGHT = 8;
 
 	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 4;
+	private final static int SPRITE_Y = 3;
 	private final static int QUANTIDADE_SPRITES = 1;
 
 	private final static int SPEED = 2;
