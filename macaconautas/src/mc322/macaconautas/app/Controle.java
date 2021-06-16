@@ -124,7 +124,6 @@ public class Controle extends Canvas{
 	}
 
 	private void iniciarJogo() throws InterruptedException {	//throws para sleep	(aplicar try catch)
-		AppMacaconautas app = new AppMacaconautas();
 		appState = 'J'; //TESTE PARA INICIAR O JOGO
 		while(appState != 'F') {
 			switch(appState) {
