@@ -9,9 +9,11 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import mc322.macaconautas.Interface.IGame;
+import mc322.macaconautas.Interface.IModo;
 import mc322.macaconautas.app.SpriteSheet;
 
-public class JogoView extends Canvas{
+public class JogoView extends Canvas implements IGame{
 	
 	private ControleJogo conJogo;
 	
@@ -19,7 +21,7 @@ public class JogoView extends Canvas{
 		conJogo = new ControleJogo(spriteSheet, f); 
 	}
 	
-	public void mostrarJogo() throws InterruptedException {
+	public void mostrar() throws InterruptedException {
 		conJogo.start();
 	}
 	
@@ -27,7 +29,7 @@ public class JogoView extends Canvas{
 		return conJogo.getBananasColetadas();
 	}
 	
-	public char getJogoState() {
+	public char getState() {
 		return conJogo.getJogoState();
 	}
 }

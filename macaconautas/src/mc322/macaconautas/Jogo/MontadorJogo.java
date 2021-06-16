@@ -11,18 +11,19 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import mc322.macaconautas.Componentes.Laser;
 import mc322.macaconautas.Componentes.Macaco;
-import mc322.macaconautas.PecasRegulares.Laser;
 import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class MontadorJogo {
+	
 	final static int TAMANHO_STRING_JOGO = 17;
-	final static int WIDTH = Controle.WIDTH; //tornar ?
+	final static int WIDTH = Controle.WIDTH; 
 	final static int HEIGHT = Controle.HEIGHT;
 	final static int BORDA = Controle.BORDA;
 	final static int SCALE = Controle.SCALE;
-
+	
 	SpriteSheet spriteSheet;
 
 	int lentidao;

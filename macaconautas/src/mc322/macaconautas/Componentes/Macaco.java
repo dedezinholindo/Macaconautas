@@ -10,8 +10,11 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class Macaco extends Componente {
 
-	private final static int WIDTH = 24;
-	private final static int HEIGHT = 32;
+	private final static int MACACO_WIDTH = 24;
+	private final static int MACACO_HEIGHT = 32;
+	
+	private final static int GORILA_WIDTH = 32;
+	private final static int GORILA_HEIGHT = 40;
 
 	private final static int SPRITE_X = 0;
 	private final static int SPRITE_Y = 5;
@@ -22,9 +25,13 @@ public class Macaco extends Componente {
 
 	private final static int GOING_UP_SPEED = 5;
 	private final static int GOING_DOWN_SPEED = 3;
+	
+	private final static int TEMPO_DE_GORILA = 10 * 60; //<segundos> * 60 (pois 60 frames/seg)
 
 	private boolean isGoingUp; // indica se o macaco está indo para cima.
 	private boolean isWalking; // indica se o macaco está andando no chão.
+	private boolean isGorila;
+	private int contadorGorila;
 
 	/**
 	 * Inicializa um macaco.
@@ -32,7 +39,7 @@ public class Macaco extends Componente {
 	 * @param y coordenada y do macaco.
 	 */
 	public Macaco(int x, int y, SpriteSheet spriteSheet) {
-		super(x, y, WIDTH, HEIGHT, spriteSheet);
+		super(x, y, MACACO_WIDTH, MACACO_HEIGHT, spriteSheet);
 		this.quantidadeSprites = QUANTIDADE_SPRITES;
 		this.sprites = new BufferedImage[this.quantidadeSprites];
 		for (int i = 0; i < this.quantidadeSprites; i++) {
@@ -40,6 +47,44 @@ public class Macaco extends Componente {
 		}
 		this.isGoingUp = false;
 		this.isWalking = false;
+		this.isGorila = false;
+		contadorGorila = 0;
+	}
+	
+	public static int getTempoDeGorila() {
+		return TEMPO_DE_GORILA;
+	}
+
+	public static int getMacacoWidth() {
+		return MACACO_WIDTH;
+	}
+
+	public static int getMacacoHeight() {
+		return MACACO_HEIGHT;
+	}
+
+	public static int getGorilaWidth() {
+		return GORILA_WIDTH;
+	}
+
+	public static int getGorilaHeight() {
+		return GORILA_HEIGHT;
+	}
+	
+	public int getContadorGorila() {
+		return contadorGorila;
+	}
+
+	public void setContadorGorila(int contadorGorila) {
+		this.contadorGorila = contadorGorila;
+	}
+
+	public boolean IsGorila() {
+		return isGorila;
+	}
+
+	public void setIsGorila(boolean gorila) {
+		this.isGorila = gorila;
 	}
 
 	/**

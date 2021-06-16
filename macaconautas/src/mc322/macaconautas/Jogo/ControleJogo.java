@@ -15,10 +15,10 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import mc322.macaconautas.Componentes.Banana;
+import mc322.macaconautas.Componentes.Laser;
 import mc322.macaconautas.Componentes.Macaco;
-import mc322.macaconautas.PecasRegulares.Banana;
-import mc322.macaconautas.PecasRegulares.Laser;
-import mc322.macaconautas.PecasRegulares.WheyProtein;
+import mc322.macaconautas.Componentes.WheyProtein;
 import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
 
@@ -57,6 +57,10 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		}
 		jogo.contador += 1;
 	}
+	
+	private void tempoDeGorila() {
+		jogo.macaco.setContadorGorila(jogo.macaco.getContadorGorila() + 1);
+	}
 
 	private void tick() {
 		//Update the AppMacaconautas
@@ -69,6 +73,7 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 				jogo.lasers.get(i).tick();
 			}
 			lentidaoJogo(jogo.lentidao); 
+			transformaGorila();
 			break;
 
 		case 'P':
@@ -154,6 +159,25 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		} 
 		bs.show();
 	}
+	
+	private void transformaGorila() {
+		tempoDeGorila();
+		returnToMonkey();
+	}
+	
+	private void virarGorila() {
+		jogo.macaco.setContadorGorila(0);
+		jogo.macaco.setIsGorila(true);
+		jogo.macaco.setSize(jogo.macaco.getGorilaWidth(), jogo.macaco.getGorilaHeight());
+	}
+	
+	private void returnToMonkey() {
+		if (jogo.macaco.IsGorila() && jogo.macaco.getContadorGorila() == jogo.macaco.getTempoDeGorila()) {
+			jogo.macaco.setContadorGorila(0);
+			jogo.macaco.setIsGorila(false);
+			jogo.macaco.setSize(jogo.macaco.getMacacoWidth(), jogo.macaco.getMacacoHeight());
+		}
+	}
 
 	private boolean checarColisaoObstaculo() {
 		Rectangle formaMacaco = jogo.macaco.getBounds();
@@ -216,9 +240,19 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	}
 
 	private void checarColisoes() { 
-		if(checarColisaoObstaculo() || checarColisaoAlien() || checarColisaoLaser()){
-			jogo.jogoState = 'O';
-		}
+		if (!jogo.macaco.IsGorila()) {
+			if(checarColisaoObstaculo() || checarColisaoAlien() || checarColisaoLaser()){
+				jogo.jogoState = 'O';
+			}
+			int w = checarColisaoWhey();
+			if (w != -1) {
+				virarGorila();
+				ArrayList<WheyProtein> whey = jogo.espaco.getWhey();
+				whey.remove(w);
+				jogo.espaco.setWhey(whey); //remocao do whey
+				jogo.espaco.setWheyNaSessao(jogo.espaco.getWheyNaSessao() - 1);
+			}
+		} 
 		int b = checarColisaoBanana();
 		if (b != -1) {
 			ArrayList<Banana> bananas = jogo.espaco.getBananas();
@@ -226,13 +260,6 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 			jogo.espaco.setBananas(bananas); //remocao da banana
 			jogo.espaco.setBananasNaSessao(jogo.espaco.getBananasNaSessao() - 1); //sem isso o jogo pifa
 			jogo.bananasColetadas += 1;
-		}
-		int w = checarColisaoWhey();
-		if (w != -1) {
-			ArrayList<WheyProtein> whey = jogo.espaco.getWhey();
-			whey.remove(w);
-			jogo.espaco.setWhey(whey); //remocao do whey
-			jogo.espaco.setWheyNaSessao(jogo.espaco.getWheyNaSessao() - 1);
 		}
 	}
 
@@ -268,6 +295,5 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 			jogo.macaco.setIsGoingUp(false);
 		}
 	}
-
 
 }              

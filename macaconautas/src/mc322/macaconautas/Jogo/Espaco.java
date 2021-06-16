@@ -5,10 +5,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-import mc322.macaconautas.PecasRegulares.Alien;
-import mc322.macaconautas.PecasRegulares.Banana;
-import mc322.macaconautas.PecasRegulares.Obstaculo;
-import mc322.macaconautas.PecasRegulares.WheyProtein;
+import mc322.macaconautas.Componentes.Alien;
+import mc322.macaconautas.Componentes.Banana;
+import mc322.macaconautas.Componentes.Obstaculo;
+import mc322.macaconautas.Componentes.WheyProtein;
 import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
 

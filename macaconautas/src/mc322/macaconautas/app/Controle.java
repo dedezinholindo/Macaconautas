@@ -1,5 +1,7 @@
 package mc322.macaconautas.app;
 
+import mc322.macaconautas.Interface.IGame;
+import mc322.macaconautas.Interface.IModo;
 import mc322.macaconautas.Jogo.*;
 import java.awt.Canvas;
 
@@ -24,9 +26,9 @@ public class Controle extends Canvas{
 	private boolean jogoCriado;
 	private boolean lojaCriada;
 	private boolean menuCriado;
-	private JogoView jogo;
-	private MenuView menu;
-	private LojaView loja;
+	private IGame jogo;
+	private IModo menu;
+	private IModo loja;
 	private int quantidadeBananas;
 	private int recorde;
 	private int[] skinsLiberadas;
@@ -72,11 +74,11 @@ public class Controle extends Canvas{
 	public void abrirMenu() throws InterruptedException {
 		if(!menuCriado) {
 			menu = new MenuView(f);
-			menu.mostrarMenu();
+			menu.mostrar();
 			menuCriado = true;
 		}
 		Thread.currentThread().sleep(50);
-		switch(menu.getMenuState()) {
+		switch(menu.getState()) {
 		case 'L':
 			appState = 'L';
 			menuCriado = false;
@@ -97,11 +99,11 @@ public class Controle extends Canvas{
 	public void abrirLoja() throws InterruptedException {
 		if(!lojaCriada) {
 			loja = new LojaView(f);
-			loja.mostrarLoja();
+			loja.mostrar();
 			lojaCriada = true;
 		}
 		Thread.currentThread().sleep(50); //operacoes imediatas ocasionam erros inesperaveis
-		if (loja.getLojaState() == 'M') {
+		if (loja.getState() == 'M') {
 			appState = 'M';
 			lojaCriada = false;
 		}
@@ -110,11 +112,11 @@ public class Controle extends Canvas{
 	public void abrirJogo() throws InterruptedException {
 		if(!jogoCriado) {
 			jogo = new JogoView(spriteSheet, f);
-			jogo.mostrarJogo();
+			jogo.mostrar();
 			jogoCriado = true;
 		}
 		Thread.currentThread().sleep(50); //operacoes imediatas ocasionam erros inesperaveis
-		if (jogo.getJogoState() == 'O') {
+		if (jogo.getState() == 'O') {
 			appState = 'M';
 			jogoCriado = false;
 			quantidadeBananas += jogo.getBananasColetadas();

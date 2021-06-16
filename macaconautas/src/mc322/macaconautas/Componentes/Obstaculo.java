@@ -1,4 +1,4 @@
-package mc322.macaconautas.PecasRegulares;
+package mc322.macaconautas.Componentes;
 
 import java.awt.Color;
 import java.awt.Graphics;
