@@ -32,7 +32,7 @@ public class Controle extends Canvas{
 	private int quantidadeBananas;
 	private int recorde;
 	private int[] skinsLiberadas;
-	private SpriteSheet spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
+	private SpriteSheet spriteSheet;
 
 	public Controle() {
 		initFrame();

@@ -12,13 +12,16 @@ public class Macaco extends Componente {
 
 	private final static int MACACO_WIDTH = 24;
 	private final static int MACACO_HEIGHT = 32;
-	
+
+	private final static int SPRITE_X = 0;
+	private final static int SPRITE_Y = 6;
+	private final static int QUANTIDADE_SPRITES = 5;
+
 	private final static int GORILA_WIDTH = 32;
 	private final static int GORILA_HEIGHT = 40;
 
-	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 5;
-	private final static int QUANTIDADE_SPRITES = 5;
+	private final static int GORILA_SPRITE_X = 0;
+	private final static int GORILA_SPRITE_Y = 5;
 
 	private final static int PERIODO_ANIMACAO = 15; // quantidade de frames do jogo para cada frame da animação.
 	private final static int MAX_FRAMES_ANIMACAO = 4;
@@ -30,6 +33,7 @@ public class Macaco extends Componente {
 
 	private boolean isGoingUp; // indica se o macaco está indo para cima.
 	private boolean isWalking; // indica se o macaco está andando no chão.
+	private BufferedImage gorilaSprites[];
 	private boolean isGorila;
 	private int contadorGorila;
 
@@ -44,6 +48,10 @@ public class Macaco extends Componente {
 		this.sprites = new BufferedImage[this.quantidadeSprites];
 		for (int i = 0; i < this.quantidadeSprites; i++) {
 			this.sprites[i] = spriteSheet.getSprite(SPRITE_X + i, SPRITE_Y);
+		}
+		this.gorilaSprites = new BufferedImage[this.quantidadeSprites];
+		for (int i = 0; i < this.quantidadeSprites; i++) {
+			this.gorilaSprites[i] = spriteSheet.getSprite(GORILA_SPRITE_X + i, GORILA_SPRITE_Y);
 		}
 		this.isGoingUp = false;
 		this.isWalking = false;
@@ -118,24 +126,25 @@ public class Macaco extends Componente {
 	 * @param g
 	 */
 	public void render (Graphics g) {
+		BufferedImage sprites[] = (isGorila) ? this.gorilaSprites : this.sprites;
 		if (this.isVisible) {
 			BufferedImage sprite;
 			if (this.isGoingUp) {
-				sprite = this.sprites[1]; // sprite com mochila a jato ativada.
+				sprite = sprites[1]; // sprite com mochila a jato ativada.
 				this.frame = 0;
 			} else if (this.isWalking) {
 				int frameAnimacao = this.frame / PERIODO_ANIMACAO;
 				if (frameAnimacao % 2 == 1) {
-					sprite = this.sprites[4]; // sprite de estado intermediário na corrida.
+					sprite = sprites[4]; // sprite de estado intermediário na corrida.
 				} else {
-					sprite = this.sprites[2 + (frameAnimacao / 2)]; // sprite de passo direito (2) ou esquerdo (3).
+					sprite = sprites[2 + (frameAnimacao / 2)]; // sprite de passo direito (2) ou esquerdo (3).
 				}
 				this.frame++;
 				if (this.frame == MAX_FRAMES_ANIMACAO * PERIODO_ANIMACAO) {
 					this.frame = 0;
 				}
 			} else {
-				sprite = this.sprites[0];
+				sprite = sprites[0];
 				this.frame = 0; // sprite com mochila a jato desativada.
 			}
 			g.drawImage(sprite, this.x, this.y, null);
