@@ -23,7 +23,7 @@ public class Macaco extends Componente {
 	private final static int GORILA_SPRITE_X = 0;
 	private final static int GORILA_SPRITE_Y = 6;
 
-	private final static int WALKING_ANIMATION_PERIOD = 60 / 4; // quantidade de frames do jogo para cada frame da animação.
+	private final static int WALKING_ANIMATION_PERIOD = 60 / 5; // quantidade de frames do jogo para cada frame da animação.
 	private final static int MAX_WALKING_ANIMATION_FRAMES = 4;
 
 	private final static int GOING_UP_SPEED = 5;

@@ -20,33 +20,38 @@ public class FrotaAlien extends Componente{
 	private final static int SHIP_SPRITE_Y = 5;
 	private final static int QUANTIDADE_SPRITES = 5;
 
-	private final static int CHARGING_ANIMATION_PERIOD = 60 / 4; // quantidade de frames do jogo para cada frame da animação.
+	private final static int CHARGING_ANIMATION_PERIOD = 60; // quantidade de frames do jogo para cada frame da animação.
 	private final static int MAX_CHARGING_ANIMATION_FRAMES = 4;
 
 	private final static int MAX_SHOOTERS_QUANTITY = 2; // quantidade de máxima naves que atiram simultaneamente.
 	private final static int REFRESH_PERIOD = 2 * 60; // quantidade de frames do jogo antes de atirar.
 	private final static int SHOOTING_PERIOD = 5 * 60; // quantidade de frames do jogo atirando.
 
+	private boolean isDestroyed; // indica se a frota alien está destruída.
 	private boolean isCharging; // indica se há naves carregando.
 	private boolean isShooting; // indica se há naves atirando.
 	private boolean shooters[]; // indica quais naves estão atirando/carregando (sempre duas).
-
+	private int maxShotsQuantity; // indica quantas vezes a frota pode atirar.
+	private int shotsQuantity; // indica quantas vezes a frota atirou.
 	/**
 	 * Inicializa uma frota alien.
 	 * @param x coordenada x da frota alien.
 	 * @param y coordenada y da frota alien.
 	 */
-	public FrotaAlien(int x, int y, SpriteSheet spriteSheet) {
+	public FrotaAlien(int x, int y, SpriteSheet spriteSheet, int maxShotsQuantity) {
 		super(x, y, SHIP_WIDTH, TOTAL_HEIGHT, spriteSheet);
 		this.quantidadeSprites = QUANTIDADE_SPRITES;
 		this.sprites = new BufferedImage[this.quantidadeSprites];
 		for (int i = 0; i < this.quantidadeSprites; i++) {
 			this.sprites[i] = spriteSheet.getSprite(SHIP_SPRITE_X + i, SHIP_SPRITE_Y);
 		}
+		this.isDestroyed = false;
 		this.isCharging = false;
 		this.isShooting = false;
 		this.shooters = new boolean[SHIP_QUANTITY];
 		Arrays.fill(this.shooters, false); // inicializa todos como false.
+		this.maxShotsQuantity = maxShotsQuantity;
+		this.shotsQuantity = 0;
 	}
 
 	/**
@@ -63,6 +68,10 @@ public class FrotaAlien extends Componente{
 	 * Atualiza o estado da frota alien em um frame.
 	 */
 	public void tick() {
+		if ((this.shotsQuantity == this.maxShotsQuantity) && !this.isShooting) {
+			this.isDestroyed = true;
+			return;
+		}
 		if (!this.isCharging && !this.isShooting) {
 			if (this.frame >= REFRESH_PERIOD) {
 				this.isCharging = true;
@@ -73,6 +82,7 @@ public class FrotaAlien extends Componente{
 			if (this.frame >= MAX_CHARGING_ANIMATION_FRAMES * CHARGING_ANIMATION_PERIOD) {
 				this.isShooting = true;
 				this.isCharging = false;
+				this.shotsQuantity++;
 				this.frame = 0;
 			}
 		} else {
