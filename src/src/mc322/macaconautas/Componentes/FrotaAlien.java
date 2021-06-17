@@ -13,8 +13,9 @@ public class FrotaAlien extends Componente{
 	private final static int SHIP_SPACING = 80; // espaço entre duas naves consecutivas.
 
 	private final static int SHIP_WIDTH = 40;
-	private final static int SHIP_HEIGHT = 40;
-	private final static int TOTAL_HEIGHT = (SHIP_HEIGHT + SHIP_SPACING) * (SHIP_QUANTITY) - SHIP_SPACING; // altura total da frota (subtração ao final, pois há espaço apenas entre naves).
+	private final static int SHIP_HEIGHT = 40; // dimensões de cada nave.
+	private final static int WIDTH = SHIP_WIDTH; // largura total da frota.
+	private final static int HEIGHT = (SHIP_HEIGHT + SHIP_SPACING) * (SHIP_QUANTITY) - SHIP_SPACING; // altura total da frota (subtração ao final, pois há espaço apenas entre naves).
 
 	private final static int SHIP_SPRITE_X = 0;
 	private final static int SHIP_SPRITE_Y = 5;
@@ -39,7 +40,7 @@ public class FrotaAlien extends Componente{
 	 * @param y coordenada y da frota alien.
 	 */
 	public FrotaAlien(int x, int y, SpriteSheet spriteSheet, int maxShotsQuantity) {
-		super(x, y, SHIP_WIDTH, TOTAL_HEIGHT, spriteSheet);
+		super(x, y, WIDTH, HEIGHT, spriteSheet);
 		this.quantidadeSprites = QUANTIDADE_SPRITES;
 		this.sprites = new BufferedImage[this.quantidadeSprites];
 		for (int i = 0; i < this.quantidadeSprites; i++) {
