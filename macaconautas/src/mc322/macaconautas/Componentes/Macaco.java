@@ -10,21 +10,21 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class Macaco extends Componente {
 
-	private final static int MACACO_WIDTH = 24;
-	private final static int MACACO_HEIGHT = 32;
+	private final static int WIDTH = 24;
+	private final static int HEIGHT = 32;
 
 	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 6;
+	private final static int SPRITE_Y = 7;
 	private final static int QUANTIDADE_SPRITES = 5;
 
 	private final static int GORILA_WIDTH = 32;
 	private final static int GORILA_HEIGHT = 40;
 
 	private final static int GORILA_SPRITE_X = 0;
-	private final static int GORILA_SPRITE_Y = 5;
+	private final static int GORILA_SPRITE_Y = 6;
 
-	private final static int PERIODO_ANIMACAO = 15; // quantidade de frames do jogo para cada frame da animação.
-	private final static int MAX_FRAMES_ANIMACAO = 4;
+	private final static int ANIMATION_PERIOD = 15; // quantidade de frames do jogo para cada frame da animação.
+	private final static int MAX_ANIMATION_FRAMES = 4;
 
 	private final static int GOING_UP_SPEED = 5;
 	private final static int GOING_DOWN_SPEED = 3;
@@ -43,7 +43,7 @@ public class Macaco extends Componente {
 	 * @param y coordenada y do macaco.
 	 */
 	public Macaco(int x, int y, SpriteSheet spriteSheet) {
-		super(x, y, MACACO_WIDTH, MACACO_HEIGHT, spriteSheet);
+		super(x, y, WIDTH, HEIGHT, spriteSheet);
 		this.quantidadeSprites = QUANTIDADE_SPRITES;
 		this.sprites = new BufferedImage[this.quantidadeSprites];
 		for (int i = 0; i < this.quantidadeSprites; i++) {
@@ -64,11 +64,11 @@ public class Macaco extends Componente {
 	}
 
 	public static int getMacacoWidth() {
-		return MACACO_WIDTH;
+		return WIDTH;
 	}
 
 	public static int getMacacoHeight() {
-		return MACACO_HEIGHT;
+		return HEIGHT;
 	}
 
 	public static int getGorilaWidth() {
