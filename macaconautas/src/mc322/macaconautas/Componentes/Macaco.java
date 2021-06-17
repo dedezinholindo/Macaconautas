@@ -23,8 +23,8 @@ public class Macaco extends Componente {
 	private final static int GORILA_SPRITE_X = 0;
 	private final static int GORILA_SPRITE_Y = 6;
 
-	private final static int ANIMATION_PERIOD = 15; // quantidade de frames do jogo para cada frame da animação.
-	private final static int MAX_ANIMATION_FRAMES = 4;
+	private final static int WALKING_ANIMATION_PERIOD = 60 / 4; // quantidade de frames do jogo para cada frame da animação.
+	private final static int MAX_WALKING_ANIMATION_FRAMES = 4;
 
 	private final static int GOING_UP_SPEED = 5;
 	private final static int GOING_DOWN_SPEED = 3;
@@ -56,7 +56,7 @@ public class Macaco extends Componente {
 		this.isGoingUp = false;
 		this.isWalking = false;
 		this.isGorila = false;
-		contadorGorila = 0;
+		this.contadorGorila = 0;
 	}
 	
 	public static int getTempoDeGorila() {
@@ -116,8 +116,12 @@ public class Macaco extends Componente {
 		if (this.y + this.height > Controle.HEIGHT * Controle.SCALE) { // está no limite inferior (chão).
 			this.y = Controle.HEIGHT * Controle.SCALE - this.height;
 			this.isWalking = true;
+			this.frame++;
 		} else if (this.y <= Controle.BORDA) { // está no limite superior (teto).
 			this.y = Controle.BORDA;
+		}
+		if (!this.isWalking || (this.frame >= MAX_WALKING_ANIMATION_FRAMES * WALKING_ANIMATION_PERIOD)) {
+			this.frame = 0; // reinicia contagem de frames caso não esteja andando ou precise reiniciar a animação.
 		}
 	}
 
@@ -126,26 +130,20 @@ public class Macaco extends Componente {
 	 * @param g
 	 */
 	public void render (Graphics g) {
-		BufferedImage sprites[] = (isGorila) ? this.gorilaSprites : this.sprites;
+		BufferedImage sprites[] = (this.isGorila ? this.gorilaSprites : this.sprites);
 		if (this.isVisible) {
 			BufferedImage sprite;
 			if (this.isGoingUp) {
 				sprite = sprites[1]; // sprite com mochila a jato ativada.
-				this.frame = 0;
 			} else if (this.isWalking) {
-				int frameAnimacao = this.frame / PERIODO_ANIMACAO;
+				int frameAnimacao = this.frame / WALKING_ANIMATION_PERIOD;
 				if (frameAnimacao % 2 == 1) {
 					sprite = sprites[4]; // sprite de estado intermediário na corrida.
 				} else {
 					sprite = sprites[2 + (frameAnimacao / 2)]; // sprite de passo direito (2) ou esquerdo (3).
 				}
-				this.frame++;
-				if (this.frame == MAX_FRAMES_ANIMACAO * PERIODO_ANIMACAO) {
-					this.frame = 0;
-				}
 			} else {
-				sprite = sprites[0];
-				this.frame = 0; // sprite com mochila a jato desativada.
+				sprite = sprites[0]; // sprite de queda livre.
 			}
 			g.drawImage(sprite, this.x, this.y, null);
 
