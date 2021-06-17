@@ -101,11 +101,9 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 		g.setColor(Color.WHITE);
 		g.drawString("Jogar", menu.WIDTH * menu.SCALE/2 - 57 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
 		
-		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
 		g.drawString("Loja", menu.WIDTH * menu.SCALE/2 - 50 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
 		
-		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
 		g.drawString("Sair do Jogo", menu.WIDTH * menu.SCALE/2 - 100 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
 	}

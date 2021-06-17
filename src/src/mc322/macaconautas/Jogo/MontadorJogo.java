@@ -23,11 +23,13 @@ public class MontadorJogo {
 	final static int HEIGHT = Controle.HEIGHT;
 	final static int BORDA = Controle.BORDA;
 	final static int SCALE = Controle.SCALE;
+	final static String[] OPTIONS = {"Resume", "Menu"};
+	final static int MAX_OPTIONS = OPTIONS.length - 1;
 	
 	SpriteSheet spriteSheet;
 
 	int lentidao;
-	char jogoState; //N para normal, P para pausado (uso do pause) e O para Game Over
+	char jogoState; //N para normal, P para pausado (uso do pause), G para game over parcial e O para Game Over
 	boolean isRunning;
 	boolean pause;
 	Thread thread;
@@ -36,6 +38,12 @@ public class MontadorJogo {
 	int bananasColetadas;
 	long distancia;
 	int contador;
+	boolean showMessageGameOver;
+	int framesMessageGameOver;
+	int currentOption;
+	boolean gameUp;
+	boolean gameDown;
+	boolean enter;
 
 	public MontadorJogo(SpriteSheet spriteSheet){
 		this.spriteSheet = spriteSheet;
@@ -48,6 +56,13 @@ public class MontadorJogo {
 		lentidao = 50;
 		distancia = 0;
 		contador = 0;
+		showMessageGameOver = true;
+		framesMessageGameOver = 0;
+		currentOption = 0;
+		gameUp = false;
+		gameDown = false;
+		enter = false;
+		
 	}	
 	
 }

@@ -55,6 +55,18 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	private void tempoDeGorila() {
 		jogo.macaco.setContadorGorila(jogo.macaco.getContadorGorila() + 1);
 	}
+	
+	private void framesGameOver() {
+		jogo.framesMessageGameOver++;
+		if(jogo.framesMessageGameOver == 25) {
+			jogo.framesMessageGameOver = 0;
+			if(jogo.showMessageGameOver) {
+				jogo.showMessageGameOver = false;
+			} else {
+				jogo.showMessageGameOver = true;
+			}
+		}
+	}
 
 	private void tick() {
 		//Update the AppMacaconautas
@@ -71,9 +83,14 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 			break;
 
 		case 'P':
-			//pause(); //tecla do teclado
+			pause(); 
 			break;
 
+			
+		case 'G':
+			framesGameOver();
+			break;
+			
 		case 'O':
 			stop();
 			break;
@@ -86,9 +103,30 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		jogo.thread.start();
 	}
 
-	/*private synchronized void pause() {
-		estaSuspensa = true;
-	}*/
+	private synchronized void pause() {
+		if(jogo.gameUp) {
+			jogo.gameUp = false;
+			jogo.currentOption--;
+			if(jogo.currentOption < 0) {
+				jogo.currentOption = jogo.MAX_OPTIONS;
+			}
+		}
+		if(jogo.gameDown) {
+			jogo.gameDown = false;
+			jogo.currentOption++;
+			if(jogo.currentOption > jogo.MAX_OPTIONS) {
+				jogo.currentOption = 0;
+			}
+		}
+		if(jogo.enter) {
+			jogo.enter = false;
+			if(jogo.OPTIONS[jogo.currentOption] == jogo.OPTIONS[0]) {
+				jogo.jogoState = 'N';
+			} else if(jogo.OPTIONS[jogo.currentOption] == jogo.OPTIONS[1]) {
+				jogo.jogoState = 'O';
+			}
+		}
+	}
 
 	public synchronized void stop() {
 		f.repaint();
@@ -101,17 +139,44 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		g.drawString(s, p_x, p_y);	
 	}
 	
+	private void renderPause(Graphics g) {
+		g.setFont(new Font("arial", Font.BOLD, 45));
+		g.setColor(Color.WHITE);
+		g.drawString("PAUSED", jogo.WIDTH * jogo.SCALE/2 - 100 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 - 90);
+		
+		g.setFont(new Font("arial", Font.BOLD, 30));
+		g.setColor(Color.WHITE);
+		g.drawString("Resume", jogo.WIDTH * jogo.SCALE/2 - 57 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 - 10);
+		
+		g.setColor(Color.WHITE);
+		g.drawString("Menu", jogo.WIDTH * jogo.SCALE/2 - 50 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 + 70);
+	}
+	
+	private void moveArrow(Graphics g) {
+		if(jogo.OPTIONS[jogo.currentOption] == jogo.OPTIONS[0]) {
+			g.drawString(">", jogo.WIDTH * jogo.SCALE/2 - 57 - 30 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 - 10);
+		} else if(jogo.OPTIONS[jogo.currentOption] == jogo.OPTIONS[1]) {
+			g.drawString(">", jogo.WIDTH * jogo.SCALE/2 - 50 - 30 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 + 70);
+		}
+	}
+	
 	private void renderGameOver(Graphics g) {
 		//TELA GAME OVER
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(new Color(0,0,0,100)); //transparencia
+		g2.setColor(new Color(0,0,0,180)); //transparencia
 		g2.fillRect(0, jogo.BORDA, jogo.WIDTH * jogo.SCALE, jogo.HEIGHT * jogo.SCALE - jogo.BORDA);
 
 		//FRASE GAME OVER
-		g.setFont(new Font("arial", Font.BOLD, 30));
+		g.setFont(new Font("arial", Font.BOLD, 70));
 		g.setColor(Color.WHITE);
-		g.drawString("GAME OVER", jogo.WIDTH * jogo.SCALE/2 - 120 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 - 100);
-		//mostrar recorde e bananas coletadas[CRIAR]
+		g.drawString("GAME OVER", jogo.WIDTH * jogo.SCALE/2 - 220 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 - 100);
+		g.setFont(new Font("arial", Font.BOLD, 25));
+		g.drawString("Colected bananas: " + jogo.bananasColetadas, jogo.WIDTH * jogo.SCALE/2 - 120 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 - 20);
+		g.drawString("Distance: " + jogo.distancia + " m", jogo.WIDTH * jogo.SCALE/2 - 120 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 + 60);
+		//fazer comparacao do recorde aqui
+		if(jogo.showMessageGameOver) {
+			g.drawString(">> Press enter to Menu <<", jogo.WIDTH * jogo.SCALE/2 - 200 , (jogo.HEIGHT * jogo.SCALE - jogo.BORDA)/2 + 140);
+		}
 	}
 
 	//TIRAR DAQUI??
@@ -139,7 +204,12 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		String stringDistancia = jogo.distancia + " m";
 		renderStringsEspaco(g, stringDistancia, (jogo.WIDTH * jogo.SCALE - (stringDistancia.length())*jogo.TAMANHO_STRING_JOGO)/2, jogo.TAMANHO_STRING_JOGO + jogo.BORDA, Color.LIGHT_GRAY);
 		
-		if (jogo.jogoState == 'O') {
+		if(jogo.jogoState == 'P') {
+			renderPause(g);
+			moveArrow(g);
+		}
+		
+		if (jogo.jogoState == 'G') {
 			renderGameOver(g);
 		} 
 		bs.show();
@@ -244,7 +314,7 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 
 	private void checarColisoes() { 
 		if((checarColisaoObstaculo() || checarColisaoAlien() || checarColisaoLaser()) && !jogo.macaco.IsGorila()){
-			jogo.jogoState = 'O';
+			jogo.jogoState = 'G';
 		}
 		if (checarColisaoWhey() && !jogo.macaco.IsGorila()) {
 			virarGorila();
@@ -275,6 +345,23 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 			jogo.macaco.setIsGoingUp(true);
+		}
+		//voltar menu quadno perde
+		if(jogo.jogoState == 'G' && e.getKeyCode() == KeyEvent.VK_ENTER) {
+			jogo.jogoState = 'O';
+		}
+		if(jogo.jogoState == 'N' && e.getKeyCode() == KeyEvent.VK_P) {
+			jogo.jogoState = 'P';
+		}
+		if(jogo.jogoState == 'P') {
+			if(e.getKeyCode() == KeyEvent.VK_UP) {
+				jogo.gameUp = true;
+			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+				jogo.gameDown = true;
+			}
+			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+				jogo.enter = true;
+			}
 		}
 	}
 
