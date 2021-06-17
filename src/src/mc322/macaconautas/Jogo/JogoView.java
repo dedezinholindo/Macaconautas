@@ -11,14 +11,19 @@ import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IGame;
 import mc322.macaconautas.Interface.IModo;
+import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class JogoView extends Canvas implements IGame{
 	
 	private ControleJogo conJogo;
+	static long record;
+	static int quantidadeBananas;
 	
 	public JogoView(SpriteSheet spriteSheet, JFrame f) throws InterruptedException {
 		conJogo = new ControleJogo(spriteSheet, f); 
+		record = Controle.getRecord();
+		quantidadeBananas = Controle.getQuantidadeBananas();
 	}
 	
 	public void mostrar() throws InterruptedException {
@@ -31,5 +36,9 @@ public class JogoView extends Canvas implements IGame{
 	
 	public char getState() {
 		return conJogo.getJogoState();
+	}
+	
+	public long getDistancia() {
+		return conJogo.getDistancia();
 	}
 }

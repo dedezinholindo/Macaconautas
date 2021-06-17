@@ -24,14 +24,14 @@ public class Controle extends Canvas implements IInit{
 	private final static int SPRITE_HEIGHT = 40;
 
 	private static char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
+	private static long record;
+	private static int quantidadeBananas;
 	private boolean jogoCriado;
 	private boolean lojaCriada;
 	private boolean menuCriado;
 	private IGame jogo;
 	private IModo menu;
 	private IModo loja;
-	private int quantidadeBananas;
-	private int recorde;
 	private int[] skinsLiberadas;
 	private SpriteSheet spriteSheet;
 
@@ -50,26 +50,32 @@ public class Controle extends Canvas implements IInit{
 		menu = null;
 		loja = null;
 		quantidadeBananas = 0; //ou de acordo com o jogo salvo
-		recorde = 0; //ou o jogo salvo
+		record = 0; //ou o jogo salvo
 		skinsLiberadas = null; //ou jogo salvo
+		appState = 'M';
 	}
-	
+
 	private void initFrame() {
 		f = new JFrame("MACACONAUTAS"); //titulo do jogo ou setTitle()
 		f.add(this); //adicionar o que criamos para ficar visível
 		f.setLayout(null);
 		f.setSize(WIDTH * SCALE, HEIGHT * SCALE);
 		f.setResizable(false); //nao pode redimensionar 
-		//f.pack(); //fazer o setPreferredSize funcionar de forma correta (erro) -apagar
 		f.setLocationRelativeTo(null); //centro (tem que estar depois do pack)
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //fechar quando clicar no x e parar de vez
 		f.setVisible(true); //deixar ele visivel
-		//f.setUndecorated(true);//tirar barra de titulo
 	}
 		
+	public static long getRecord() {
+		return record;
+	}
 	
 	public static void setAppState(char state) {
 		appState = state;
+	}
+	
+	public static int getQuantidadeBananas() {
+		return quantidadeBananas;
 	}
 	
 	public void abrirMenu() throws InterruptedException {
@@ -120,12 +126,12 @@ public class Controle extends Canvas implements IInit{
 		if (jogo.getState() == 'O') {
 			appState = 'M';
 			jogoCriado = false;
+			record = jogo.getDistancia();
 			quantidadeBananas += jogo.getBananasColetadas();
 		}
 	}
 
 	public void init() throws InterruptedException {	//throws para sleep	(aplicar try catch)
-		appState = 'M'; 
 		while(appState != 'F') {
 			switch(appState) {
 			case 'M':

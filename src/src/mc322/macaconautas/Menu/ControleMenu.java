@@ -118,6 +118,12 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 		}
 	}
 	
+	private void renderBottom(Graphics g){
+		g.setFont(new Font("arial",Font.PLAIN, 15));
+		g.setColor(Color.yellow);
+		g.drawString("Record: " + MenuView.record,  0, menu.HEIGHT * menu.SCALE);
+		g.drawString("Bananas: " + MenuView.quantidadeBananas,  0, menu.HEIGHT * menu.SCALE - 15);
+	}
 	
 	private void render() {
 		//renderizar the AppMacaconautas
@@ -134,6 +140,7 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 		//options
 		renderOptions(g);
 		moveArrow(g);
+		renderBottom(g);
 		bs.show(); //mostra o grafico
 	}
 

@@ -43,6 +43,14 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		return jogo.jogoState;
 	}
 	
+	long getDistancia() {
+		if(jogo.distancia < JogoView.record) {
+			return JogoView.record;
+		}
+		//renderizar new record
+		return jogo.distancia;
+	}
+	
 	private void lentidaoJogo(int lentidao) {
 		if(lentidao == jogo.contador) {
 			jogo.distancia += 1;
@@ -197,7 +205,7 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 			Alien.getLasers().get(i).render(g);
 		}
 		//banana
-		String stringBanana = "Bananas: " + jogo.bananasColetadas;
+		String stringBanana = "Bananas: " + (jogo.bananasColetadas + JogoView.quantidadeBananas);
 		renderStringsEspaco(g, stringBanana, jogo.WIDTH * jogo.SCALE - (stringBanana.length())*jogo.TAMANHO_STRING_JOGO, jogo.HEIGHT * jogo.SCALE, Color.LIGHT_GRAY);
 		
 		//distancia
