@@ -5,6 +5,7 @@
 Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve desviar de aliens, lasers e obstáculos para coletar bananas e percorrer a maior distância possível.
 
 # Equipe
+
 * `André Ricardo Pereira Silva` - `231391`
 * `Pedro Henrique Pinheiro Gadêlha` - `186985`
 
@@ -36,19 +37,13 @@ Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve d
 
 ![Diagrama Jogo](assets/diagrama-componentes-Jogo.png)
 
->
-
 ### Componente Menu
 
 ![Diagrama Menu](assets/diagrama-componentes-Menu.png)
 
->
-
 ### Componente Loja
 
 ![Diagrama Loja](assets/diagrama-componentes-Loja.png)
-
->
 
 ## Componente Jogo
 
