@@ -50,7 +50,7 @@ Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve d
 
 >
 
-## Componente `<Nome do Componente>`
+## Componente Jogo
 
 > <Resumo do papel do componente e serviços que ele oferece.>
 
@@ -59,9 +59,61 @@ Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve d
 **Ficha Técnica**
 item | detalhamento
 ----- | -----
-Classe | `<caminho completo da classe com pacotes>` <br> Exemplo: `pt.c08componentes.s20catalog.s10ds.DataSetComponent`
-Autores | `<nome dos membros que criaram o componente>`
-Interfaces | `<listagem das interfaces do componente>`
+Classe |  src.src.mc233.macaconautas.Jogo.* 
+Autores | André Ricardo e Pedro Gadelha
+Interfaces | IGame
+
+### Interfaces
+
+Interfaces associadas a esse componente:
+
+![Diagrama Interfaces](diagrama-interfaces.png)
+
+Interface agregadora do componente em Java:
+
+~~~java
+public interface IDataSet extends ITableProducer, IDataSetProperties {
+}
+~~~
+
+## Componente Menu
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Componente](diagrama-componente.png)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe |  src.src.mc233.macaconautas.Mneu.* 
+Autores | André Ricardo e Pedro Gadelha
+Interfaces | IModo
+
+### Interfaces
+
+Interfaces associadas a esse componente:
+
+![Diagrama Interfaces](diagrama-interfaces.png)
+
+Interface agregadora do componente em Java:
+
+~~~java
+public interface IDataSet extends ITableProducer, IDataSetProperties {
+}
+~~~
+
+## Componente Loja
+
+> <Resumo do papel do componente e serviços que ele oferece.>
+
+![Componente](diagrama-componente.png)
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe |  src.src.mc233.macaconautas.Loja.* 
+Autores | André Ricardo e Pedro Gadelha
+Interfaces | IModo
 
 ### Interfaces
 
