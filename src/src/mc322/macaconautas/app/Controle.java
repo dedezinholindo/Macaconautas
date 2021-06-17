@@ -84,7 +84,7 @@ public class Controle extends Canvas implements IInit{
 			menu.mostrar();
 			menuCriado = true;
 		}
-		Thread.currentThread().sleep(100); //alterar baseado no processamento do computador(error de renderizacao)
+		Thread.currentThread().sleep(200); //alterar baseado no processamento do computador(error de renderizacao)
 		switch(menu.getState()) {
 		case 'L':
 			appState = 'L';
@@ -109,7 +109,7 @@ public class Controle extends Canvas implements IInit{
 			loja.mostrar();
 			lojaCriada = true;
 		}
-		Thread.currentThread().sleep(100); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(200); //operacoes imediatas ocasionam erros inesperaveis
 		if (loja.getState() == 'M') {
 			appState = 'M';
 			lojaCriada = false;
@@ -122,7 +122,7 @@ public class Controle extends Canvas implements IInit{
 			jogo.mostrar();
 			jogoCriado = true;
 		}
-		Thread.currentThread().sleep(100); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(200); //operacoes imediatas ocasionam erros inesperaveis
 		if (jogo.getState() == 'O') {
 			appState = 'M';
 			jogoCriado = false;
