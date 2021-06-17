@@ -29,11 +29,10 @@ public class MontadorJogo {
 	int lentidao;
 	char jogoState; //N para normal, P para pausado (uso do pause) e O para Game Over
 	boolean isRunning;
-	// boolean estaSuspensa;
+	boolean pause;
 	Thread thread;
 	Macaco macaco;
 	Espaco espaco;
-	static ArrayList <Laser> lasers; 
 	int bananasColetadas;
 	long distancia;
 	int contador;
@@ -42,19 +41,13 @@ public class MontadorJogo {
 		this.spriteSheet = spriteSheet;
 		macaco = new Macaco(15, 0, this.spriteSheet);
 		espaco = new Espaco(this.spriteSheet);
-		lasers = new ArrayList<Laser>();
 		jogoState = 'N';
 		isRunning = true;
-		//estaSuspensa = false;
+		pause = false;
 		bananasColetadas = 0;
 		lentidao = 50;
 		distancia = 0;
 		contador = 0;
 	}	
 	
-	
-
-	
-
-
 }

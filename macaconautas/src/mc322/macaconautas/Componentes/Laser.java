@@ -40,9 +40,9 @@ public class Laser extends Componente {
 	public void tick() {
 		this.x -= this.speed;
 		if (this.x < 0) { //sumir quando sir da tela
-			ArrayList <Laser> l = ControleJogo.getLasers();
-			l.remove(this);
-			ControleJogo.setLasers(l);
+			ArrayList <Laser> l = Alien.getLasers();
+			//l.remove(this);
+			Alien.setLasers(l);
 			return; // sempre retornar quando elimina o proprio objeto 
 		}
 	}

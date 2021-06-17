@@ -15,9 +15,11 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import mc322.macaconautas.Componentes.Alien;
 import mc322.macaconautas.Componentes.Banana;
 import mc322.macaconautas.Componentes.Laser;
 import mc322.macaconautas.Componentes.Macaco;
+import mc322.macaconautas.Componentes.Obstaculo;
 import mc322.macaconautas.Componentes.WheyProtein;
 import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
@@ -40,14 +42,6 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	char getJogoState() {
 		return jogo.jogoState;
 	}
-
-	public static ArrayList<Laser> getLasers() {
-		return MontadorJogo.lasers; //mudar
-	}
-
-	public static void setLasers(ArrayList<Laser> lasers) {
-		MontadorJogo.lasers = lasers; //mudar estatico
-	}
 	
 	private void lentidaoJogo(int lentidao) {
 		if(lentidao == jogo.contador) {
@@ -69,8 +63,8 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 			jogo.macaco.tick();
 			jogo.espaco.tick();
 			checarColisoes();
-			for (int i = 0; i < jogo.lasers.size(); i++) {
-				jogo.lasers.get(i).tick();
+			for (int i = 0; i < Alien.getLasers().size(); i++) {
+				Alien.getLasers().get(i).tick();
 			}
 			lentidaoJogo(jogo.lentidao); 
 			transformaGorila();
@@ -81,13 +75,6 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 			break;
 
 		case 'O':
-			// Mostrar resultados por alguns segundos e voltar pro menu
-			try {
-				Thread.currentThread().sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			stop();
 			break;
 		}
@@ -141,10 +128,9 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		g.fillRect(0, jogo.BORDA, jogo.WIDTH * jogo.SCALE, jogo.HEIGHT * jogo.SCALE - jogo.BORDA); //aparece um retangulo na tela (x,y,largura,altura)
 		jogo.macaco.render(g);
 		jogo.espaco.render(g);
-		for (int i = 0; i < jogo.lasers.size(); i++) {
-			jogo.lasers.get(i).render(g);
+		for (int i = 0; i < Alien.getLasers().size(); i++) {
+			Alien.getLasers().get(i).render(g);
 		}
-		
 		//banana
 		String stringBanana = "Bananas: " + jogo.bananasColetadas;
 		renderStringsEspaco(g, stringBanana, jogo.WIDTH * jogo.SCALE - (stringBanana.length())*jogo.TAMANHO_STRING_JOGO, jogo.HEIGHT * jogo.SCALE, Color.LIGHT_GRAY);
@@ -155,7 +141,6 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		
 		if (jogo.jogoState == 'O') {
 			renderGameOver(g);
-			//esperar uns segundos para sair [CRIAR]
 		} 
 		bs.show();
 	}
@@ -185,6 +170,10 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		for (int i = 0; i < jogo.espaco.getObstaculosNaSessao(); i++) {
 			formaObstaculo = jogo.espaco.getObstaculos().get(i).getBounds();
 			if (formaMacaco.intersects(formaObstaculo)) {
+				ArrayList<Obstaculo> obstaculos = jogo.espaco.getObstaculos();
+				obstaculos.remove(i);
+				jogo.espaco.setObstaculos(obstaculos); //remocao do whey
+				jogo.espaco.setObstaculosNaSessao(jogo.espaco.getObstaculosNaSessao() - 1);
 				return true;
 			}
 		}
@@ -197,6 +186,10 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 		for (int i = 0; i < jogo.espaco.getAliensNaSessao(); i++) {
 			formaAlien = jogo.espaco.getAliens().get(i).getBounds();
 			if (formaMacaco.intersects(formaAlien)) {
+				ArrayList<Alien> aliens = jogo.espaco.getAliens();
+				aliens.remove(i);
+				jogo.espaco.setAliens(aliens); //remocao do whey
+				jogo.espaco.setAliensNaSessao(jogo.espaco.getAliensNaSessao() - 1);
 				return true;
 			}
 		}
@@ -206,61 +199,57 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	private boolean checarColisaoLaser() {
 		Rectangle formaMacaco = jogo.macaco.getBounds();
 		Rectangle formaLaser = null;
-		for (int i = 0; i < jogo.lasers.size(); i++) {
-			formaLaser = jogo.lasers.get(i).getBounds();
+		for (int i = 0; i < Alien.getLasers().size(); i++) {
+			formaLaser = Alien.getLasers().get(i).getBounds();
 			if (formaMacaco.intersects(formaLaser)) {
+				ArrayList<Laser> lasers = Alien.getLasers();
+				lasers.remove(i);
+				Alien.setLasers(lasers); //remocao da banana
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private int checarColisaoBanana() {
+	private void checarColisaoBanana() {
 		Rectangle formaMacaco = jogo.macaco.getBounds();
 		Rectangle formaBanana = null;
 		for (int i = 0; i < jogo.espaco.getBananasNaSessao(); i++) {
 			formaBanana = jogo.espaco.getBananas().get(i).getBounds();
 			if (formaMacaco.intersects(formaBanana)) {
-				return i;
+				ArrayList<Banana> bananas = jogo.espaco.getBananas();
+				bananas.remove(i);
+				jogo.espaco.setBananas(bananas); //remocao da banana
+				jogo.espaco.setBananasNaSessao(jogo.espaco.getBananasNaSessao() - 1); //sem isso o jogo pifa
+				jogo.bananasColetadas += 1;
 			}
 		}
-		return -1;
 	}
 	
-	private int checarColisaoWhey() {
+	private boolean checarColisaoWhey() {
 		Rectangle formaMacaco = jogo.macaco.getBounds();
 		Rectangle formaWhey = null;
 		for (int i = 0; i < jogo.espaco.getWheyNaSessao(); i++) {
 			formaWhey = jogo.espaco.getWhey().get(i).getBounds();
 			if (formaMacaco.intersects(formaWhey)) {
-				return i;
+				ArrayList<WheyProtein> whey = jogo.espaco.getWhey();
+				whey.remove(i);
+				jogo.espaco.setWhey(whey); //remocao do whey
+				jogo.espaco.setWheyNaSessao(jogo.espaco.getWheyNaSessao() - 1);
+				return true;
 			}
 		}
-		return -1;
+		return false;
 	}
 
 	private void checarColisoes() { 
-		if (!jogo.macaco.IsGorila()) {
-			if(checarColisaoObstaculo() || checarColisaoAlien() || checarColisaoLaser()){
-				jogo.jogoState = 'O';
-			}
-			int w = checarColisaoWhey();
-			if (w != -1) {
-				virarGorila();
-				ArrayList<WheyProtein> whey = jogo.espaco.getWhey();
-				whey.remove(w);
-				jogo.espaco.setWhey(whey); //remocao do whey
-				jogo.espaco.setWheyNaSessao(jogo.espaco.getWheyNaSessao() - 1);
-			}
-		} 
-		int b = checarColisaoBanana();
-		if (b != -1) {
-			ArrayList<Banana> bananas = jogo.espaco.getBananas();
-			bananas.remove(b);
-			jogo.espaco.setBananas(bananas); //remocao da banana
-			jogo.espaco.setBananasNaSessao(jogo.espaco.getBananasNaSessao() - 1); //sem isso o jogo pifa
-			jogo.bananasColetadas += 1;
+		if((checarColisaoObstaculo() || checarColisaoAlien() || checarColisaoLaser()) && !jogo.macaco.IsGorila()){
+			jogo.jogoState = 'O';
 		}
+		if (checarColisaoWhey() && !jogo.macaco.IsGorila()) {
+			virarGorila();
+		}
+		checarColisaoBanana();
 	}
 
 	public void run() {

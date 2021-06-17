@@ -1,6 +1,7 @@
 package mc322.macaconautas.app;
 
 import mc322.macaconautas.Interface.IGame;
+import mc322.macaconautas.Interface.IInit;
 import mc322.macaconautas.Interface.IModo;
 import mc322.macaconautas.Jogo.*;
 import java.awt.Canvas;
@@ -11,7 +12,7 @@ import mc322.macaconautas.Jogo.ControleJogo;
 import mc322.macaconautas.Loja.LojaView;
 import mc322.macaconautas.Menu.MenuView;
 
-public class Controle extends Canvas{
+public class Controle extends Canvas implements IInit{
 	public final static int BORDA = 37; //grossura da borda
 	public final static int WIDTH = 160;
 	public final static int HEIGHT = 120;
@@ -22,7 +23,7 @@ public class Controle extends Canvas{
 	private final static int SPRITE_WIDTH = 40;
 	private final static int SPRITE_HEIGHT = 40;
 
-	private char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
+	private static char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
 	private boolean jogoCriado;
 	private boolean lojaCriada;
 	private boolean menuCriado;
@@ -37,11 +38,6 @@ public class Controle extends Canvas{
 	public Controle() {
 		initFrame();
 		initAtributos();
-		try {
-			iniciarJogo();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	private void initAtributos() {
@@ -71,6 +67,11 @@ public class Controle extends Canvas{
 		//f.setUndecorated(true);//tirar barra de titulo
 	}
 		
+	
+	public static void setAppState(char state) {
+		appState = state;
+	}
+	
 	public void abrirMenu() throws InterruptedException {
 		if(!menuCriado) {
 			menu = new MenuView(f);
@@ -123,21 +124,16 @@ public class Controle extends Canvas{
 		}
 	}
 
-	private void iniciarJogo() throws InterruptedException {	//throws para sleep	(aplicar try catch)
-		appState = 'J'; //TESTE PARA INICIAR O JOGO
+	public void init() throws InterruptedException {	//throws para sleep	(aplicar try catch)
+		appState = 'M'; 
 		while(appState != 'F') {
 			switch(appState) {
 			case 'M':
 				abrirMenu();
-				Thread.currentThread().sleep(3000);
-				System.out.println("FUNCIONOOOOOOOOOOOOOOU");
-				appState = 'L'; //TESTE- simular ida a loja
 				break;
 				
 			case 'L':
 				abrirLoja();
-				Thread.currentThread().sleep(3000);
-				appState = 'F'; //simular saida da loja (TESTE - no jogo só sai pelo menu)
 				break;
 				
 			case 'J':
@@ -147,7 +143,6 @@ public class Controle extends Canvas{
 		}
 		//salvar jogo
 		System.exit(0);
-	}
-	
+	}	
 
 }              
