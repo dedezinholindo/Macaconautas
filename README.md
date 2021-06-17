@@ -1,21 +1,24 @@
-# Projeto `<Título do Projeto/Jogo>`
+# Projeto Macaconautas
 
 # Descrição Resumida do Projeto/Jogo
 
-> <Descreva resumidamente o jogo e seu propósito.>
+Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve desviar de aliens, lasers e obstáculos para coletar bananas e percorrer a maior distância possível.
 
 # Equipe
-* `<nome completo>` - `<RA>`
+* `André Ricardo Pereira Silva` - `231391`
+* `Pedro Henrique Pinheiro Gadêlha` - `186985`
 
 # Vídeos do Projeto
 
 ## Vídeo da Prévia
-> <Coloque um link para o vídeo da prévia do projeto.>
+
+[Link para o vídeo.](https://drive.google.com/file/d/1qr5MKYpSwSPLfJ39C_fErArR71p2KT8u/view?usp=sharing)
 
 # Slides do Projeto
 
 ## Slides da Prévia
-`<Coloque um link para os slides da prévia do projeto.>`
+
+[Link para os slides.](https://drive.google.com/file/d/1KMDmPCyxy-PK8IQgqy-QHjUKPX5Bcj9d/view?usp=sharing)
 
 # Documentação dos Componentes
 
@@ -23,31 +26,29 @@
 
 ## Diagrama Geral do Projeto
 
-> <Apresente um diagrama geral de organização da organização do seu sistema. O formato é livre. A escolha de um ou mais estilos arquiteturais será considerado um diferencial.>
+![Diagrama Geral](assets/diagrama-componentes-Geral.png)
 
-> <Faça uma breve descrição do diagrama.>
+> O AppMacaconautas inicializa o Controle. Então o Controle inicializa o algum dos três componentes: Jogo, Loja ou Menu, de acordo com o estado atual.
 
 ## Diagrama Geral de Componentes
 
-### Exemplo 1
+### Componente Jogo
 
-Este é o diagrama compondo componentes para análise:
+![Diagrama Jogo](assets/diagrama-componentes-Jogo.png)
 
-![Diagrama Analise](diagrama-componentes-analise.png)
+>
 
-### Exemplo 2
+### Componente Menu
 
-Este é um diagrama inicial do projeto de jogos:
+![Diagrama Menu](assets/diagrama-componentes-Menu.png)
 
-![Diagrama Jogos](diagrama-componentes-jogos.png)
+>
 
-### Exemplo 3
+### Componente Loja
 
-Este é outro diagrama de um projeto de vendas:
+![Diagrama Loja](assets/diagrama-componentes-Loja.png)
 
-![Diagrama Vendas](diagrama-componentes-vendas.png)
-
-Para cada componente será apresentado um documento conforme o modelo a seguir:
+>
 
 ## Componente `<Nome do Componente>`
 
