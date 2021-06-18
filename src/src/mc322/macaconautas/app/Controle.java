@@ -107,7 +107,7 @@ public class Controle extends Canvas implements IInit{
 	
 	public void abrirLoja() throws InterruptedException {
 		if(!lojaCriada) {
-			loja = new LojaView(f);
+			loja = new LojaView(f, this.spriteSheet);
 			loja.mostrar();
 			lojaCriada = true;
 		}
@@ -120,7 +120,7 @@ public class Controle extends Canvas implements IInit{
 	
 	public void abrirJogo() throws InterruptedException {
 		if(!jogoCriado) {
-			jogo = new JogoView(spriteSheet, f);
+			jogo = new JogoView(f, this.spriteSheet);
 			jogo.mostrar();
 			jogoCriado = true;
 		}

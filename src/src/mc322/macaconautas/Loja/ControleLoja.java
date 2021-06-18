@@ -9,18 +9,20 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
 import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.app.SpriteSheet;
 
 public class ControleLoja extends Canvas implements Runnable, KeyListener{
-	
+
 	private MontadorLoja loja;
 	private JFrame f;
 	
-	public ControleLoja(JFrame f) {
-		loja = new MontadorLoja();
+	public ControleLoja(JFrame f, SpriteSheet spriteSheet) {
+		loja = new MontadorLoja(spriteSheet);
 		f.addKeyListener(this);
 		this.f = f;
 	}
@@ -30,32 +32,19 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 	}
 	
 	private void executeLoja() {
-		if(loja.lojaLeft) {
+		if (loja.lojaLeft) {
 			loja.lojaLeft = false;
-			loja.currentOption--;
-			if(loja.currentOption < 0) {
-				loja.currentOption = loja.MAX_OPTIONS;
+			loja.selectedSkin--;
+			if(loja.selectedSkin < 0) {
+				loja.selectedSkin = loja.skinQuantity - 1;
 			}
 		}
-		if(loja.lojaRight) {
+		if (loja.lojaRight) {
 			loja.lojaRight = false;
-			loja.currentOption++;
-			if(loja.currentOption > loja.MAX_OPTIONS) {
-				loja.currentOption = 0;
+			loja.selectedSkin++;
+			if(loja.selectedSkin >= loja.skinQuantity) {
+				loja.selectedSkin = 0;
 			}
-		}
-		if(loja.OPTIONS[loja.currentOption] == loja.OPTIONS[0]) {
-			loja.selectedSkin = 0;
-		} else if(loja.OPTIONS[loja.currentOption] == loja.OPTIONS[1]) {
-			loja.selectedSkin = 1;
-		} else if(loja.OPTIONS[loja.currentOption] == loja.OPTIONS[2]) {
-			loja.selectedSkin = 2;
-		} else if(loja.OPTIONS[loja.currentOption] == loja.OPTIONS[3]) {
-			loja.selectedSkin = 3;
-		} else if(loja.OPTIONS[loja.currentOption] == loja.OPTIONS[4]) {
-			loja.selectedSkin = 4;
-		} else if(loja.OPTIONS[loja.currentOption] == loja.OPTIONS[5]) {
-			loja.selectedSkin = 5;
 		}
 	}
 	
@@ -87,40 +76,25 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		loja.isRunning = false;
 	}
 	
-	private void renderOptions(Graphics g) {
-		g.setColor(Color.cyan);
-		g.fillRect(loja.WIDTH * loja.SCALE/2 - 150, loja.HEIGHT*loja.SCALE/2 -205, 300, 350);
+	private void renderSkinInformation(Graphics g) {
 		g.setColor(Color.gray);
-		g.fillRect(loja.WIDTH * loja.SCALE/2 - 150, loja.HEIGHT*loja.SCALE/2 +150, 300, 50);
-		//setas
+		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 60), 300, 60);
+		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) + 180, 300, 60);
+		g.setColor(Color.lightGray);
+		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - 180, 300, 360);
+
 		g.setFont(new Font("arial", Font.PLAIN, 40));
-		g.drawString(">", loja.WIDTH * loja.SCALE - 50 , (loja.HEIGHT * loja.SCALE - loja.BORDA)/2 );
-		g.drawString("<", 20 , (loja.HEIGHT * loja.SCALE - loja.BORDA)/2);
+		g.drawString(">", (loja.WIDTH * loja.SCALE) - 50, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
+		g.drawString("<", 20, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
 		//preco
 		//botar um if ja comprou, entao nao mostra o preço
 		//botar um certinho se ja foi comprada
 		g.setFont(new Font("arial", Font.PLAIN, 25));
 		g.setColor(Color.white);
-		switch (loja.selectedSkin) {
-		case 0:
-			g.drawString("10 bananas",loja.WIDTH * loja.SCALE/2 - 150 , loja.HEIGHT*loja.SCALE/2 +180);
-			break;
-		case 1:
-			g.drawString("20 bananas",loja.WIDTH * loja.SCALE/2 - 150 , loja.HEIGHT*loja.SCALE/2 +180);
-			break;
-		case 2:
-			g.drawString("30 bananas",loja.WIDTH * loja.SCALE/2 - 150 , loja.HEIGHT*loja.SCALE/2 +180);
-			break;
-		case 3:
-			g.drawString("40 bananas",loja.WIDTH * loja.SCALE/2 - 150 , loja.HEIGHT*loja.SCALE/2 +180);
-			break;
-		case 4:
-			g.drawString("50 bananas",loja.WIDTH * loja.SCALE/2 - 150 , loja.HEIGHT*loja.SCALE/2 +180);
-			break;
-		case 5:
-			g.drawString("60 bananas",loja.WIDTH * loja.SCALE/2 - 150 , loja.HEIGHT*loja.SCALE/2 +180);
-			break;
-		}
+		g.drawString(loja.skinNames[loja.selectedSkin], ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 25));
+		g.drawString(loja.skinPrices[loja.selectedSkin] + " bananas", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
+		Graphics2D g2 = (Graphics2D) g;
+		g2.drawImage(loja.skinSprites[loja.selectedSkin], ((loja.WIDTH * loja.SCALE) / 2) - 100, ((loja.HEIGHT * loja.SCALE) / 2) - 125, 320, 320, null);
 	}
 	
 	
@@ -135,7 +109,7 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0, loja.WIDTH * loja.SCALE, loja.HEIGHT * loja.SCALE); //aparece um retangulo na tela (x,y,largura,altura)
-		renderOptions(g);
+		renderSkinInformation(g);
 		bs.show(); //mostra o grafico
 	}
 

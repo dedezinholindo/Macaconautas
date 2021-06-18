@@ -20,8 +20,8 @@ public class JogoView extends Canvas implements IGame{
 	static long record;
 	static int quantidadeBananas;
 	
-	public JogoView(SpriteSheet spriteSheet, JFrame f) throws InterruptedException {
-		conJogo = new ControleJogo(spriteSheet, f); 
+	public JogoView(JFrame f, SpriteSheet spriteSheet) throws InterruptedException {
+		conJogo = new ControleJogo(f, spriteSheet); 
 		record = Controle.getRecord();
 		quantidadeBananas = Controle.getQuantidadeBananas();
 	}
