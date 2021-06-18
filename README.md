@@ -2,7 +2,8 @@
 
 # Descrição Resumida do Projeto/Jogo
 
-Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve desviar de aliens, lasers e obstáculos para coletar bananas e percorrer a maior distância possível.
+Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve desviar de aliens, lasers e obstáculos para coletar bananas e percorrer a maior distância possível. Ele pode comprar skins diferentes para o macaco com as bananas em nossa magnífica loja e tentar quebrar seus recordes de distância, com o jogo cada vez mais difícil com o aumento da distância! <br>
+<b>OBS:</b> whey protein de banana pode ser um ótimo suplemento para um primata!
 
 # Equipe
 
@@ -29,7 +30,7 @@ Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve d
 
 ![Diagrama Geral](assets/diagrama-componentes-Geral.png)
 
-> O AppMacaconautas inicializa o Controle. Então o Controle inicializa o algum dos três componentes: Jogo, Loja ou Menu, de acordo com o estado atual.
+> O AppMacaconautas inicializa o Controle. Então oControle inicializa algum dos três componentes: Jogo, Loja ou Menu, de acordo com o estado atual.
 
 ## Diagrama Geral de Componentes
 
@@ -47,143 +48,153 @@ Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve d
 
 ## Componente Jogo
 
-> <Resumo do papel do componente e serviços que ele oferece.>
+> O Jogo é responsável pela administração, visualização e criação de elementos e do ambiente de jogo. Foi utilizado o pattern Model-View-Control para a sua arquitetura interna.
 
-![Componente](diagrama-componente.png)
+![Componente](assets/diagrama-componentes-Jogo.png)
 
 **Ficha Técnica**
 item | detalhamento
 ----- | -----
-Classe |  src.src.mc233.macaconautas.Jogo.* 
-Autores | André Ricardo e Pedro Gadelha
+Classe |  mc322.macaconautas.Jogo.* 
+Autores | André Ricardo e Pedro Gadêlha
 Interfaces | IGame
 
 ### Interfaces
 
 Interfaces associadas a esse componente:
 
-![Diagrama Interfaces](diagrama-interfaces.png)
+![Diagrama Interfaces](assets/diagrama-interfaces-JogoView.png)
 
 Interface agregadora do componente em Java:
 
 ~~~java
-public interface IDataSet extends ITableProducer, IDataSetProperties {
-}
+public interface IGame extends IGameInformation, IModo{}
 ~~~
 
 ## Componente Menu
 
-> <Resumo do papel do componente e serviços que ele oferece.>
+> O Menu é responsável pela administração e visualização do ambiente de navegação entre o jogo e a loja, e para sair programa. Foi utilizado o pattern Model-View-Control para a sua arquitetura interna.
 
-![Componente](diagrama-componente.png)
+![Componente](assets/diagrama-componentes-Menu.png)
 
 **Ficha Técnica**
 item | detalhamento
 ----- | -----
-Classe |  src.src.mc233.macaconautas.Mneu.* 
-Autores | André Ricardo e Pedro Gadelha
+Classe |  mc322.macaconautas.Menu.* 
+Autores | André Ricardo e Pedro Gadêlha
 Interfaces | IModo
 
 ### Interfaces
 
 Interfaces associadas a esse componente:
 
-![Diagrama Interfaces](diagrama-interfaces.png)
+![Diagrama Interfaces](assets/diagrama-interfaces-MenuView.png)
 
 Interface agregadora do componente em Java:
 
 ~~~java
-public interface IDataSet extends ITableProducer, IDataSetProperties {
+public interface IModo {
+  void mostrar();
+  char getState();
 }
 ~~~
 
 ## Componente Loja
 
-> <Resumo do papel do componente e serviços que ele oferece.>
+> O Loja é responsável pela administração, visualização e criação de elementos e do ambiente de jogo. Foi utilizado o pattern Model-View-Control para a sua arquitetura interna.
 
-![Componente](diagrama-componente.png)
+![Componente](assets/diagrama-componentes-Loja.png)
 
 **Ficha Técnica**
 item | detalhamento
 ----- | -----
-Classe |  src.src.mc233.macaconautas.Loja.* 
-Autores | André Ricardo e Pedro Gadelha
+Classe |  mc322.macaconautas.Loja.* 
+Autores | André Ricardo e Pedro Gadêlha
 Interfaces | IModo
 
 ### Interfaces
 
 Interfaces associadas a esse componente:
 
-![Diagrama Interfaces](diagrama-interfaces.png)
+![Diagrama Interfaces](assets/diagrama-interfaces-LojaView.png)
 
 Interface agregadora do componente em Java:
 
 ~~~java
-public interface IDataSet extends ITableProducer, IDataSetProperties {
+public interface IModo {
+  void mostrar();
+  char getState();
 }
 ~~~
 
 ## Detalhamento das Interfaces
 
-### Interface `<nome da interface>`
+### Interface IModo
 
-`<Resumo do papel da interface.>`
-
-~~~
-<Interface em Java.>
-~~~
-
-Método | Objetivo
--------| --------
-`<id do método em Java>` | `<objetivo do método e descrição dos parâmetros>`
-
-## Exemplo:
-
-### Interface `ITableProducer`
-
-Interface provida por qualquer fonte de dados que os forneça na forma de uma tabela.
+Responsável pela visualização do jogo e por devolver o estado do jogo para alterar o estado do App.
 
 ~~~java
-public interface ITableProducer {
-  String[] requestAttributes();
-  String[][] requestInstances();
+public interface IModo {
+  void mostrar();
+  char getState();
 }
 ~~~
 
 Método | Objetivo
 -------| --------
-`requestAttributes` | Retorna um vetor com o nome de todos os atributos (colunas) da tabela.
-`requestInstances` | Retorna uma matriz em que cada linha representa uma instância e cada coluna o valor do respectivo atributo (a ordem dos atributos é a mesma daquela fornecida por `requestAttributes`.
+void mostrar() | mostra na tela o serviço que o componente que o implementa oferece (o jogo, o menu ou a loja).
+char getState() | devolve o estado atual do do Componente para realizar as devidas ações no app.
 
-### Interface `IDataSetProperties`
+### Interface IGameInformation
 
-Define o recurso (usualmente o caminho para um arquivo em disco) que é a fonte de dados.
+Responsável por devolver ao app informações sobre resultados do jogo.
 
 ~~~java
-public interface IDataSetProperties {
-  public String getDataSource();
-  public void setDataSource(String dataSource);
+public interface IGameInformation {
+  int getBananasColetadas();
+  long getDistancia();
 }
 ~~~
 
 Método | Objetivo
 -------| --------
-`getDataSource` | Retorna o caminho da fonte de dados.
-`setDataSource` | Define o caminho da fonte de dados, informado através do parâmetro `dataSource`.
+int getBananasColetadas() | devolve o número de bananas coletadas para setar o total de bananas que o jogador possui.
+long getDistancia() | devolve a distância percorrida do jogador para setar, se for o novo recorde, a distância do app.
+
+### Interface IGame
+
+Interface agregadora que une IModo e IGameInformation para interagir com o componente Jogo.
+
+~~~java
+public interface IGame extends IGameInformation, IModo {
+ 
+}
+~~~
+
+### Interface IInit
+
+Inicia o App.
+	
+~~~java
+public interface IInit {
+  void init() throws InterruptionExcepion;
+}
+~~~
+
+Método | Objetivo
+-------| --------
+void init() | reponsável por inicial o app.
 
 # Plano de Exceções
 
 ## Diagrama da hierarquia de exceções
-`<Elabore um diagrama com a hierarquia de exceções como detalhado abaixo>`
-
-![Hierarquia Exceções](exception-hierarchy.png)
+Terá o de salvamento e carregamento.
 
 ## Descrição das classes de exceção
 
-`<Monte uma tabela descritiva seguindo o exemplo>:`
+Não possuímos um plano de exceção atual, pois o nosso jogo restringe ao máximo as ações do usuário. Contudo, estamos planejando o salvamento do jogo em um arquivo criptografado e iremos elaborar um plano de exceção para o carregamento do jogo salvo.
 
 Classe | Descrição
 ----- | -----
-DivisaoInvalida | Engloba todas as exceções de divisões não aceitas.
-DivisaoInutil | Indica que a divisão por 1 é inútil.
-DivisaoNaoInteira | Indica uma divisão não inteira.
+FileNotFound | Arquivo de carregamento de jogo salvo não foi encontrado.
+FileNotVerified | Arquivo não está no formato certo requerido pelo jogo.
