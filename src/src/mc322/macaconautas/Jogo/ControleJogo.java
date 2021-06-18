@@ -137,7 +137,7 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	}
 
 	public synchronized void stop() {
-		f.repaint();
+		//f.repaint();
 		jogo.isRunning = false;
 	}
 	

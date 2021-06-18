@@ -83,7 +83,7 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 	
 	
 	private synchronized void stop() {
-		f.repaint();
+		//f.repaint();
 		loja.isRunning = false;
 	}
 	

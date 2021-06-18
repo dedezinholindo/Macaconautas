@@ -19,6 +19,8 @@ public class Controle extends Canvas implements IInit{
 	public final static int SCALE = 5;
 	public static JFrame f;
 	
+	private final static int TEMPO_BUG = 300;
+	
 	private final static String SPRITE_SHEET_PATH = "/res/spritesheet.png";
 	private final static int SPRITE_WIDTH = 40;
 	private final static int SPRITE_HEIGHT = 40;
@@ -84,7 +86,7 @@ public class Controle extends Canvas implements IInit{
 			menu.mostrar();
 			menuCriado = true;
 		}
-		Thread.currentThread().sleep(250); //alterar baseado no processamento do computador(error de renderizacao)
+		Thread.currentThread().sleep(TEMPO_BUG);//alterar baseado no processamento do computador(error de renderizacao)
 		switch(menu.getState()) {
 		case 'L':
 			appState = 'L';
@@ -109,7 +111,7 @@ public class Controle extends Canvas implements IInit{
 			loja.mostrar();
 			lojaCriada = true;
 		}
-		Thread.currentThread().sleep(250); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
 		if (loja.getState() == 'M') {
 			appState = 'M';
 			lojaCriada = false;
@@ -122,7 +124,7 @@ public class Controle extends Canvas implements IInit{
 			jogo.mostrar();
 			jogoCriado = true;
 		}
-		Thread.currentThread().sleep(250); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
 		if (jogo.getState() == 'O') {
 			appState = 'M';
 			jogoCriado = false;

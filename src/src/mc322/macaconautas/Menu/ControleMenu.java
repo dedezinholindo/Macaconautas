@@ -88,7 +88,7 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 	
 	
 	private synchronized void stop() {
-		f.repaint();
+		//f.repaint();
 		menu.isRunning = false;
 	}
 	
