@@ -19,7 +19,7 @@ public class Controle extends Canvas implements IInit{
 	public final static int SCALE = 5;
 	public static JFrame f;
 	
-	private final static int TEMPO_BUG = 300;
+	private final static int TEMPO_BUG = 400;
 	
 	private final static String SPRITE_SHEET_PATH = "/res/spritesheet.png";
 	private final static int SPRITE_WIDTH = 40;
