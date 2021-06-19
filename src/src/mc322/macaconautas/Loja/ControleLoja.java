@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+import mc322.macaconautas.Menu.MenuView;
 import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
 
@@ -125,15 +126,6 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 	}
 	
 	private void renderSkinInformation(Graphics g) {
-		g.setColor(Color.gray);
-		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 60), 300, 60);
-		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) + 180, 300, 60);
-		g.setColor(Color.lightGray);
-		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - 180, 300, 360);
-
-		g.setFont(new Font("arial", Font.PLAIN, 40));
-		g.drawString(">", (loja.WIDTH * loja.SCALE) - 50, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
-		g.drawString("<", 20, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
 		//preco
 		//botar um if ja comprou, entao nao mostra o preço
 		//botar um certinho se ja foi comprada
@@ -150,8 +142,6 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 			g.setColor(Color.red);
 			g.drawString(">>>SELECTED<<<", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - 150);
 		}
-		g.setColor(Color.white);
-		g.drawString("bananas: " + LojaView.quantidadeBananas, 10, ((loja.HEIGHT * loja.SCALE) -30));
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(loja.skinSprites[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - 100, ((loja.HEIGHT * loja.SCALE) / 2) - 125, 320, 320, null);
 	}
@@ -168,6 +158,17 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
 		g.setColor(Color.BLACK);
 		g.fillRect(0,0, loja.WIDTH * loja.SCALE, loja.HEIGHT * loja.SCALE); //aparece um retangulo na tela (x,y,largura,altura)
+		g.setColor(Color.gray);
+		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 60), 300, 60);
+		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) + 180, 300, 60);
+		g.setColor(Color.lightGray);
+		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - 180, 300, 360);
+		g.setFont(new Font("arial", Font.PLAIN, 40));
+		g.drawString(">", (loja.WIDTH * loja.SCALE) - 50, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
+		g.drawString("<", 20, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
+		g.setFont(new Font("herhehdfhdf",Font.PLAIN, 30));
+		g.setColor(Color.yellow);
+		g.drawString("Bananas: " + LojaView.quantidadeBananas,  0, loja.HEIGHT * loja.SCALE);
 		renderSkinInformation(g);
 		bs.show(); //mostra o grafico
 	}

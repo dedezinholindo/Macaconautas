@@ -121,8 +121,8 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 	private void renderBottom(Graphics g){
 		g.setFont(new Font("herhehdfhdf",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
-		g.drawString("Recorde: " + MenuView.record + " m",  0, menu.HEIGHT * menu.SCALE);
-		g.drawString("Bananas: " + MenuView.quantidadeBananas,  0, menu.HEIGHT * menu.SCALE - 30);
+		g.drawString("Recorde: " + MenuView.record + " m",  0, menu.HEIGHT * menu.SCALE - 30);
+		g.drawString("Bananas: " + MenuView.quantidadeBananas,  0, menu.HEIGHT * menu.SCALE);
 	}
 	
 	private void render() {
