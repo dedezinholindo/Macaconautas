@@ -146,6 +146,10 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 			g.setColor(Color.GREEN);
 			g.drawString("LIBERADO :)", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
 		}
+		if(loja.currentOption == loja.selectedSkin) {
+			g.setColor(Color.red);
+			g.drawString(">>>SELECTED<<<", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - 150);
+		}
 		g.setColor(Color.white);
 		g.drawString("bananas: " + LojaView.quantidadeBananas, 10, ((loja.HEIGHT * loja.SCALE) -30));
 		Graphics2D g2 = (Graphics2D) g;
