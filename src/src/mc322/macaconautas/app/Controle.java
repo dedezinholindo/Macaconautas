@@ -2,9 +2,11 @@ package mc322.macaconautas.app;
 
 import mc322.macaconautas.Interface.IGame;
 import mc322.macaconautas.Interface.IInit;
+import mc322.macaconautas.Interface.ILoja;
 import mc322.macaconautas.Interface.IModo;
 import mc322.macaconautas.Jogo.*;
 import java.awt.Canvas;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -28,13 +30,14 @@ public class Controle extends Canvas implements IInit{
 	private static char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
 	private static long record;
 	private static int quantidadeBananas;
+	private static int selectedSkin;
+	private static boolean[] skinsLiberadas = {true, false, false}; //ou jogo salvo
 	private boolean jogoCriado;
 	private boolean lojaCriada;
 	private boolean menuCriado;
 	private IGame jogo;
 	private IModo menu;
-	private IModo loja;
-	private int[] skinsLiberadas;
+	private ILoja loja;
 	private SpriteSheet spriteSheet;
 
 	public Controle() {
@@ -53,7 +56,6 @@ public class Controle extends Canvas implements IInit{
 		loja = null;
 		quantidadeBananas = 0; //ou de acordo com o jogo salvo
 		record = 0; //ou o jogo salvo
-		skinsLiberadas = null; //ou jogo salvo
 		appState = 'M';
 	}
 
@@ -78,6 +80,10 @@ public class Controle extends Canvas implements IInit{
 	
 	public static int getQuantidadeBananas() {
 		return quantidadeBananas;
+	}
+	
+	public static boolean[] getSkinsLiberadas() {
+		return skinsLiberadas;
 	}
 	
 	public void abrirMenu() throws InterruptedException {
@@ -115,6 +121,8 @@ public class Controle extends Canvas implements IInit{
 		if (loja.getState() == 'M') {
 			appState = 'M';
 			lojaCriada = false;
+			selectedSkin = loja.getSkinSelected();
+			skinsLiberadas = loja.getSkinsLiberadas();
 		}
 	}
 	
@@ -129,7 +137,7 @@ public class Controle extends Canvas implements IInit{
 			appState = 'M';
 			jogoCriado = false;
 			record = jogo.getDistancia();
-			quantidadeBananas += jogo.getBananasColetadas();
+			quantidadeBananas += jogo.getBananas();
 		}
 	}
 

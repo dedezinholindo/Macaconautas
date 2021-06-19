@@ -1,6 +1,7 @@
 package mc322.macaconautas.Loja;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -15,12 +16,13 @@ public class MontadorLoja {
 	final static int SCALE = Controle.SCALE;
 	final static JFrame f  = Controle.f;
 
-	private final static int SKIN_QUANTITY = 3;
-	private final static int SKIN_SPRITE_X = 0;
-	private final static int SKIN_SPRITE_Y = 8;
-	private final static String SKIN_NAMES[] = {"Macaco", "Macaco 47", "Mico Leão Dourado"};
-	private final static int SKIN_PRICES[] = {0, 20, 40};
+	final static int SKIN_QUANTITY = 3;
+	final static int SKIN_SPRITE_X = 0;
+	final static int SKIN_SPRITE_Y = 8;
+	final static String SKIN_NAMES[] = {"Macaco", "Macaco 47", "Mico Leão Dourado"};
+	final static int SKIN_PRICES[] = {0, 2, 4};
 
+	boolean[] skinsLiberadas = {true, false, false};
 	char lojaState; //N normal, M para ir para o menu
 	int selectedSkin;
 	boolean isRunning;

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -27,23 +28,70 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		this.f = f;
 	}
 	
-	public char getLojaState() {
+	char getLojaState() {
 		return loja.lojaState;
+	}
+	
+	int getSelectedSkin() {
+		return loja.selectedSkin;
+	}
+	
+	boolean[] getSkinsLIberadas() {
+		return loja.skinsLiberadas;
+	}
+	
+	private boolean verificarSkinComprada(int skin) {
+		return loja.skinsLiberadas[skin];
+	}
+	
+	
+	private boolean buySkin(int skinIndex) {
+		if(!verificarSkinComprada(skinIndex) && LojaView.quantidadeBananas >= loja.SKIN_PRICES[skinIndex]) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean selectSkin(int skinIndex) {
+		if(verificarSkinComprada(skinIndex)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private void adicionarSkin(int index) {
+		if(buySkin(index)) {
+			loja.skinsLiberadas[index] = true;
+			LojaView.quantidadeBananas -= loja.skinPrices[index];
+		}
+		if(verificarSkinComprada(index)) {
+			loja.selectedSkin = index;
+		}
 	}
 	
 	private void executeLoja() {
 		if (loja.lojaLeft) {
 			loja.lojaLeft = false;
-			loja.selectedSkin--;
-			if(loja.selectedSkin < 0) {
-				loja.selectedSkin = loja.skinQuantity - 1;
+			loja.currentOption--;
+			if(loja.currentOption < 0) {
+				loja.currentOption = loja.skinQuantity - 1;
 			}
 		}
 		if (loja.lojaRight) {
 			loja.lojaRight = false;
-			loja.selectedSkin++;
-			if(loja.selectedSkin >= loja.skinQuantity) {
-				loja.selectedSkin = 0;
+			loja.currentOption++;
+			if(loja.currentOption >= loja.skinQuantity) {
+				loja.currentOption = 0;
+			}
+		}
+		if(loja.enter) {
+			loja.enter = false;
+			if(loja.SKIN_NAMES[loja.currentOption] == loja.SKIN_NAMES[0]) {
+				adicionarSkin(0);
+			} else if(loja.SKIN_NAMES[loja.currentOption] == loja.SKIN_NAMES[1]) {
+				adicionarSkin(1);
+			} else if(loja.SKIN_NAMES[loja.currentOption] == loja.SKIN_NAMES[2]) {
+				adicionarSkin(2);
 			}
 		}
 	}
@@ -91,10 +139,17 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		//botar um certinho se ja foi comprada
 		g.setFont(new Font("arial", Font.PLAIN, 25));
 		g.setColor(Color.white);
-		g.drawString(loja.skinNames[loja.selectedSkin], ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 25));
-		g.drawString(loja.skinPrices[loja.selectedSkin] + " bananas", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
+		g.drawString(loja.skinNames[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 25));
+		if(!verificarSkinComprada(loja.currentOption)) {
+			g.drawString(loja.skinPrices[loja.currentOption] + " bananas", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
+		} else {
+			g.setColor(Color.GREEN);
+			g.drawString("LIBERADO :)", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
+		}
+		g.setColor(Color.white);
+		g.drawString("bananas: " + LojaView.quantidadeBananas, 10, ((loja.HEIGHT * loja.SCALE) -30));
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(loja.skinSprites[loja.selectedSkin], ((loja.WIDTH * loja.SCALE) / 2) - 100, ((loja.HEIGHT * loja.SCALE) / 2) - 125, 320, 320, null);
+		g2.drawImage(loja.skinSprites[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - 100, ((loja.HEIGHT * loja.SCALE) / 2) - 125, 320, 320, null);
 	}
 	
 	

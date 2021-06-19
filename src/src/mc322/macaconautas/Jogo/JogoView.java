@@ -30,7 +30,7 @@ public class JogoView extends Canvas implements IGame{
 		conJogo.start();
 	}
 	
-	public int getBananasColetadas() {
+	public int getBananas() {
 		return conJogo.getBananasColetadas();
 	}
 	

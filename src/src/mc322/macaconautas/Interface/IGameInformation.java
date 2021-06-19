@@ -1,6 +1,5 @@
 package mc322.macaconautas.Interface;
 
-public interface IGameInformation {
-	int getBananasColetadas();
+public interface IGameInformation extends IBanana{
 	long getDistancia();
 }
