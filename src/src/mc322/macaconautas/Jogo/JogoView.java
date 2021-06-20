@@ -20,17 +20,17 @@ public class JogoView extends Canvas implements IGame{
 	static long record;
 	static int quantidadeBananas;
 	
-	public JogoView(JFrame f, SpriteSheet spriteSheet) throws InterruptedException {
-		conJogo = new ControleJogo(f, spriteSheet); 
+	public JogoView(JFrame f, SpriteSheet spriteSheet, int selectedSkin) throws InterruptedException {
+		conJogo = new ControleJogo(f, spriteSheet, selectedSkin); 
 		record = Controle.getRecord();
-		quantidadeBananas = Controle.getQuantidadeBananas();
+		quantidadeBananas = Controle.getBananaQuantity();
 	}
 	
 	public void mostrar() throws InterruptedException {
 		conJogo.start();
 	}
 	
-	public int getBananas() {
+	public int getBananaQuantity() {
 		return conJogo.getBananasColetadas();
 	}
 	
@@ -40,5 +40,11 @@ public class JogoView extends Canvas implements IGame{
 	
 	public long getDistancia() {
 		return conJogo.getDistancia();
+	}
+
+	@Override
+	public void setBananaQuantity(int bananaQuantity) {
+		// TODO Auto-generated method stub
+		
 	}
 }

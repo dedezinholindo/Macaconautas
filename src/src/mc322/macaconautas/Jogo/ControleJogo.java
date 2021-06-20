@@ -29,8 +29,8 @@ public class ControleJogo extends Canvas implements Runnable, KeyListener {
 	private MontadorJogo jogo;
 	private JFrame f;
 
-	public ControleJogo(JFrame f, SpriteSheet spriteSheet) throws InterruptedException {
-		jogo = new MontadorJogo(spriteSheet);
+	public ControleJogo(JFrame f, SpriteSheet spriteSheet, int selectedSkin) throws InterruptedException {
+		jogo = new MontadorJogo(spriteSheet, selectedSkin);
 		f.addKeyListener(this);
 		this.f = f;
 	}	

@@ -10,11 +10,9 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class LojaView implements ILoja{
 	private ControleLoja conLoja;
-	static int quantidadeBananas;
 	
-	public LojaView(JFrame f, SpriteSheet spriteSheet) {
-		conLoja = new ControleLoja(f, spriteSheet);
-		quantidadeBananas = Controle.getQuantidadeBananas();
+	public LojaView(JFrame f, int bananaQuantity, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
+		conLoja = new ControleLoja(f, bananaQuantity, ownedSkins, selectedSkin, spriteSheet);
 	}
 	
 	public void mostrar() throws InterruptedException {
@@ -26,16 +24,21 @@ public class LojaView implements ILoja{
 	}
 
 	@Override
-	public int getSkinSelected() {
+	public int getSelectedSkin() {
 		return conLoja.getSelectedSkin();
 	}
 	
-	public int getBananas() {
-		return quantidadeBananas;
+	public int getBananaQuantity() {
+		return conLoja.getBananaQuantity();
 	}
 
 	@Override
-	public boolean[] getSkinsLiberadas() {
-		return conLoja.getSkinsLIberadas();
+	public void setBananaQuantity(int bananaQuantity) {
+		conLoja.setBananaQuantity(bananaQuantity);
+	}
+
+	@Override
+	public boolean[] getOwnedSkins() {
+		return conLoja.getOwnedSkins();
 	}
 }

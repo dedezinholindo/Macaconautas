@@ -7,6 +7,7 @@ import mc322.macaconautas.Interface.IModo;
 import mc322.macaconautas.Jogo.*;
 import java.awt.Canvas;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JFrame;
 
@@ -19,7 +20,6 @@ public class Controle extends Canvas implements IInit{
 	public final static int WIDTH = 160;
 	public final static int HEIGHT = 120;
 	public final static int SCALE = 5;
-	public static JFrame f;
 	
 	private final static int TEMPO_BUG = 400;
 	
@@ -27,18 +27,22 @@ public class Controle extends Canvas implements IInit{
 	private final static int SPRITE_WIDTH = 40;
 	private final static int SPRITE_HEIGHT = 40;
 
+	private final static int SKIN_QUANTITY = 3;
+	private final static int INITIAL_SKIN = 0;
+
+	public static JFrame f;
 	private static char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
-	private static long record;
-	private static int quantidadeBananas;
-	private static int selectedSkin;
-	private static boolean[] skinsLiberadas = {true, false, false}; //ou jogo salvo
 	private boolean jogoCriado;
-	private boolean lojaCriada;
 	private boolean menuCriado;
+	private boolean lojaCriada;
 	private IGame jogo;
 	private IModo menu;
 	private ILoja loja;
 	private SpriteSheet spriteSheet;
+	private static int bananaQuantity;
+	private static long record;
+	private static boolean[] ownedSkins; //ou jogo salvo
+	private static int selectedSkin;
 
 	public Controle() {
 		initFrame();
@@ -46,17 +50,20 @@ public class Controle extends Canvas implements IInit{
 	}
 	
 	private void initAtributos() {
-		spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
-		appState = 'M';
-		jogoCriado = false;
-		lojaCriada = false;
-		menuCriado = false;
-		jogo = null;
-		menu = null;
-		loja = null;
-		quantidadeBananas = 0; //ou de acordo com o jogo salvo
-		record = 0; //ou o jogo salvo
-		appState = 'M';
+		this.appState = 'M';
+		this.jogoCriado = false;
+		this.menuCriado = false;
+		this.lojaCriada = false;
+		this.jogo = null;
+		this.menu = null;
+		this.loja = null;
+		this.spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
+		this.bananaQuantity = 0; //ou de acordo com o jogo salvo
+		this.record = 0; //ou o jogo salvo
+		this.ownedSkins = new boolean[SKIN_QUANTITY];
+		Arrays.fill(this.ownedSkins, false);
+		this.ownedSkins[INITIAL_SKIN] = true;
+		this.selectedSkin = INITIAL_SKIN;
 	}
 
 	private void initFrame() {
@@ -78,12 +85,12 @@ public class Controle extends Canvas implements IInit{
 		appState = state;
 	}
 	
-	public static int getQuantidadeBananas() {
-		return quantidadeBananas;
+	public static int getBananaQuantity() {
+		return bananaQuantity;
 	}
 	
 	public static boolean[] getSkinsLiberadas() {
-		return skinsLiberadas;
+		return ownedSkins;
 	}
 	
 	public void abrirMenu() throws InterruptedException {
@@ -113,31 +120,36 @@ public class Controle extends Canvas implements IInit{
 	
 	public void abrirLoja() throws InterruptedException {
 		if(!lojaCriada) {
-			loja = new LojaView(f, this.spriteSheet);
+			loja = new LojaView(f, this.bananaQuantity, this.ownedSkins, this.selectedSkin, this.spriteSheet);
 			loja.mostrar();
 			lojaCriada = true;
+		} else {
+			loja.setBananaQuantity(this.bananaQuantity);
 		}
 		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
 		if (loja.getState() == 'M') {
 			appState = 'M';
 			lojaCriada = false;
-			selectedSkin = loja.getSkinSelected();
-			skinsLiberadas = loja.getSkinsLiberadas();
+			this.bananaQuantity = loja.getBananaQuantity();
+			this.selectedSkin = loja.getSelectedSkin();
+			this.ownedSkins = loja.getOwnedSkins();
 		}
 	}
 	
 	public void abrirJogo() throws InterruptedException {
 		if(!jogoCriado) {
-			jogo = new JogoView(f, this.spriteSheet);
+			jogo = new JogoView(f, this.spriteSheet, this.selectedSkin);
 			jogo.mostrar();
 			jogoCriado = true;
+		} else {
+			jogo.setBananaQuantity(this.bananaQuantity);
 		}
 		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
 		if (jogo.getState() == 'O') {
 			appState = 'M';
 			jogoCriado = false;
 			record = jogo.getDistancia();
-			quantidadeBananas += jogo.getBananas();
+			this.bananaQuantity = jogo.getBananaQuantity();
 		}
 	}
 

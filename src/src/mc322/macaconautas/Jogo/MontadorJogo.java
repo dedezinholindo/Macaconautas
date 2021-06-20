@@ -45,9 +45,9 @@ public class MontadorJogo {
 	boolean gameDown;
 	boolean enter;
 
-	public MontadorJogo(SpriteSheet spriteSheet){
+	public MontadorJogo(SpriteSheet spriteSheet, int selectedSkin){
 		this.spriteSheet = spriteSheet;
-		macaco = new Macaco(15, 0, this.spriteSheet);
+		macaco = new Macaco(15, 0, this.spriteSheet, selectedSkin);
 		espaco = new Espaco(this.spriteSheet);
 		jogoState = 'N';
 		isRunning = true;

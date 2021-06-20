@@ -1,5 +1,3 @@
 package mc322.macaconautas.Interface;
 
-public interface ILoja extends IModo, ILojaInformation{
-
-}
+public interface ILoja extends IModo, ILojaInformation{}

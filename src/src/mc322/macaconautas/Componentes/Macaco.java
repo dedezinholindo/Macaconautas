@@ -14,7 +14,7 @@ public class Macaco extends Componente {
 	private final static int HEIGHT = 32;
 
 	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 8;
+	private final static int SPRITE_Y = 8; // indica onde começam as skins do macaco.
 	private final static int QUANTIDADE_SPRITES = 5;
 
 	private final static int GORILA_WIDTH = 32;
@@ -31,6 +31,7 @@ public class Macaco extends Componente {
 	
 	private final static int TEMPO_DE_GORILA = 10 * 60; //<segundos> * 60 (pois 60 frames/seg)
 
+	private int selectedSkin;
 	private boolean isGoingUp; // indica se o macaco está indo para cima.
 	private boolean isWalking; // indica se o macaco está andando no chão.
 	private BufferedImage gorilaSprites[];
@@ -42,12 +43,14 @@ public class Macaco extends Componente {
 	 * @param x coordenada x do macaco.
 	 * @param y coordenada y do macaco.
 	 */
-	public Macaco(int x, int y, SpriteSheet spriteSheet) {
+	public Macaco(int x, int y, SpriteSheet spriteSheet, int selectedSkin) {
 		super(x, y, WIDTH, HEIGHT, spriteSheet);
 		this.quantidadeSprites = QUANTIDADE_SPRITES;
 		this.sprites = new BufferedImage[this.quantidadeSprites];
+		this.selectedSkin = selectedSkin;
+		System.out.println(selectedSkin);
 		for (int i = 0; i < this.quantidadeSprites; i++) {
-			this.sprites[i] = spriteSheet.getSprite(SPRITE_X + i, SPRITE_Y);
+			this.sprites[i] = spriteSheet.getSprite(SPRITE_X + i, SPRITE_Y + this.selectedSkin);
 		}
 		this.gorilaSprites = new BufferedImage[this.quantidadeSprites];
 		for (int i = 0; i < this.quantidadeSprites; i++) {

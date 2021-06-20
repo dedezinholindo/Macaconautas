@@ -13,7 +13,7 @@ public class MenuView implements IModo{
 	public MenuView(JFrame f) {
 		conMenu = new ControleMenu(f);
 		record = Controle.getRecord();
-		quantidadeBananas = Controle.getQuantidadeBananas();
+		quantidadeBananas = Controle.getBananaQuantity();
 	}
 	
 	public void mostrar() throws InterruptedException {

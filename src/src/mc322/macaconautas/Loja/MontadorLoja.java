@@ -22,9 +22,7 @@ public class MontadorLoja {
 	final static String SKIN_NAMES[] = {"Macaco", "Macaco 47", "Mico Leão Dourado"};
 	final static int SKIN_PRICES[] = {0, 2, 4};
 
-	boolean[] skinsLiberadas = {true, false, false};
 	char lojaState; //N normal, M para ir para o menu
-	int selectedSkin;
 	boolean isRunning;
 	Thread thread;
 	int currentOption;
@@ -41,7 +39,7 @@ public class MontadorLoja {
 		isRunning = true;
 		lojaLeft = false;
 		lojaRight = false;
-		selectedSkin = 0;
+		currentOption = 0;
 		this.skinQuantity = SKIN_QUANTITY;
 		this.skinSprites = new BufferedImage[this.skinQuantity];
 		for (int i = 0; i < this.skinQuantity; i++) {

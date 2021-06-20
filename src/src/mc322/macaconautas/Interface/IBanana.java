@@ -1,5 +1,6 @@
 package mc322.macaconautas.Interface;
 
 public interface IBanana {
-	int getBananas();
+	int getBananaQuantity();
+	void setBananaQuantity(int bananaQuantity);
 }

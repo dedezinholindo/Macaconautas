@@ -22,51 +22,51 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 
 	private MontadorLoja loja;
 	private JFrame f;
+	private int bananaQuantity;
+	private boolean ownedSkins[];
+	private int selectedSkin;
 	
-	public ControleLoja(JFrame f, SpriteSheet spriteSheet) {
+	public ControleLoja(JFrame f, int bananaQuantity, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
 		loja = new MontadorLoja(spriteSheet);
 		f.addKeyListener(this);
 		this.f = f;
+		this.bananaQuantity = bananaQuantity;
+		this.ownedSkins = ownedSkins;
+		this.selectedSkin = selectedSkin;
 	}
 	
 	char getLojaState() {
 		return loja.lojaState;
 	}
-	
+
+	int getBananaQuantity() {
+		return this.bananaQuantity;
+	}
+
 	int getSelectedSkin() {
-		return loja.selectedSkin;
+		return this.selectedSkin;
 	}
 	
-	boolean[] getSkinsLIberadas() {
-		return loja.skinsLiberadas;
+	boolean[] getOwnedSkins() {
+		return this.ownedSkins;
 	}
 	
-	private boolean verificarSkinComprada(int skin) {
-		return loja.skinsLiberadas[skin];
+	void setBananaQuantity(int bananaQuantity) {
+		this.bananaQuantity = bananaQuantity;
 	}
-	
-	
+
 	private boolean buySkin(int skinIndex) {
-		if(!verificarSkinComprada(skinIndex) && LojaView.quantidadeBananas >= loja.SKIN_PRICES[skinIndex]) {
+		if (!this.ownedSkins[skinIndex] && this.bananaQuantity >= loja.SKIN_PRICES[skinIndex]) {
+			this.ownedSkins[skinIndex] = true;
+			this.bananaQuantity -= loja.skinPrices[skinIndex];
 			return true;
 		}
 		return false;
 	}
-	
-	private boolean selectSkin(int skinIndex) {
-		if(verificarSkinComprada(skinIndex)) {
-			return true;
-		}
-		return false;
-	}
-	
-	private void adicionarSkin(int index) {
-		if(buySkin(index)) {
-			loja.skinsLiberadas[index] = true;
-			LojaView.quantidadeBananas -= loja.skinPrices[index];
-		}
-		if(verificarSkinComprada(index)) {
-			loja.selectedSkin = index;
+
+	private void selectSkin(int skinIndex) {
+		if (this.ownedSkins[skinIndex] || buySkin(skinIndex)) {
+			this.selectedSkin = skinIndex;
 		}
 	}
 	
@@ -87,13 +87,7 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		}
 		if(loja.enter) {
 			loja.enter = false;
-			if(loja.SKIN_NAMES[loja.currentOption] == loja.SKIN_NAMES[0]) {
-				adicionarSkin(0);
-			} else if(loja.SKIN_NAMES[loja.currentOption] == loja.SKIN_NAMES[1]) {
-				adicionarSkin(1);
-			} else if(loja.SKIN_NAMES[loja.currentOption] == loja.SKIN_NAMES[2]) {
-				adicionarSkin(2);
-			}
+			selectSkin(loja.currentOption);
 		}
 	}
 	
@@ -132,14 +126,14 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		g.setFont(new Font("arial", Font.PLAIN, 25));
 		g.setColor(Color.white);
 		g.drawString(loja.skinNames[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 25));
-		if(!verificarSkinComprada(loja.currentOption)) {
+		if(!ownedSkins[loja.currentOption]) {
 			g.drawString(loja.skinPrices[loja.currentOption] + " bananas", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
 		} else {
-			g.setColor(Color.GREEN);
+			g.setColor(Color.green);
 			g.drawString("LIBERADO :)", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
 		}
-		if(loja.currentOption == loja.selectedSkin) {
-			g.setColor(Color.red);
+		if(loja.currentOption == this.selectedSkin) {
+			g.setColor(Color.blue);
 			g.drawString(">>>SELECTED<<<", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - 150);
 		}
 		Graphics2D g2 = (Graphics2D) g;
@@ -168,7 +162,7 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		g.drawString("<", 20, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
 		g.setFont(new Font("herhehdfhdf",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
-		g.drawString("Bananas: " + LojaView.quantidadeBananas,  0, loja.HEIGHT * loja.SCALE);
+		g.drawString("Bananas: " + this.bananaQuantity,  0, loja.HEIGHT * loja.SCALE);
 		renderSkinInformation(g);
 		bs.show(); //mostra o grafico
 	}
