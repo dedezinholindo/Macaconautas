@@ -41,10 +41,4 @@ public class JogoView extends Canvas implements IGame{
 	public long getDistancia() {
 		return conJogo.getDistancia();
 	}
-
-	@Override
-	public void setBananaQuantity(int bananaQuantity) {
-		// TODO Auto-generated method stub
-		
-	}
 }

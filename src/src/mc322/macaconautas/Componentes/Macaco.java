@@ -48,7 +48,6 @@ public class Macaco extends Componente {
 		this.quantidadeSprites = QUANTIDADE_SPRITES;
 		this.sprites = new BufferedImage[this.quantidadeSprites];
 		this.selectedSkin = selectedSkin;
-		System.out.println(selectedSkin);
 		for (int i = 0; i < this.quantidadeSprites; i++) {
 			this.sprites[i] = spriteSheet.getSprite(SPRITE_X + i, SPRITE_Y + this.selectedSkin);
 		}

@@ -120,12 +120,10 @@ public class Controle extends Canvas implements IInit{
 	
 	public void abrirLoja() throws InterruptedException {
 		if(!lojaCriada) {
-			loja = new LojaView(f, this.bananaQuantity, this.ownedSkins, this.selectedSkin, this.spriteSheet);
+			loja = new LojaView(f, this.ownedSkins, this.selectedSkin, this.spriteSheet);
 			loja.mostrar();
 			lojaCriada = true;
-		} else {
-			loja.setBananaQuantity(this.bananaQuantity);
-		}
+		} 
 		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
 		if (loja.getState() == 'M') {
 			appState = 'M';
@@ -141,15 +139,13 @@ public class Controle extends Canvas implements IInit{
 			jogo = new JogoView(f, this.spriteSheet, this.selectedSkin);
 			jogo.mostrar();
 			jogoCriado = true;
-		} else {
-			jogo.setBananaQuantity(this.bananaQuantity);
-		}
+		} 
 		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
 		if (jogo.getState() == 'O') {
 			appState = 'M';
 			jogoCriado = false;
 			record = jogo.getDistancia();
-			this.bananaQuantity = jogo.getBananaQuantity();
+			this.bananaQuantity += jogo.getBananaQuantity();
 		}
 	}
 
