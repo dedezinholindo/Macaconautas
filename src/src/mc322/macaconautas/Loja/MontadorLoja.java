@@ -16,11 +16,11 @@ public class MontadorLoja {
 	final static int SCALE = Controle.SCALE;
 	final static JFrame f  = Controle.f;
 
-	final static int SKIN_QUANTITY = 3;
+	final static int SKIN_QUANTITY = 5;
 	final static int SKIN_SPRITE_X = 0;
 	final static int SKIN_SPRITE_Y = 8;
-	final static String SKIN_NAMES[] = {"Macaco", "Macaco 47", "Mico Leão Dourado"};
-	final static int SKIN_PRICES[] = {0, 2, 4};
+	final static String SKIN_NAMES[] = {"Macaco", "Macaco 47", "Mico Leão Dourado", "Ninjacaco", "Macaconauta"};
+	final static int SKIN_PRICES[] = {0, 2, 4, 7, 15};
 
 	char lojaState; //N normal, M para ir para o menu
 	boolean isRunning;

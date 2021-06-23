@@ -27,7 +27,7 @@ public class Controle extends Canvas implements IInit{
 	private final static int SPRITE_WIDTH = 40;
 	private final static int SPRITE_HEIGHT = 40;
 
-	private final static int SKIN_QUANTITY = 3;
+	private final static int SKIN_QUANTITY = 5;
 	private final static int INITIAL_SKIN = 0;
 
 	public static JFrame f;
