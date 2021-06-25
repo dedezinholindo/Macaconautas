@@ -40,10 +40,10 @@ public class Controle extends Canvas implements IInit{
 	private IModo menu;
 	private ILoja loja;
 	private SpriteSheet spriteSheet;
+	private boolean[] ownedSkins; //ou jogo salvo
+	private int selectedSkin;
 	private static int bananaQuantity;
 	private static long record;
-	private static boolean[] ownedSkins; //ou jogo salvo
-	private static int selectedSkin;
 
 	public Controle() {
 		initFrame();
@@ -59,10 +59,8 @@ public class Controle extends Canvas implements IInit{
 		this.menu = null;
 		this.loja = null;
 		this.spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
-		this.selectedSkin = INITIAL_SKIN;
-		save = new SaveGame();
-		loadGame();
-		this.ownedSkins[INITIAL_SKIN] = true;
+		this.save = new SaveGame();
+		loadSavedGame();
 	}
 
 	private void initFrame() {
@@ -76,27 +74,30 @@ public class Controle extends Canvas implements IInit{
 		f.setVisible(true); //deixar ele visivel
 	}
 	
-	private boolean[] NumbersToBoolean(String numb) {
-		boolean [] b = new boolean[SKIN_QUANTITY];
-		for (int i = 0; i < numb.length(); i++) {			
-			if(numb.charAt(i) == 1) {
-				b[i] = true;
-			} else {
-				b[i] = false;
-			}
+	private boolean[] NumbersToBoolean(String numbers) {
+		boolean b[] = new boolean[numbers.length()];
+		for (int i = 0; i < b.length; i++) {			
+			b[i] = ((numbers.charAt(i) == '1') ? true : false);
 		}
 		return b;
 	}
 	
-	private void loadGame() {
-		if(save.fileExists()) {
-			ArrayList<String> info = save.applySave();
-			this.record = Integer.parseInt(info.get(0)); 
-			this.ownedSkins = NumbersToBoolean(info.get(1));
-			this.bananaQuantity = Integer.parseInt(info.get(2));
-		} else {
-			ownedSkins = new boolean[SKIN_QUANTITY];
+	private void loadSavedGame() {
+		if(this.save.fileExists()) { // carregar jogo salvo.
+			String info[] = save.getInfo();
+				System.out.println(info[0]);
+			this.ownedSkins = NumbersToBoolean(info[0]);
+			for (int i =0; i < ownedSkins.length; i++) {
+				System.out.println(ownedSkins[i]);
+			}
+			this.selectedSkin = Integer.parseInt(info[1]);
+			this.bananaQuantity = Integer.parseInt(info[2]);
+			this.record = Integer.parseInt(info[3]); 
+		} else { // criar novo jogo.
+			this.ownedSkins = new boolean[SKIN_QUANTITY];
 			Arrays.fill(this.ownedSkins, false);
+			this.ownedSkins[INITIAL_SKIN] = true;
+			this.selectedSkin = INITIAL_SKIN;
 			this.bananaQuantity = 0; 
 			this.record = 0; 
 		}
@@ -114,9 +115,29 @@ public class Controle extends Canvas implements IInit{
 		return bananaQuantity;
 	}
 	
-	public static boolean[] getSkinsLiberadas() {
-		return ownedSkins;
+	public boolean[] getSkinsLiberadas() {
+		return this.ownedSkins;
 	}
+
+	public void init() throws InterruptedException {	//throws para sleep	(aplicar try catch)
+		while(appState != 'F') {
+			switch(appState) {
+			case 'M':
+				abrirMenu();
+				break;
+				
+			case 'L':
+				abrirLoja();
+				break;
+				
+			case 'J':
+				abrirJogo();
+				break;
+			}
+		}
+		save.saveGame(this.ownedSkins, this.selectedSkin, this.bananaQuantity, this.record);
+		System.exit(0);
+	}	
 	
 	public void abrirMenu() throws InterruptedException {
 		if(!menuCriado) {
@@ -173,25 +194,4 @@ public class Controle extends Canvas implements IInit{
 			this.bananaQuantity += jogo.getBananaQuantity();
 		}
 	}
-
-	public void init() throws InterruptedException {	//throws para sleep	(aplicar try catch)
-		while(appState != 'F') {
-			switch(appState) {
-			case 'M':
-				abrirMenu();
-				break;
-				
-			case 'L':
-				abrirLoja();
-				break;
-				
-			case 'J':
-				abrirJogo();
-				break;
-			}
-		}
-		save.saveGame(this.record, this.ownedSkins, this.bananaQuantity);
-		System.exit(0);
-	}	
-
 }              
