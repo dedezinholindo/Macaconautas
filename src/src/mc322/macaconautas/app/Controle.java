@@ -35,6 +35,7 @@ public class Controle extends Canvas implements IInit{
 	private boolean jogoCriado;
 	private boolean menuCriado;
 	private boolean lojaCriada;
+	private SaveGame save;
 	private IGame jogo;
 	private IModo menu;
 	private ILoja loja;
@@ -58,12 +59,10 @@ public class Controle extends Canvas implements IInit{
 		this.menu = null;
 		this.loja = null;
 		this.spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
-		this.bananaQuantity = 0; //ou de acordo com o jogo salvo
-		this.record = 0; //ou o jogo salvo
-		this.ownedSkins = new boolean[SKIN_QUANTITY];
-		Arrays.fill(this.ownedSkins, false);
-		this.ownedSkins[INITIAL_SKIN] = true;
 		this.selectedSkin = INITIAL_SKIN;
+		save = new SaveGame();
+		loadGame();
+		this.ownedSkins[INITIAL_SKIN] = true;
 	}
 
 	private void initFrame() {
@@ -75,6 +74,35 @@ public class Controle extends Canvas implements IInit{
 		f.setLocationRelativeTo(null); //centro (tem que estar depois do pack)
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //fechar quando clicar no x e parar de vez
 		f.setVisible(true); //deixar ele visivel
+	}
+	
+	private boolean[] NumbersToBoolean(String numb) {
+		boolean [] b = new boolean[SKIN_QUANTITY];
+		for (int i = 0; i < numb.length(); i++) {
+			
+			System.out.print("load " + numb.charAt(i));
+			if(numb.charAt(i) == 1) {
+				b[i] = true;
+			} else {
+				b[i] = false;
+			}
+		}
+		return b;
+	}
+	
+	private void loadGame() {
+		if(save.fileExists()) {
+			ArrayList<String> info = save.applySave();
+			this.bananaQuantity = 0; 
+			this.record = Integer.parseInt(info.get(0)); 
+			this.ownedSkins = NumbersToBoolean(info.get(1));
+			this.bananaQuantity = Integer.parseInt(info.get(2));
+		} else {
+			ownedSkins = new boolean[SKIN_QUANTITY];
+			Arrays.fill(this.ownedSkins, false);
+			this.bananaQuantity = 0; 
+			this.record = 0; 
+		}
 	}
 		
 	public static long getRecord() {
@@ -165,7 +193,7 @@ public class Controle extends Canvas implements IInit{
 				break;
 			}
 		}
-		//salvar jogo
+		save.saveGame(this.record, this.ownedSkins, this.bananaQuantity);
 		System.exit(0);
 	}	
 
