@@ -78,9 +78,7 @@ public class Controle extends Canvas implements IInit{
 	
 	private boolean[] NumbersToBoolean(String numb) {
 		boolean [] b = new boolean[SKIN_QUANTITY];
-		for (int i = 0; i < numb.length(); i++) {
-			
-			System.out.print("load " + numb.charAt(i));
+		for (int i = 0; i < numb.length(); i++) {			
 			if(numb.charAt(i) == 1) {
 				b[i] = true;
 			} else {
@@ -93,7 +91,6 @@ public class Controle extends Canvas implements IInit{
 	private void loadGame() {
 		if(save.fileExists()) {
 			ArrayList<String> info = save.applySave();
-			this.bananaQuantity = 0; 
 			this.record = Integer.parseInt(info.get(0)); 
 			this.ownedSkins = NumbersToBoolean(info.get(1));
 			this.bananaQuantity = Integer.parseInt(info.get(2));

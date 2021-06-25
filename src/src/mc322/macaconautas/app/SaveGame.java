@@ -101,6 +101,7 @@ public class SaveGame {
 		String[] s = this.gameInfo.split(" ");
 		ArrayList<String> info = new ArrayList<String>();
 		for (int i = 1; i < 4; i++) {
+			System.out.println("dede " + s[i].split(":")[1]);
 			info.add(s[i].split(":")[1]);
 		}
 		return info;
