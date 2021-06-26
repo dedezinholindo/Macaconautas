@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 import mc322.macaconautas.Interface.IModo;
 import mc322.macaconautas.app.Controle;
 
-public class MenuView implements IModo{
+public class MenuView implements IModo {
 	private ControleMenu conMenu;
 	static long record;
 	static int quantidadeBananas;

@@ -124,7 +124,7 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		}
 		if(loja.currentOption == this.selectedSkin) {
 			g.setColor(Color.blue);
-			g.drawString(">>>SELECTED<<<", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - 150);
+			g.drawString(">SELECIONADA<", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - 150);
 		}
 		Graphics2D g2 = (Graphics2D) g;
 		g2.drawImage(loja.skinSprites[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - 100, ((loja.HEIGHT * loja.SCALE) / 2) - 125, 320, 320, null);
@@ -153,9 +153,9 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		g.setFont(new Font("arial",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
 		g.drawString("Bananas: " + LojaView.bananaQuantity,  0, loja.HEIGHT * loja.SCALE);
-		g.setFont(new Font("arial",Font.PLAIN, 10));
+		g.setFont(new Font("arial",Font.PLAIN, 20));
 		g.setColor(Color.white);;
-		g.drawString("<esc> to Menu",  0, 50);
+		g.drawString("Press ESC to go to the Menu", 0, loja.BORDA + 16);
 		renderSkinInformation(g);
 		bs.show(); //mostra o grafico
 	}

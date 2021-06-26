@@ -97,13 +97,9 @@ public class SaveGame {
 	public String[] getInfo() {
 		loadGame();
 		String s[] = this.gameInfo.split(" ");
-		for (int i = 0; i < s.length; i++) {
-			System.out.println(s[i]);
-		}
 		String info[] = new String[s.length - 2];
 		for (int i = 0; i < info.length; i++) {
 			info[i] = s[i + 1].split(":")[1]; // ignora o nome do tipo da informação.
-			System.out.println(info[i]);
 		}
 		return info;
 	}

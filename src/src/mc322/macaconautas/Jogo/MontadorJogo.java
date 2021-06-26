@@ -11,8 +11,7 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Componentes.Laser;
-import mc322.macaconautas.Componentes.Macaco;
+import mc322.macaconautas.Entity.Monkey;
 import mc322.macaconautas.app.Controle;
 import mc322.macaconautas.app.SpriteSheet;
 
@@ -33,8 +32,8 @@ public class MontadorJogo {
 	boolean isRunning;
 	boolean pause;
 	Thread thread;
-	Macaco macaco;
-	Espaco espaco;
+	Monkey monkey;
+	Space space;
 	int bananasColetadas;
 	long distancia;
 	int contador;
@@ -47,8 +46,9 @@ public class MontadorJogo {
 
 	public MontadorJogo(SpriteSheet spriteSheet, int selectedSkin){
 		this.spriteSheet = spriteSheet;
-		macaco = new Macaco(15, 0, this.spriteSheet, selectedSkin);
-		espaco = new Espaco(this.spriteSheet);
+		space = new Space(Controle.WIDTH * Controle.SCALE, Controle.HEIGHT * Controle.SCALE, 40, this.spriteSheet);
+		monkey = new Monkey(10 * Controle.SCALE, Controle.HEIGHT / 2, this.space, this.spriteSheet, selectedSkin);
+		space.setMonkey(monkey);
 		jogoState = 'N';
 		isRunning = true;
 		pause = false;

@@ -46,11 +46,11 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 		}
 		if(menu.enter) {
 			menu.enter = false;
-			if(menu.OPTIONS[menu.currentOption] == menu.OPTIONS[0]) {
+			if(menu.currentOption == 0) {
 				menu.menuState = 'J';
-			} else if(menu.OPTIONS[menu.currentOption] == menu.OPTIONS[1]) {
+			} else if(menu.currentOption == 1) {
 				menu.menuState = 'L';
-			} else if(menu.OPTIONS[menu.currentOption] == menu.OPTIONS[2]) {
+			} else if(menu.currentOption == 2) {
 				menu.menuState = 'F';
 			}
 		}
@@ -93,28 +93,24 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 	}
 	
 	private void renderOptions(Graphics g) {
-		g.setFont(new Font("arial", Font.BOLD, 45));
-		g.setColor(Color.CYAN);
-		g.drawString("MACACONAUTAS", menu.WIDTH * menu.SCALE/2 - 220 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 90);
+		g.setFont(new Font("oslo", Font.BOLD, 85));
+		g.setColor(Color.BLUE);
+		g.drawString("MACACONAUTAS", 0, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 90);
 		
 		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
-		g.drawString("Jogar", menu.WIDTH * menu.SCALE/2 - 57 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
-		
-		g.setColor(Color.WHITE);
-		g.drawString("Loja", menu.WIDTH * menu.SCALE/2 - 50 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
-		
-		g.setColor(Color.WHITE);
-		g.drawString("Sair do Jogo", menu.WIDTH * menu.SCALE/2 - 100 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
+		g.drawString("Jogar", menu.WIDTH * menu.SCALE/2 - 57, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
+		g.drawString("Loja", menu.WIDTH * menu.SCALE/2 - 50, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
+		g.drawString("Salvar e Sair", menu.WIDTH * menu.SCALE/2 - 114, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
 	}
 	
 	private void moveArrow(Graphics g) {
-		if(menu.OPTIONS[menu.currentOption] == menu.OPTIONS[0]) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - 57 - 30 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
-		} else if(menu.OPTIONS[menu.currentOption] == menu.OPTIONS[1]) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - 50 - 30 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
-		} else if(menu.OPTIONS[menu.currentOption] == menu.OPTIONS[2]) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - 100 - 30 , (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
+		if(menu.currentOption == 0) {
+			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (57 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
+		} else if(menu.currentOption == 1) {
+			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (50 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
+		} else if(menu.currentOption == 2) {
+			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (114 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
 		}
 	}
 	

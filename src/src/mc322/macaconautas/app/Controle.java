@@ -85,11 +85,7 @@ public class Controle extends Canvas implements IInit{
 	private void loadSavedGame() {
 		if(this.save.fileExists()) { // carregar jogo salvo.
 			String info[] = save.getInfo();
-				System.out.println(info[0]);
 			this.ownedSkins = NumbersToBoolean(info[0]);
-			for (int i =0; i < ownedSkins.length; i++) {
-				System.out.println(ownedSkins[i]);
-			}
 			this.selectedSkin = Integer.parseInt(info[1]);
 			this.bananaQuantity = Integer.parseInt(info[2]);
 			this.record = Integer.parseInt(info[3]); 

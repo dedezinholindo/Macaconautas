@@ -1,10 +1,11 @@
-package mc322.macaconautas.Componentes;
+package mc322.macaconautas.Entity;
 
 import java.awt.image.BufferedImage;
 
+import mc322.macaconautas.Jogo.Space;
 import mc322.macaconautas.app.SpriteSheet;
 
-public class PecaRegular extends Componente {
+public class RegularEntity extends Entity {
 
 	private final static int PECA_REGULAR_SPEED = 1; // todas peças regulares têm a mesma velocidade
 
@@ -15,8 +16,8 @@ public class PecaRegular extends Componente {
 	 * @param width largura da peça regular.
 	 * @param height altura da peça regular.
 	 */
-	public PecaRegular(int x, int y, int width, int height, SpriteSheet spriteSheet) {
-		super(x, y, width, height, spriteSheet);
+	public RegularEntity(int x, int y, int width, int height, Space space, SpriteSheet spriteSheet, int spriteX, int spriteY, int spriteQuantity) {
+		super(x, y, width, height, space, spriteSheet, spriteX, spriteY, spriteQuantity);
 		this.speed = PECA_REGULAR_SPEED;
 	}
 
