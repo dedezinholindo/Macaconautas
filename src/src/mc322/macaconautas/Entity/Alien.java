@@ -5,9 +5,9 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import mc322.macaconautas.Jogo.ControleJogo;
-import mc322.macaconautas.Jogo.Space;
-import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.Game.GameControl;
+import mc322.macaconautas.Game.Space;
+import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class Alien extends RegularEntity {
@@ -56,7 +56,7 @@ public class Alien extends RegularEntity {
 	 */
 	public void tick() {
 		super.tick();
-		if (this.x <= Controle.WIDTH * Controle.SCALE) {
+		if (this.x <= Control.WIDTH * Control.SCALE) {
 			if (this.distanceWithoutShooting == MAX_DISTANCE_WITHOUT_SHOOTING) { // atira um laser.
 				this.space.generateLaser(this.x - this.width - this.speed, this.y + GUN_HEIGHT_LASER_ADJUST);
 				this.distanceWithoutShooting = 0;

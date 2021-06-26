@@ -12,15 +12,15 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.app.Control;
 
-public class ControleMenu extends Canvas implements Runnable, KeyListener{
+public class MenuControl extends Canvas implements Runnable, KeyListener{
 	
-	private MontadorMenu menu;
+	private MenuBuilder menu;
 	private JFrame f;
 	
-	public ControleMenu(JFrame f) {
-		menu = new MontadorMenu();
+	public MenuControl(JFrame f) {
+		menu = new MenuBuilder();
 		f.addKeyListener(this);
 		this.f = f;
 	}
@@ -65,12 +65,12 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 			break;
 
 		case 'L':
-			Controle.setAppState('L');
+			Control.setAppState('L');
 			stop();
 			break;
 
 		case 'J':
-			Controle.setAppState('L');
+			Control.setAppState('L');
 			stop();
 			break;
 			
@@ -88,37 +88,36 @@ public class ControleMenu extends Canvas implements Runnable, KeyListener{
 	
 	
 	private synchronized void stop() {
-		//f.repaint();
 		menu.isRunning = false;
 	}
 	
 	private void renderOptions(Graphics g) {
 		g.setFont(new Font("oslo", Font.BOLD, 85));
 		g.setColor(Color.BLUE);
-		g.drawString("MACACONAUTAS", 0, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 90);
+		g.drawString("MACACONAUTAS", 0, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 - 90);
 		
 		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
-		g.drawString("Jogar", menu.WIDTH * menu.SCALE/2 - 57, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
-		g.drawString("Loja", menu.WIDTH * menu.SCALE/2 - 50, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
-		g.drawString("Salvar e Sair", menu.WIDTH * menu.SCALE/2 - 114, (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
+		g.drawString(menu.OPTIONS[0], menu.WIDTH * menu.SCALE/2 - 57, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 - 10);
+		g.drawString(menu.OPTIONS[1], menu.WIDTH * menu.SCALE/2 - 67, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 70);
+		g.drawString(menu.OPTIONS[2], menu.WIDTH * menu.SCALE/2 - 130, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 150);
 	}
 	
 	private void moveArrow(Graphics g) {
 		if(menu.currentOption == 0) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (57 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 - 10);
+			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (57 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 - 10);
 		} else if(menu.currentOption == 1) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (50 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 70);
+			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (67 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 70);
 		} else if(menu.currentOption == 2) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (114 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDA)/2 + 150);
+			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (130 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 150);
 		}
 	}
 	
 	private void renderBottom(Graphics g){
-		g.setFont(new Font("herhehdfhdf",Font.PLAIN, 30));
+		g.setFont(new Font("arial",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
-		g.drawString("Recorde: " + MenuView.record + " m",  0, menu.HEIGHT * menu.SCALE - 30);
-		g.drawString("Bananas: " + MenuView.quantidadeBananas,  0, menu.HEIGHT * menu.SCALE);
+		g.drawString("Record: " + MenuView.record + " m",  0, menu.HEIGHT * menu.SCALE - 30);
+		g.drawString("Bananas: " + MenuView.bananaQuantity,  0, menu.HEIGHT * menu.SCALE);
 	}
 	
 	private void render() {

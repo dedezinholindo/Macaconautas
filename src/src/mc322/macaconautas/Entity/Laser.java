@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import mc322.macaconautas.Jogo.ControleJogo;
-import mc322.macaconautas.Jogo.Space;
+import mc322.macaconautas.Game.GameControl;
+import mc322.macaconautas.Game.Space;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class Laser extends Entity {

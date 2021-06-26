@@ -1,11 +1,11 @@
-package mc322.macaconautas.Jogo;
+package mc322.macaconautas.Game;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 import mc322.macaconautas.Entity.*;
 
@@ -114,7 +114,7 @@ public class Space {
 	 * Gera uma alien fleet no space.
 	 */
 	private void generateAlienFleet() {
-		this.alienFleet = new AlienFleet(this.width - 40, Controle.BORDA, this, this.spriteSheet, 3);
+		this.alienFleet = new AlienFleet(this.width - 40, Control.BORDER, this, this.spriteSheet, 3);
 	}
 	
 	public void generateHugeLaser(int cannonX, int cannonY) {

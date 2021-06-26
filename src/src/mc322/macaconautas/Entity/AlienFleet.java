@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Random;
 
-import mc322.macaconautas.Jogo.Space;
-import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.Game.Space;
+import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class AlienFleet extends Entity {
@@ -15,7 +15,7 @@ public class AlienFleet extends Entity {
 
 	private final static int SHIP_WIDTH = 40;
 	private final static int SHIP_HEIGHT = 40; // dimensões de cada nave.
-	private final static int SHIP_SPACING = ((Controle.HEIGHT * Controle.SCALE) - Controle.BORDA - (SHIP_QUANTITY * SHIP_HEIGHT)) / (SHIP_QUANTITY - 1); // espaço entre duas naves consecutivas.
+	private final static int SHIP_SPACING = ((Control.HEIGHT * Control.SCALE) - Control.BORDER - (SHIP_QUANTITY * SHIP_HEIGHT)) / (SHIP_QUANTITY - 1); // espaço entre duas naves consecutivas.
 	private final static int WIDTH = SHIP_WIDTH; // largura total da frota.
 	private final static int HEIGHT = (SHIP_HEIGHT + SHIP_SPACING) * (SHIP_QUANTITY) - SHIP_SPACING; // altura total da frota (subtração ao final, pois há espaço apenas entre naves).
 	private final static int CANNON_HEIGHT = 26; // coordenada y do centro do cannon relativa à coordenada y de uma ship qualquer.

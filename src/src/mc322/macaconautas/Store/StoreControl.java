@@ -1,4 +1,4 @@
-package mc322.macaconautas.Loja;
+package mc322.macaconautas.Store;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -15,26 +15,26 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Menu.MenuView;
-import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
-public class ControleLoja extends Canvas implements Runnable, KeyListener{
+public class StoreControl extends Canvas implements Runnable, KeyListener{
 
-	private MontadorLoja loja;
+	private StoreBuilder store;
 	private JFrame f;
 	private boolean ownedSkins[];
 	private int selectedSkin;
 	
-	public ControleLoja(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
-		loja = new MontadorLoja(spriteSheet);
+	public StoreControl(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
+		store = new StoreBuilder(spriteSheet);
 		f.addKeyListener(this);
 		this.f = f;
 		this.ownedSkins = ownedSkins;
 		this.selectedSkin = selectedSkin;
 	}
 	
-	char getLojaState() {
-		return loja.lojaState;
+	char getStoreState() {
+		return store.storeState;
 	}
 
 	int getSelectedSkin() {
@@ -46,9 +46,9 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 	}
 
 	private boolean buySkin(int skinIndex) {
-		if (!this.ownedSkins[skinIndex] && LojaView.bananaQuantity >= loja.SKIN_PRICES[skinIndex]) {
+		if (!this.ownedSkins[skinIndex] && StoreView.bananaQuantity >= store.SKIN_PRICES[skinIndex]) {
 			this.ownedSkins[skinIndex] = true;
-			LojaView.bananaQuantity -= loja.skinPrices[skinIndex];
+			StoreView.bananaQuantity -= store.skinPrices[skinIndex];
 			return true;
 		}
 		return false;
@@ -60,33 +60,33 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		}
 	}
 	
-	private void executeLoja() {
-		if (loja.lojaLeft) {
-			loja.lojaLeft = false;
-			loja.currentOption--;
-			if(loja.currentOption < 0) {
-				loja.currentOption = loja.skinQuantity - 1;
+	private void executeStore() {
+		if (store.storeLeft) {
+			store.storeLeft = false;
+			store.currentOption--;
+			if(store.currentOption < 0) {
+				store.currentOption = store.skinQuantity - 1;
 			}
 		}
-		if (loja.lojaRight) {
-			loja.lojaRight = false;
-			loja.currentOption++;
-			if(loja.currentOption >= loja.skinQuantity) {
-				loja.currentOption = 0;
+		if (store.storeRight) {
+			store.storeRight = false;
+			store.currentOption++;
+			if(store.currentOption >= store.skinQuantity) {
+				store.currentOption = 0;
 			}
 		}
-		if(loja.enter) {
-			loja.enter = false;
-			selectSkin(loja.currentOption);
+		if(store.enter) {
+			store.enter = false;
+			selectSkin(store.currentOption);
 		}
 	}
 	
 	
 	private void tick() {
 		//Update the AppMacaconautas
-		switch(loja.lojaState) {
+		switch(store.storeState) {
 		case 'N':
-			executeLoja();
+			executeStore();
 			//normal
 			break;
 
@@ -98,36 +98,33 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 	}
 
 	public synchronized void start() throws InterruptedException { //synchronized para evitar que a thread use/mude o mesmo recurso ao mesmo tempo
-		loja.isRunning = true;
-		loja.thread = new Thread(this);
-		loja.thread.start();
+		store.isRunning = true;
+		store.thread = new Thread(this);
+		store.thread.start();
 	}
 	
 	
 	private synchronized void stop() {
-		//f.repaint();
-		loja.isRunning = false;
+		store.isRunning = false;
 	}
 	
 	private void renderSkinInformation(Graphics g) {
 		//preco
-		//botar um if ja comprou, entao nao mostra o preço
-		//botar um certinho se ja foi comprada
 		g.setFont(new Font("arial", Font.PLAIN, 25));
 		g.setColor(Color.white);
-		g.drawString(loja.skinNames[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 25));
-		if(!ownedSkins[loja.currentOption]) {
-			g.drawString(loja.skinPrices[loja.currentOption] + " bananas", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
+		g.drawString(store.skinNames[store.currentOption], ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) - (180 + 25));
+		if(!ownedSkins[store.currentOption]) {
+			g.drawString(store.skinPrices[store.currentOption] + " bananas", ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) + (180 + 40));
 		} else {
 			g.setColor(Color.green);
-			g.drawString("LIBERADO :)", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) + (180 + 40));
+			g.drawString("LIBERADO :)", ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) + (180 + 40));
 		}
-		if(loja.currentOption == this.selectedSkin) {
+		if(store.currentOption == this.selectedSkin) {
 			g.setColor(Color.blue);
-			g.drawString(">SELECIONADA<", ((loja.WIDTH * loja.SCALE) / 2) - (150 - 10), ((loja.HEIGHT * loja.SCALE) / 2) - 150);
+			g.drawString(">SELECIONADA<", ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) - 150);
 		}
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(loja.skinSprites[loja.currentOption], ((loja.WIDTH * loja.SCALE) / 2) - 100, ((loja.HEIGHT * loja.SCALE) / 2) - 125, 320, 320, null);
+		g2.drawImage(store.skinSprites[store.currentOption], ((store.WIDTH * store.SCALE) / 2) - 100, ((store.HEIGHT * store.SCALE) / 2) - 125, 320, 320, null);
 	}
 	
 	
@@ -141,21 +138,21 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 		//fundo
 		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
 		g.setColor(Color.BLACK);
-		g.fillRect(0,0, loja.WIDTH * loja.SCALE, loja.HEIGHT * loja.SCALE); //aparece um retangulo na tela (x,y,largura,altura)
+		g.fillRect(0,0, store.WIDTH * store.SCALE, store.HEIGHT * store.SCALE); //aparece um retangulo na tela (x,y,largura,altura)
 		g.setColor(Color.gray);
-		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - (180 + 60), 300, 60);
-		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) + 180, 300, 60);
+		g.fillRect(((store.WIDTH * store.SCALE) / 2) - 150, ((store.HEIGHT * store.SCALE) / 2) - (180 + 60), 300, 60);
+		g.fillRect(((store.WIDTH * store.SCALE) / 2) - 150, ((store.HEIGHT * store.SCALE) / 2) + 180, 300, 60);
 		g.setColor(Color.lightGray);
-		g.fillRect(((loja.WIDTH * loja.SCALE) / 2) - 150, ((loja.HEIGHT * loja.SCALE) / 2) - 180, 300, 360);
+		g.fillRect(((store.WIDTH * store.SCALE) / 2) - 150, ((store.HEIGHT * store.SCALE) / 2) - 180, 300, 360);
 		g.setFont(new Font("arial", Font.PLAIN, 40));
-		g.drawString(">", (loja.WIDTH * loja.SCALE) - 50, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
-		g.drawString("<", 20, (loja.HEIGHT * loja.SCALE - loja.BORDA) / 2);
+		g.drawString(">", (store.WIDTH * store.SCALE) - 50, (store.HEIGHT * store.SCALE - store.BORDER) / 2);
+		g.drawString("<", 20, (store.HEIGHT * store.SCALE - store.BORDER) / 2);
 		g.setFont(new Font("arial",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
-		g.drawString("Bananas: " + LojaView.bananaQuantity,  0, loja.HEIGHT * loja.SCALE);
+		g.drawString("Bananas: " + StoreView.bananaQuantity,  0, store.HEIGHT * store.SCALE);
 		g.setFont(new Font("arial",Font.PLAIN, 20));
 		g.setColor(Color.white);;
-		g.drawString("Press ESC to go to the Menu", 0, loja.BORDA + 16);
+		g.drawString("Press ESC to go to the Menu", 0, store.BORDER + 16);
 		renderSkinInformation(g);
 		bs.show(); //mostra o grafico
 	}
@@ -169,15 +166,15 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			loja.lojaState = 'M';
+			store.storeState = 'M';
 		} 
 		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-				loja.lojaLeft = true;
+				store.storeLeft = true;
 		} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			loja.lojaRight = true;
+			store.storeRight = true;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			loja.enter = true;
+			store.enter = true;
 		}
 	}
 
@@ -189,7 +186,7 @@ public class ControleLoja extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void run() {
-		while (loja.isRunning) {
+		while (store.isRunning) {
 			tick();
 			render();
 			try {

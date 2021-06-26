@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import mc322.macaconautas.Jogo.Space;
+import mc322.macaconautas.Game.Space;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class Asteroid extends RegularEntity {

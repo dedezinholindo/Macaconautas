@@ -5,8 +5,8 @@ import java.awt.Graphics;
 import java.awt.Rectangle; //vai ter toda a colisão e todos os métodos necessários
 import java.awt.image.BufferedImage;
 
-import mc322.macaconautas.Jogo.Space;
-import mc322.macaconautas.app.Controle;
+import mc322.macaconautas.Game.Space;
+import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class Monkey extends Entity {
@@ -107,12 +107,12 @@ public class Monkey extends Entity {
 		} else { 
 			this.y += GOING_DOWN_SPEED;
 		}
-		if (this.y + this.height > Controle.HEIGHT * Controle.SCALE) { // está no limite inferior (chão).
-			this.y = Controle.HEIGHT * Controle.SCALE - this.height;
+		if (this.y + this.height > Control.HEIGHT * Control.SCALE) { // está no limite inferior (chão).
+			this.y = Control.HEIGHT * Control.SCALE - this.height;
 			this.isWalking = true;
 			this.frame++;
-		} else if (this.y <= Controle.BORDA) { // está no limite superior (teto).
-			this.y = Controle.BORDA;
+		} else if (this.y <= Control.BORDER) { // está no limite superior (teto).
+			this.y = Control.BORDER;
 		}
 		if (!this.isWalking || (this.frame >= MAX_WALKING_ANIMATION_FRAMES * WALKING_ANIMATION_PERIOD)) {
 			this.frame = 0; // reinicia contagem de frames caso não esteja andando ou precise reiniciar a animação.
@@ -135,11 +135,11 @@ public class Monkey extends Entity {
 		if (this.isGoingUp) {
 			sprite = sprites[1]; // sprite com mochila a jato ativada.
 		} else if (this.isWalking) {
-			int frameAnimacao = this.frame / WALKING_ANIMATION_PERIOD;
-			if (frameAnimacao % 2 == 1) {
+			int frameAnimation = this.frame / WALKING_ANIMATION_PERIOD;
+			if (frameAnimation % 2 == 1) {
 				sprite = sprites[4]; // sprite de estado intermediário na corrida.
 			} else {
-				sprite = sprites[2 + (frameAnimacao / 2)]; // sprite de passo direito (2) ou esquerdo (3).
+				sprite = sprites[2 + (frameAnimation / 2)]; // sprite de passo direito (2) ou esquerdo (3).
 			}
 		} else {
 			sprite = sprites[0]; // sprite de queda livre.

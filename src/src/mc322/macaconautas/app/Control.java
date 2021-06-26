@@ -1,27 +1,27 @@
 package mc322.macaconautas.app;
 
+import mc322.macaconautas.Game.*;
 import mc322.macaconautas.Interface.IGame;
 import mc322.macaconautas.Interface.IInit;
-import mc322.macaconautas.Interface.ILoja;
-import mc322.macaconautas.Interface.IModo;
-import mc322.macaconautas.Jogo.*;
+import mc322.macaconautas.Interface.IStore;
+import mc322.macaconautas.Interface.IMode;
+
 import java.awt.Canvas;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Jogo.ControleJogo;
-import mc322.macaconautas.Loja.LojaView;
 import mc322.macaconautas.Menu.MenuView;
+import mc322.macaconautas.Store.StoreView;
 
-public class Controle extends Canvas implements IInit{
-	public final static int BORDA = 37; //grossura da borda
+public class Control extends Canvas implements IInit{
+	public final static int BORDER = 37; //grossura da borda
 	public final static int WIDTH = 160;
 	public final static int HEIGHT = 120;
 	public final static int SCALE = 5;
 	
-	private final static int TEMPO_BUG = 400;
+	private final static int TIME_BUG = 400;
 	
 	private final static String SPRITE_SHEET_PATH = "/res/spritesheet.png";
 	private final static int SPRITE_WIDTH = 40;
@@ -31,40 +31,40 @@ public class Controle extends Canvas implements IInit{
 	private final static int INITIAL_SKIN = 0;
 
 	public static JFrame f;
-	private static char appState; //"L" para Loja, "M" para menu inicial, "J" para jogo e F de Fim
-	private boolean jogoCriado;
-	private boolean menuCriado;
-	private boolean lojaCriada;
+	private static char appState; //"L" para Store, "M" para menu inicial, "J" para game e F de Fim
+	private boolean gameCreated;
+	private boolean menuCreated;
+	private boolean storeCreated;
 	private SaveGame save;
-	private IGame jogo;
-	private IModo menu;
-	private ILoja loja;
+	private IGame game;
+	private IMode menu;
+	private IStore store;
 	private SpriteSheet spriteSheet;
-	private boolean[] ownedSkins; //ou jogo salvo
+	private boolean[] ownedSkins; //ou game salvo
 	private int selectedSkin;
 	private static int bananaQuantity;
 	private static long record;
 
-	public Controle() {
+	public Control() {
 		initFrame();
 		initAtributos();
 	}
 	
 	private void initAtributos() {
 		this.appState = 'M';
-		this.jogoCriado = false;
-		this.menuCriado = false;
-		this.lojaCriada = false;
-		this.jogo = null;
+		this.gameCreated = false;
+		this.menuCreated = false;
+		this.storeCreated = false;
+		this.game = null;
 		this.menu = null;
-		this.loja = null;
+		this.store = null;
 		this.spriteSheet = new SpriteSheet(SPRITE_SHEET_PATH, SPRITE_WIDTH, SPRITE_HEIGHT);
 		this.save = new SaveGame();
 		loadSavedGame();
 	}
 
 	private void initFrame() {
-		f = new JFrame("MACACONAUTAS"); //titulo do jogo ou setTitle()
+		f = new JFrame("MACACONAUTAS"); //titulo do game ou setTitle()
 		f.add(this); //adicionar o que criamos para ficar visível
 		f.setLayout(null);
 		f.setSize(WIDTH * SCALE, HEIGHT * SCALE);
@@ -83,13 +83,13 @@ public class Controle extends Canvas implements IInit{
 	}
 	
 	private void loadSavedGame() {
-		if(this.save.fileExists()) { // carregar jogo salvo.
+		if(this.save.fileExists()) { // carregar game salvo.
 			String info[] = save.getInfo();
 			this.ownedSkins = NumbersToBoolean(info[0]);
 			this.selectedSkin = Integer.parseInt(info[1]);
 			this.bananaQuantity = Integer.parseInt(info[2]);
 			this.record = Integer.parseInt(info[3]); 
-		} else { // criar novo jogo.
+		} else { // criar novo game.
 			this.ownedSkins = new boolean[SKIN_QUANTITY];
 			Arrays.fill(this.ownedSkins, false);
 			this.ownedSkins[INITIAL_SKIN] = true;
@@ -119,15 +119,15 @@ public class Controle extends Canvas implements IInit{
 		while(appState != 'F') {
 			switch(appState) {
 			case 'M':
-				abrirMenu();
+				openMenu();
 				break;
 				
 			case 'L':
-				abrirLoja();
+				openStore();
 				break;
 				
 			case 'J':
-				abrirJogo();
+				openJogo();
 				break;
 			}
 		}
@@ -135,59 +135,59 @@ public class Controle extends Canvas implements IInit{
 		System.exit(0);
 	}	
 	
-	public void abrirMenu() throws InterruptedException {
-		if(!menuCriado) {
+	public void openMenu() throws InterruptedException {
+		if(!menuCreated) {
 			menu = new MenuView(f);
-			menu.mostrar();
-			menuCriado = true;
+			menu.shows();
+			menuCreated = true;
 		}
-		Thread.currentThread().sleep(TEMPO_BUG);//alterar baseado no processamento do computador(error de renderizacao)
+		Thread.currentThread().sleep(TIME_BUG);//alterar baseado no processamento do computador(error de renderizacao)
 		switch(menu.getState()) {
 		case 'L':
 			appState = 'L';
-			menuCriado = false;
+			menuCreated = false;
 			break;
 		
 		case 'J':
 			appState = 'J';
-			menuCriado = false;
+			menuCreated = false;
 			break;
 		
 		case 'F':
 			appState = 'F';
-			menuCriado = false;
+			menuCreated = false;
 			break;
 		}		
 	}
 	
-	public void abrirLoja() throws InterruptedException {
-		if(!lojaCriada) {
-			loja = new LojaView(f, this.ownedSkins, this.selectedSkin, this.spriteSheet);
-			loja.mostrar();
-			lojaCriada = true;
+	public void openStore() throws InterruptedException {
+		if(!storeCreated) {
+			store = new StoreView(f, this.ownedSkins, this.selectedSkin, this.spriteSheet);
+			store.shows();
+			storeCreated = true;
 		} 
-		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
-		if (loja.getState() == 'M') {
+		Thread.currentThread().sleep(TIME_BUG); //operacoes imediatas ocasionam erros inesperaveis
+		if (store.getState() == 'M') {
 			appState = 'M';
-			lojaCriada = false;
-			this.bananaQuantity = loja.getBananaQuantity();
-			this.selectedSkin = loja.getSelectedSkin();
-			this.ownedSkins = loja.getOwnedSkins();
+			storeCreated = false;
+			this.bananaQuantity = store.getBananaQuantity();
+			this.selectedSkin = store.getSelectedSkin();
+			this.ownedSkins = store.getOwnedSkins();
 		}
 	}
 	
-	public void abrirJogo() throws InterruptedException {
-		if(!jogoCriado) {
-			jogo = new JogoView(f, this.spriteSheet, this.selectedSkin);
-			jogo.mostrar();
-			jogoCriado = true;
+	public void openJogo() throws InterruptedException {
+		if(!gameCreated) {
+			game = new GameView(f, this.spriteSheet, this.selectedSkin);
+			game.shows();
+			gameCreated = true;
 		} 
-		Thread.currentThread().sleep(TEMPO_BUG); //operacoes imediatas ocasionam erros inesperaveis
-		if (jogo.getState() == 'O') {
+		Thread.currentThread().sleep(TIME_BUG); //operacoes imediatas ocasionam erros inesperaveis
+		if (game.getState() == 'O') {
 			appState = 'M';
-			jogoCriado = false;
-			record = jogo.getDistancia();
-			this.bananaQuantity += jogo.getBananaQuantity();
+			gameCreated = false;
+			record = game.getDistance();
+			this.bananaQuantity += game.getBananaQuantity();
 		}
 	}
 }              

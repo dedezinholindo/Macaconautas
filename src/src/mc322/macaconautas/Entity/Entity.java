@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import mc322.macaconautas.Jogo.Space;
+import mc322.macaconautas.Game.Space;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class Entity extends Rectangle {
