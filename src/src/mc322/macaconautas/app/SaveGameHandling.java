@@ -60,11 +60,11 @@ public class SaveGameHandling implements ISaveGameHandling {
 	 */
 	private void writeSaveFile(BufferedWriter write) {
 		String content = (selectKey() +
-							" " + "ownedSkins:" + booleanArrayToNumbersString(this.ownedSkins) +
-							" " + "selectedSkin:" + this.selectedSkin +
-							" " + "bananas:" + this.bananaQuantity +
-							" " + "record:" + this.record +
-							" " + selectKey());
+				" " + "ownedSkins:" + booleanArrayToNumbersString(this.ownedSkins) +
+				" " + "selectedSkin:" + this.selectedSkin +
+				" " + "bananas:" + this.bananaQuantity +
+				" " + "record:" + this.record +
+				" " + selectKey());
 		byte[] encodedBytes = Base64.getEncoder().encode(content.getBytes()); // encodamento do save.
 		try {
 			write.write(new String(encodedBytes));
@@ -128,20 +128,39 @@ public class SaveGameHandling implements ISaveGameHandling {
 		this.gameInfo = new String(Base64.getDecoder().decode(this.gameInfo));
 	}
 
-//	public boolean checkFile();
+	private boolean findKey(String key) {
+		for (int i = 0; i < KEYS.length; i++) {
+			if (key.equals(KEYS[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean checkedFile(){
+		String s[] = this.gameInfo.split(" ");
+		boolean begin = findKey(s[0]);
+		boolean end = findKey(s[s.length - 1]);
+		if(begin && end) {
+			return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Retorna os dados do jogo salvo.
 	 * @return dados do jogo salvo. null, caso não exista um.
 	 */
 	public String[] getSavedInfo() {
-		String info[];
+		String info[] = null;
 		if (fileExists()) {
 			loadGame();
-			String s[] = this.gameInfo.split(" ");
-			info = new String[s.length - 2];
-			for (int i = 0; i < info.length; i++) {
-				info[i] = s[i + 1].split(":")[1]; // ignora o nome do tipo da informação.
+			if(checkedFile()) {
+				String s[] = this.gameInfo.split(" ");
+				info = new String[s.length - 2];
+				for (int i = 0; i < info.length; i++) {
+					info[i] = s[i + 1].split(":")[1]; // ignora o nome do tipo da informação.
+				}
 			}
 		} else {
 			info = null;
