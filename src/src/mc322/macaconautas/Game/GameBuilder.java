@@ -16,53 +16,48 @@ import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class GameBuilder {
-	
-	final static int SIZE_STRING_GAME = 17;
-	final static int WIDTH = Control.WIDTH; 
-	final static int HEIGHT = Control.HEIGHT;
-	final static int BORDER = Control.BORDER;
-	final static int SCALE = Control.SCALE;
-	final static String[] OPTIONS = {"Resume", "Menu"};
-	final static int MAX_OPTIONS = OPTIONS.length - 1;
-	
-	SpriteSheet spriteSheet;
 
-	int slowness;
-	char gameState; //N para normal, P para pausado (uso do pause), G para game over parcial e O para Game Over
+	private final static String[] PAUSE_MENU_OPTIONS = {"Voltar ao Jogo", "Menu Principal"};
+	
+	int slowness = 12;
+	SpriteSheet spriteSheet;
+	char state; //N para normal, P para pausado (uso do pause), G para game over parcial e O para Game Over
 	boolean isRunning;
-	boolean pause;
 	Thread thread;
-	Monkey monkey;
+	int bananaQuantity;
+	long record;
 	Space space;
-	int colectedBananas;
+	Monkey monkey;
+	boolean pause;
 	long distance;
 	int counter;
 	boolean showMessageGameOver;
 	int framesMessageGameOver;
-	int currentOption;
-	boolean gameUp;
-	boolean gameDown;
-	boolean enter;
+	String[] pauseMenuOptions;
+	int currentPauseMenuOption;
+	boolean goUp;
+	boolean goDown;
+	boolean select;
 
-	public GameBuilder(SpriteSheet spriteSheet, int selectedSkin){
+	public GameBuilder(int frameWidth, int frameHeight, int frameBorder, int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity, long record){
 		this.spriteSheet = spriteSheet;
-		space = new Space(Control.WIDTH * Control.SCALE, Control.HEIGHT * Control.SCALE, 40, this.spriteSheet);
-		monkey = new Monkey(10 * Control.SCALE, Control.HEIGHT / 2, this.space, this.spriteSheet, selectedSkin);
-		space.setMonkey(monkey);
-		gameState = 'N';
-		isRunning = true;
-		pause = false;
-		colectedBananas = 0;
-		slowness = 50;
-		distance = 0;
-		counter = 0;
-		showMessageGameOver = true;
-		framesMessageGameOver = 0;
-		currentOption = 0;
-		gameUp = false;
-		gameDown = false;
-		enter = false;
-		
+		this.space = new Space(frameWidth, frameHeight, frameBorder, 40, this.spriteSheet);
+		this.monkey = new Monkey(frameWidth / 16, frameHeight / 4 + frameBorder, this.space, this.spriteSheet, selectedSkin);
+		this.space.setMonkey(monkey);
+		this.state = 'N';
+		this.isRunning = true;
+		this.pause = false;
+		this.bananaQuantity = bananaQuantity;
+		this.record = record;
+		this.distance = 0;
+		this.counter = 0;
+		this.showMessageGameOver = true;
+		this.framesMessageGameOver = 0;
+		this.pauseMenuOptions = PAUSE_MENU_OPTIONS;
+		this.currentPauseMenuOption = 0;
+		this.goUp = false;
+		this.goDown = false;
+		this.select = false;
 	}	
 	
 }

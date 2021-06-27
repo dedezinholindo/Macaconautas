@@ -2,25 +2,22 @@ package mc322.macaconautas.Menu;
 
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Interface.IMode;
+import mc322.macaconautas.Interface.IMenu;
 import mc322.macaconautas.app.Control;
 
-public class MenuView implements IMode {
+public class MenuView implements IMenu {
+
 	private MenuControl conMenu;
-	static long record;
-	static int bananaQuantity;
-	
-	public MenuView(JFrame f) {
-		conMenu = new MenuControl(f);
-		record = Control.getRecord();
-		bananaQuantity = Control.getBananaQuantity();
+
+	public MenuView(JFrame f, int bananaQuantity, long record) {
+		this.conMenu = new MenuControl(f, bananaQuantity, record);
 	}
-	
+
 	public void shows() throws InterruptedException {
-		conMenu.start();
+		this.conMenu.start();
 	}
-	
+
 	public char getState() {
-		return conMenu.getMenuState();
+		return this.conMenu.getMenuState();
 	}
 }

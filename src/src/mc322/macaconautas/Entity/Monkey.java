@@ -107,12 +107,12 @@ public class Monkey extends Entity {
 		} else { 
 			this.y += GOING_DOWN_SPEED;
 		}
-		if (this.y + this.height > Control.HEIGHT * Control.SCALE) { // está no limite inferior (chão).
-			this.y = Control.HEIGHT * Control.SCALE - this.height;
+		if (this.y + this.height > this.space.getHeight() + this.space.getJFrameBorder()) { // está no limite inferior (chão).
+			this.y = ((int) this.space.getHeight()) + this.space.getJFrameBorder() - this.height;
 			this.isWalking = true;
 			this.frame++;
-		} else if (this.y <= Control.BORDER) { // está no limite superior (teto).
-			this.y = Control.BORDER;
+		} else if (this.y <= this.space.getJFrameBorder()) { // está no limite superior (teto).
+			this.y = this.space.getJFrameBorder();
 		}
 		if (!this.isWalking || (this.frame >= MAX_WALKING_ANIMATION_FRAMES * WALKING_ANIMATION_PERIOD)) {
 			this.frame = 0; // reinicia contagem de frames caso não esteja andando ou precise reiniciar a animação.

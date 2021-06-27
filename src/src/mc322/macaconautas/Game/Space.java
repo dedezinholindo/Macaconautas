@@ -9,13 +9,13 @@ import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 import mc322.macaconautas.Entity.*;
 
-public class Space {
+public class Space extends Rectangle {
 
 	private final static int TERMINAL_X = -40; // valor de coordenada x para o qual entities são destruídas (não aparecem mais na tela).
 
 	private final static int HOSTILE_GEN_FRAME_STEP = 3 * 60; // aliens e obstáculos são gerados a cada HOSTILE_GEN_STEP frames.
-	private final static int ALIEN_FLEET_GEN_FRAME_STEP = 10 * 60; // a frota alien é gerada a cada ALIEN_FLEET_GEN_STEP frames.
-	private final static int WHEY_PROTEIN_GEN_FRAME_STEP = 10 * 60;
+	private final static int ALIEN_FLEET_GEN_FRAME_STEP = 30 * 60; // a frota alien é gerada a cada ALIEN_FLEET_GEN_STEP frames.
+	private final static int WHEY_PROTEIN_GEN_FRAME_STEP = 5 * 60;
 	private final static int FRAME_CEILING = ALIEN_FLEET_GEN_FRAME_STEP; // quantidade máxima de frames que o space conta.
 
 	private final static int MAX_HOSTILE_PER_X = 5; // quantidade máxima de entities hostis em uma mesma coordenada x.
@@ -25,8 +25,8 @@ public class Space {
 	private final static double BANANA_GEN_PROBABILITY = 0.01;
 	private final static double WHEY_PROTEIN_GEN_PROBABILITY = 0.7; // probabilidades de geração das entities.
 
-	private int width;
-	private int height;
+	private int jFrameBorder;
+	private int distanceToFloor;
 	private int frame;
 	private Monkey monkey;
 	private ArrayList<RegularEntity> peacefulRegularEntities;
@@ -45,9 +45,10 @@ public class Space {
 	 * @param distanceToFloor distância a ser mantida do chão para não gerar entities parcialmente escondidas.
 	 * @param spriteSheet sprite sheet com sprites a serem utilizados por entities no space.
 	 */
-	public Space(int width, int height, int distanceToFloor, SpriteSheet spriteSheet) {
-		this.width = width;
-		this.height = height - distanceToFloor;
+	public Space(int width, int height, int jFrameBorder, int distanceToFloor, SpriteSheet spriteSheet) {
+		super(0, jFrameBorder, width, height - distanceToFloor);
+		this.jFrameBorder = jFrameBorder;
+		this.distanceToFloor = distanceToFloor;
 		this.frame = 0;
 		this.monkey = null;
 		this.peacefulRegularEntities = new ArrayList<RegularEntity>();
@@ -60,41 +61,40 @@ public class Space {
 		this.randomGenerator = new Random();
 	}
 	
+	public int getJFrameBorder () {
+		return this.jFrameBorder;
+	}
+	
 	public void setMonkey(Monkey monkey) {
 		this.monkey = monkey;
+	}
+	
+	private double getRandomPercentage() {
+		return ((double) this.randomGenerator.nextInt(1001)) / 1000;
+	}
+	
+	private int getRandomY() {
+		return this.randomGenerator.nextInt(this.height) + this.jFrameBorder - this.distanceToFloor;
 	}
 
 	/**
 	 * Gera novas regular entities na zona de geração do space randomicamente.
 	 */
 	private void generateRegularEntities() {
-		double n; // número sorteado.
-		int y; // coordenada y da entity gerada.
-		n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
-		while (n < BANANA_GEN_PROBABILITY) {
-			y = this.randomGenerator.nextInt(this.height);
-			this.peacefulRegularEntities.add(new Banana(this.width, y, this, this.spriteSheet));
-			n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
+		while (getRandomPercentage() < BANANA_GEN_PROBABILITY) {
+			this.peacefulRegularEntities.add(new Banana(this.width, getRandomY(), this, this.spriteSheet));
 		}
-		n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
-		if ((this.frame % WHEY_PROTEIN_GEN_FRAME_STEP == 0) && (n < WHEY_PROTEIN_GEN_PROBABILITY)) {
-			y = this.randomGenerator.nextInt(this.height);
-			this.peacefulRegularEntities.add(new WheyProtein(this.width, y, this, this.spriteSheet));
+		if ((this.frame % WHEY_PROTEIN_GEN_FRAME_STEP == 0) && (getRandomPercentage() < WHEY_PROTEIN_GEN_PROBABILITY)) {
+			this.peacefulRegularEntities.add(new WheyProtein(this.width, getRandomY(), this, this.spriteSheet));
 		}
 		if (this.frame % HOSTILE_GEN_FRAME_STEP == 0) {
 			int hostileQuantity = 0;
-			n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
-			while (n < OBSTACLE_GEN_PROBABILITY && hostileQuantity < MAX_HOSTILE_PER_X) {
-				y = this.randomGenerator.nextInt(this.height);
-				this.hostileRegularEntities.add(new Asteroid(this.width, y, this, this.spriteSheet));
-				n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
+			while (getRandomPercentage() < OBSTACLE_GEN_PROBABILITY && hostileQuantity < MAX_HOSTILE_PER_X) {
+				this.hostileRegularEntities.add(new Asteroid(this.width, getRandomY(), this, this.spriteSheet));
 				hostileQuantity++;
 			}
-			n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
-			while (n < ALIEN_GEN_PROBABILITY && hostileQuantity < MAX_HOSTILE_PER_X) {
-				y = this.randomGenerator.nextInt(this.height);
-				this.hostileRegularEntities.add(new Alien(this.width, y, this, this.spriteSheet));
-				n = ((double) this.randomGenerator.nextInt(1001)) / 1000;
+			while (getRandomPercentage() < ALIEN_GEN_PROBABILITY && hostileQuantity < MAX_HOSTILE_PER_X) {
+				this.hostileRegularEntities.add(new Alien(this.width, getRandomY(), this, this.spriteSheet));
 				hostileQuantity++;
 			}
 		}
@@ -114,7 +114,7 @@ public class Space {
 	 * Gera uma alien fleet no space.
 	 */
 	private void generateAlienFleet() {
-		this.alienFleet = new AlienFleet(this.width - 40, Control.BORDER, this, this.spriteSheet, 3);
+		this.alienFleet = new AlienFleet(this.width - 40, this.jFrameBorder, this, this.spriteSheet, 3);
 	}
 	
 	public void generateHugeLaser(int cannonX, int cannonY) {
@@ -130,7 +130,7 @@ public class Space {
 	 */
 	private void destroyOutsiders() {
 		for (int i = 0; i < this.peacefulRegularEntities.size(); i++) {
-			if (this.peacefulRegularEntities.get(i).getX() == TERMINAL_X) { // está na zona de destruição
+			if (this.peacefulRegularEntities.get(i).getX() <= TERMINAL_X) { // está na zona de destruição
 				this.peacefulRegularEntities.remove(i);
 				i--;
 			} else { // regular entities da zona de destruição estão sempre juntas nas primeiras posições.
@@ -138,7 +138,7 @@ public class Space {
 			}
 		}
 		for (int i = 0; i < this.hostileRegularEntities.size(); i++) {
-			if (this.hostileRegularEntities.get(i).getX() == TERMINAL_X) { // está na zona de destruição
+			if (this.hostileRegularEntities.get(i).getX() <= TERMINAL_X) { // está na zona de destruição
 				this.hostileRegularEntities.remove(i);
 				i--;
 			} else { // regular entities da zona de destruição estão sempre juntas nas primeiras posições.
@@ -146,7 +146,7 @@ public class Space {
 			}
 		}
 		for (int i = 0; i < this.lasers.size(); i++) {
-			if (this.lasers.get(i).getX() == TERMINAL_X) {
+			if (this.lasers.get(i).getX() <= TERMINAL_X) {
 				this.lasers.remove(i);
 				i--;
 			} else {

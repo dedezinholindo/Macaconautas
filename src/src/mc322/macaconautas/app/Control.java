@@ -1,10 +1,7 @@
 package mc322.macaconautas.app;
 
 import mc322.macaconautas.Game.*;
-import mc322.macaconautas.Interface.IGame;
-import mc322.macaconautas.Interface.IInit;
-import mc322.macaconautas.Interface.IStore;
-import mc322.macaconautas.Interface.IMode;
+import mc322.macaconautas.Interface.*;
 
 import java.awt.Canvas;
 import java.util.ArrayList;
@@ -15,14 +12,14 @@ import javax.swing.JFrame;
 import mc322.macaconautas.Menu.MenuView;
 import mc322.macaconautas.Store.StoreView;
 
-public class Control extends Canvas implements IInit{
-	public final static int BORDER = 37; //grossura da borda
-	public final static int WIDTH = 160;
-	public final static int HEIGHT = 120;
-	public final static int SCALE = 5;
-	
-	private final static int TIME_BUG = 400;
-	
+public class Control extends Canvas implements IInit {
+
+	private final static int FRAME_WIDTH = 160;
+	private final static int FRAME_HEIGHT = 120;
+	private final static int FRAME_SCALE = 5;
+
+	private final static int THREAD_SLEEP_TIME = 400;
+
 	private final static String SPRITE_SHEET_PATH = "/res/spritesheet.png";
 	private final static int SPRITE_WIDTH = 40;
 	private final static int SPRITE_HEIGHT = 40;
@@ -30,20 +27,23 @@ public class Control extends Canvas implements IInit{
 	private final static int SKIN_QUANTITY = 5;
 	private final static int INITIAL_SKIN = 0;
 
-	public static JFrame f;
-	private static char appState; //"L" para Store, "M" para menu inicial, "J" para game e F de Fim
-	private boolean gameCreated;
-	private boolean menuCreated;
-	private boolean storeCreated;
-	private SaveGame save;
+	private JFrame f;
+	private int frameWidth;
+	private int frameHeigth;
+	private int frameScale;
+	private char appState; // 'S' para Store, 'M' para Menu, 'G' para Game e 'O' de Fim.
+	private boolean isGameCreated;
+	private boolean isMenuCreated;
+	private boolean isStoreCreated;
+	private ISaveGame save;
+	private IMenu menu;
 	private IGame game;
-	private IMode menu;
 	private IStore store;
 	private SpriteSheet spriteSheet;
-	private boolean[] ownedSkins; //ou game salvo
+	private boolean[] ownedSkins;
 	private int selectedSkin;
-	private static int bananaQuantity;
-	private static long record;
+	private int bananaQuantity;
+	private long record;
 
 	public Control() {
 		initFrame();
@@ -52,9 +52,9 @@ public class Control extends Canvas implements IInit{
 	
 	private void initAtributos() {
 		this.appState = 'M';
-		this.gameCreated = false;
-		this.menuCreated = false;
-		this.storeCreated = false;
+		this.isGameCreated = false;
+		this.isMenuCreated = false;
+		this.isStoreCreated = false;
 		this.game = null;
 		this.menu = null;
 		this.store = null;
@@ -64,28 +64,31 @@ public class Control extends Canvas implements IInit{
 	}
 
 	private void initFrame() {
+		this.frameWidth = FRAME_WIDTH;
+		this.frameHeigth = FRAME_HEIGHT;
+		this.frameScale = FRAME_SCALE;
 		f = new JFrame("MACACONAUTAS"); //titulo do game ou setTitle()
 		f.add(this); //adicionar o que criamos para ficar visível
 		f.setLayout(null);
-		f.setSize(WIDTH * SCALE, HEIGHT * SCALE);
+		f.setSize(this.frameWidth * this.frameScale, this.frameHeigth * this.frameScale);
 		f.setResizable(false); //nao pode redimensionar 
 		f.setLocationRelativeTo(null); //centro (tem que estar depois do pack)
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //fechar quando clicar no x e parar de vez
 		f.setVisible(true); //deixar ele visivel
 	}
 	
-	private boolean[] NumbersToBoolean(String numbers) {
+	private boolean[] numbersToBoolean(String numbers) {
 		boolean b[] = new boolean[numbers.length()];
 		for (int i = 0; i < b.length; i++) {			
 			b[i] = ((numbers.charAt(i) == '1') ? true : false);
 		}
 		return b;
 	}
-	
+
 	private void loadSavedGame() {
-		if(this.save.fileExists()) { // carregar game salvo.
-			String info[] = save.getInfo();
-			this.ownedSkins = NumbersToBoolean(info[0]);
+		String info[] = save.getSavedInfo();
+		if (info != null) { // carregar game salvo.
+			this.ownedSkins = numbersToBoolean(info[0]);
 			this.selectedSkin = Integer.parseInt(info[1]);
 			this.bananaQuantity = Integer.parseInt(info[2]);
 			this.record = Integer.parseInt(info[3]); 
@@ -98,36 +101,22 @@ public class Control extends Canvas implements IInit{
 			this.record = 0; 
 		}
 	}
-		
-	public static long getRecord() {
-		return record;
-	}
-	
-	public static void setAppState(char state) {
-		appState = state;
-	}
-	
-	public static int getBananaQuantity() {
-		return bananaQuantity;
-	}
-	
-	public boolean[] getSkinsLiberadas() {
-		return this.ownedSkins;
-	}
 
 	public void init() throws InterruptedException {	//throws para sleep	(aplicar try catch)
-		while(appState != 'F') {
+		while (appState != 'O') {
 			switch(appState) {
 			case 'M':
 				openMenu();
 				break;
 				
-			case 'L':
+			case 'S':
 				openStore();
 				break;
 				
-			case 'J':
+			case 'G':
 				openJogo();
+				break;
+			default:
 				break;
 			}
 		}
@@ -136,40 +125,40 @@ public class Control extends Canvas implements IInit{
 	}	
 	
 	public void openMenu() throws InterruptedException {
-		if(!menuCreated) {
-			menu = new MenuView(f);
+		if (!isMenuCreated) {
+			menu = new MenuView(f, this.bananaQuantity, this.record);
 			menu.shows();
-			menuCreated = true;
+			isMenuCreated = true;
 		}
-		Thread.currentThread().sleep(TIME_BUG);//alterar baseado no processamento do computador(error de renderizacao)
+		Thread.currentThread().sleep(THREAD_SLEEP_TIME); // alterar baseado no processamento do computador (erro de renderizacao).
 		switch(menu.getState()) {
-		case 'L':
-			appState = 'L';
-			menuCreated = false;
+		case 'S':
+			appState = 'S';
+			isMenuCreated = false;
 			break;
-		
-		case 'J':
-			appState = 'J';
-			menuCreated = false;
+		case 'G':
+			appState = 'G';
+			isMenuCreated = false;
 			break;
-		
-		case 'F':
-			appState = 'F';
-			menuCreated = false;
+		case 'O':
+			appState = 'O';
+			isMenuCreated = false;
+			break;
+		default:
 			break;
 		}		
 	}
 	
 	public void openStore() throws InterruptedException {
-		if(!storeCreated) {
-			store = new StoreView(f, this.ownedSkins, this.selectedSkin, this.spriteSheet);
+		if (!isStoreCreated) {
+			store = new StoreView(f, this.ownedSkins, this.selectedSkin, this.spriteSheet, this.bananaQuantity);
 			store.shows();
-			storeCreated = true;
+			isStoreCreated = true;
 		} 
-		Thread.currentThread().sleep(TIME_BUG); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(THREAD_SLEEP_TIME); //operacoes imediatas ocasionam erros inesperaveis
 		if (store.getState() == 'M') {
 			appState = 'M';
-			storeCreated = false;
+			isStoreCreated = false;
 			this.bananaQuantity = store.getBananaQuantity();
 			this.selectedSkin = store.getSelectedSkin();
 			this.ownedSkins = store.getOwnedSkins();
@@ -177,17 +166,17 @@ public class Control extends Canvas implements IInit{
 	}
 	
 	public void openJogo() throws InterruptedException {
-		if(!gameCreated) {
-			game = new GameView(f, this.spriteSheet, this.selectedSkin);
+		if (!isGameCreated) {
+			game = new GameView(f, this.selectedSkin, this.spriteSheet, this.bananaQuantity, this.record);
 			game.shows();
-			gameCreated = true;
+			isGameCreated = true;
 		} 
-		Thread.currentThread().sleep(TIME_BUG); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(THREAD_SLEEP_TIME); //operacoes imediatas ocasionam erros inesperaveis
 		if (game.getState() == 'O') {
 			appState = 'M';
-			gameCreated = false;
-			record = game.getDistance();
-			this.bananaQuantity += game.getBananaQuantity();
+			isGameCreated = false;
+			this.bananaQuantity = game.getBananaQuantity();
+			this.record = game.getRecord();
 		}
 	}
 }              

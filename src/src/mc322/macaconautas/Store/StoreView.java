@@ -10,32 +10,30 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class StoreView implements IStore{
 	private StoreControl conStore;
-	static int bananaQuantity;
 	
-	public StoreView(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
-		conStore = new StoreControl(f, ownedSkins, selectedSkin, spriteSheet);
-		this.bananaQuantity = Control.getBananaQuantity();
+	public StoreView(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity) {
+		this.conStore = new StoreControl(f, ownedSkins, selectedSkin, spriteSheet, bananaQuantity);
 	}
 	
 	public void shows() throws InterruptedException {
-		conStore.start();
+		this.conStore.start();
 	}
 	
 	public char getState() {
-		return conStore.getStoreState();
+		return this.conStore.getState();
 	}
 
 	@Override
 	public int getSelectedSkin() {
-		return conStore.getSelectedSkin();
+		return this.conStore.getSelectedSkin();
 	}
 	
 	public int getBananaQuantity() {
-		return bananaQuantity;
+		return this.conStore.getBananaQuantity();
 	}
 
 	@Override
 	public boolean[] getOwnedSkins() {
-		return conStore.getOwnedSkins();
+		return this.conStore.getOwnedSkins();
 	}
 }

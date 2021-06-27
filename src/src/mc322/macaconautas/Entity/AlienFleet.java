@@ -15,9 +15,7 @@ public class AlienFleet extends Entity {
 
 	private final static int SHIP_WIDTH = 40;
 	private final static int SHIP_HEIGHT = 40; // dimensões de cada nave.
-	private final static int SHIP_SPACING = ((Control.HEIGHT * Control.SCALE) - Control.BORDER - (SHIP_QUANTITY * SHIP_HEIGHT)) / (SHIP_QUANTITY - 1); // espaço entre duas naves consecutivas.
 	private final static int WIDTH = SHIP_WIDTH; // largura total da frota.
-	private final static int HEIGHT = (SHIP_HEIGHT + SHIP_SPACING) * (SHIP_QUANTITY) - SHIP_SPACING; // altura total da frota (subtração ao final, pois há espaço apenas entre naves).
 	private final static int CANNON_HEIGHT = 26; // coordenada y do centro do cannon relativa à coordenada y de uma ship qualquer.
 
 	private final static int SPRITE_X = 0;
@@ -32,6 +30,7 @@ public class AlienFleet extends Entity {
 	private final static int SHOOTING_PERIOD = 5 * 60; // quantidade de frames do jogo atirando.
 
 	private Random randomGenerator; // gerador randômico utilizado em algumas escolhas.
+	private int shipSpacing;
 	private boolean isDestroyed; // indica se a frota alien está destruída.
 	private boolean isCharging; // indica se há naves carregando.
 	private boolean isShooting; // indica se há naves atirando.
@@ -44,7 +43,9 @@ public class AlienFleet extends Entity {
 	 * @param y coordenada y da frota alien.
 	 */
 	public AlienFleet(int x, int y, Space space, SpriteSheet spriteSheet, int maxShotsQuantity) {
-		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
+		super(x, y, WIDTH, 0, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
+		this.shipSpacing = (((int) this.space.getHeight()) - (SHIP_QUANTITY * SHIP_HEIGHT)) / (SHIP_QUANTITY - 1); // espaço entre duas naves consecutivas.
+		this.setSize(WIDTH, (SHIP_HEIGHT + this.shipSpacing) * (SHIP_QUANTITY) - this.shipSpacing); // atualiza a altura total da frota (subtração ao final, pois há espaço apenas entre naves).
 		this.randomGenerator= new Random();
 		this.isDestroyed = false;
 		this.isCharging = false;
@@ -71,7 +72,7 @@ public class AlienFleet extends Entity {
 	private void shoot() {
 		for (int i = 0; i < shooters.length; i++) {
 			if (this.shooters[i]) {
-				this.space.generateHugeLaser(this.x, (this.y + (i * (SHIP_HEIGHT + SHIP_SPACING)) + CANNON_HEIGHT));
+				this.space.generateHugeLaser(this.x, (this.y + (i * (SHIP_HEIGHT + this.shipSpacing)) + CANNON_HEIGHT));
 			}
 		}
 		this.isCharging = false;
@@ -120,7 +121,7 @@ public class AlienFleet extends Entity {
 					sprite = this.sprites[4]; // sprite com arma atirando
 				}
 			}
-			g.drawImage(sprite, this.x, (this.y + (i * (SHIP_HEIGHT + SHIP_SPACING))), null);
+			g.drawImage(sprite, this.x, (this.y + (i * (SHIP_HEIGHT + this.shipSpacing))), null);
 		}
 	}
 

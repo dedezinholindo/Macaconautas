@@ -22,109 +22,116 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 
 	private StoreBuilder store;
 	private JFrame f;
-	private boolean ownedSkins[];
-	private int selectedSkin;
-	
-	public StoreControl(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
-		store = new StoreBuilder(spriteSheet);
-		f.addKeyListener(this);
+	private int frameWidth;
+	private int frameHeight;
+	private int frameBorder;
+
+	public StoreControl(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity) {
 		this.f = f;
-		this.ownedSkins = ownedSkins;
-		this.selectedSkin = selectedSkin;
+		this.f.addKeyListener(this);
+		this.frameWidth = this.f.getContentPane().getWidth();
+		this.frameHeight = this.f.getContentPane().getHeight();
+		this.frameBorder = this.f.getHeight() - this.frameHeight;
+		this.store = new StoreBuilder(spriteSheet, ownedSkins, selectedSkin, bananaQuantity);
 	}
 	
-	char getStoreState() {
-		return store.storeState;
+	char getState() {
+		return this.store.state;
 	}
 
 	int getSelectedSkin() {
-		return this.selectedSkin;
+		return this.store.selectedSkin;
 	}
 	
 	boolean[] getOwnedSkins() {
-		return this.ownedSkins;
+		return this.store.ownedSkins;
+	}
+	
+	int getBananaQuantity() {
+		return this.store.bananaQuantity;
 	}
 
 	private boolean buySkin(int skinIndex) {
-		if (!this.ownedSkins[skinIndex] && StoreView.bananaQuantity >= store.SKIN_PRICES[skinIndex]) {
-			this.ownedSkins[skinIndex] = true;
-			StoreView.bananaQuantity -= store.skinPrices[skinIndex];
+		if (!this.store.ownedSkins[skinIndex] && this.store.bananaQuantity >= this.store.skinPrices[skinIndex]) {
+			this.store.ownedSkins[skinIndex] = true;
+			this.store.bananaQuantity -= this.store.skinPrices[skinIndex];
 			return true;
 		}
 		return false;
 	}
 
 	private void selectSkin(int skinIndex) {
-		if (this.ownedSkins[skinIndex] || buySkin(skinIndex)) {
-			this.selectedSkin = skinIndex;
+		if (this.store.ownedSkins[skinIndex] || buySkin(skinIndex)) {
+			this.store.selectedSkin = skinIndex;
 		}
 	}
 	
 	private void executeStore() {
-		if (store.storeLeft) {
-			store.storeLeft = false;
-			store.currentOption--;
-			if(store.currentOption < 0) {
-				store.currentOption = store.skinQuantity - 1;
+		if (this.store.goLeft) {
+			this.store.goLeft = false;
+			this.store.currentOption--;
+			if(this.store.currentOption < 0) {
+				this.store.currentOption = this.store.skinOptions.length - 1;
 			}
 		}
-		if (store.storeRight) {
-			store.storeRight = false;
-			store.currentOption++;
-			if(store.currentOption >= store.skinQuantity) {
-				store.currentOption = 0;
+		if (this.store.goRight) {
+			this.store.goRight = false;
+			this.store.currentOption++;
+			if(this.store.currentOption >= this.store.skinOptions.length) {
+				this.store.currentOption = 0;
 			}
 		}
-		if(store.enter) {
-			store.enter = false;
-			selectSkin(store.currentOption);
+		if(this.store.select) {
+			this.store.select = false;
+			selectSkin(this.store.currentOption);
 		}
 	}
 	
 	
 	private void tick() {
 		//Update the AppMacaconautas
-		switch(store.storeState) {
+		switch(this.store.state) {
 		case 'N':
 			executeStore();
 			//normal
 			break;
-
 		case 'M':
 			//ir para o menu
 			stop();
+			break;
+		default:
 			break;
 		}
 	}
 
 	public synchronized void start() throws InterruptedException { //synchronized para evitar que a thread use/mude o mesmo recurso ao mesmo tempo
-		store.isRunning = true;
-		store.thread = new Thread(this);
-		store.thread.start();
+		this.store.isRunning = true;
+		this.store.thread = new Thread(this);
+		this.store.thread.start();
 	}
 	
 	
 	private synchronized void stop() {
-		store.isRunning = false;
+		this.store.isRunning = false;
 	}
 	
 	private void renderSkinInformation(Graphics g) {
 		//preco
 		g.setFont(new Font("arial", Font.PLAIN, 25));
 		g.setColor(Color.white);
-		g.drawString(store.skinNames[store.currentOption], ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) - (180 + 25));
-		if(!ownedSkins[store.currentOption]) {
-			g.drawString(store.skinPrices[store.currentOption] + " bananas", ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) + (180 + 40));
+		g.drawString(this.store.skinOptions[this.store.currentOption], this.frameWidth / 2 - (150 - 10), this.frameHeight / 2 + this.frameBorder - (180 + 25));
+		if(!this.store.ownedSkins[this.store.currentOption]) {
+			g.drawString(this.store.skinPrices[this.store.currentOption] + " bananas", this.frameWidth / 2 - (150 - 10), this.frameHeight / 2 + this.frameBorder + (180 + 40));
 		} else {
 			g.setColor(Color.green);
-			g.drawString("LIBERADO :)", ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) + (180 + 40));
+			g.drawString("LIBERADA :)", this.frameWidth / 2 - (150 - 10), this.frameHeight / 2 + this.frameBorder + (180 + 40));
 		}
-		if(store.currentOption == this.selectedSkin) {
+		if(this.store.currentOption == this.store.selectedSkin) {
 			g.setColor(Color.blue);
-			g.drawString(">SELECIONADA<", ((store.WIDTH * store.SCALE) / 2) - (150 - 10), ((store.HEIGHT * store.SCALE) / 2) - 150);
+			g.drawString("SELECIONADA", this.frameWidth / 2 - (150 - 10), this.frameHeight / 2 + this.frameBorder - 150);
 		}
 		Graphics2D g2 = (Graphics2D) g;
-		g2.drawImage(store.skinSprites[store.currentOption], ((store.WIDTH * store.SCALE) / 2) - 100, ((store.HEIGHT * store.SCALE) / 2) - 125, 320, 320, null);
+		g2.drawImage(this.store.skinSprites[this.store.currentOption], this.frameWidth / 2 - 100, this.frameHeight / 2 + this.frameBorder - 125, 320, 320, null);
 	}
 	
 	
@@ -137,22 +144,22 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 		}
 		//fundo
 		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
-		g.setColor(Color.BLACK);
-		g.fillRect(0,0, store.WIDTH * store.SCALE, store.HEIGHT * store.SCALE); //aparece um retangulo na tela (x,y,largura,altura)
+		g.setColor(Color.black);
+		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); //aparece um retangulo na tela (x,y,largura,altura)
 		g.setColor(Color.gray);
-		g.fillRect(((store.WIDTH * store.SCALE) / 2) - 150, ((store.HEIGHT * store.SCALE) / 2) - (180 + 60), 300, 60);
-		g.fillRect(((store.WIDTH * store.SCALE) / 2) - 150, ((store.HEIGHT * store.SCALE) / 2) + 180, 300, 60);
+		g.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder - (180 + 60), 300, 60);
+		g.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder + 180, 300, 60);
 		g.setColor(Color.lightGray);
-		g.fillRect(((store.WIDTH * store.SCALE) / 2) - 150, ((store.HEIGHT * store.SCALE) / 2) - 180, 300, 360);
+		g.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder - 180, 300, 360);
 		g.setFont(new Font("arial", Font.PLAIN, 40));
-		g.drawString(">", (store.WIDTH * store.SCALE) - 50, (store.HEIGHT * store.SCALE - store.BORDER) / 2);
-		g.drawString("<", 20, (store.HEIGHT * store.SCALE - store.BORDER) / 2);
+		g.drawString(">", this.frameWidth - 50, this.frameHeight / 2 + this.frameBorder);
+		g.drawString("<", 20, this.frameHeight / 2 + this.frameBorder);
 		g.setFont(new Font("arial",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
-		g.drawString("Bananas: " + StoreView.bananaQuantity,  0, store.HEIGHT * store.SCALE);
+		g.drawString("Bananas: " + this.store.bananaQuantity,  0, this.frameHeight + this.frameBorder);
 		g.setFont(new Font("arial",Font.PLAIN, 20));
 		g.setColor(Color.white);;
-		g.drawString("Press ESC to go to the Menu", 0, store.BORDER + 16);
+		g.drawString("(Aperte ESC para ir ao Menu Principal)", 0, this.frameBorder + 16);
 		renderSkinInformation(g);
 		bs.show(); //mostra o grafico
 	}
@@ -166,15 +173,15 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			store.storeState = 'M';
+			this.store.state = 'M';
 		} 
 		if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-				store.storeLeft = true;
+			this.store.goLeft = true;
 		} else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			store.storeRight = true;
+			this.store.goRight = true;
 		}
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-			store.enter = true;
+			this.store.select = true;
 		}
 	}
 

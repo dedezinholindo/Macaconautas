@@ -21,33 +21,40 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class GameControl extends Canvas implements Runnable, KeyListener {
 
+	private final static int SIZE_STRING_GAME = 17;
+
 	private GameBuilder game;
 	private JFrame f;
+	private int frameWidth;
+	private int frameHeight;
+	private int frameBorder;
 
-	public GameControl(JFrame f, SpriteSheet spriteSheet, int selectedSkin) throws InterruptedException {
-		game = new GameBuilder(spriteSheet, selectedSkin);
-		f.addKeyListener(this);
+	public GameControl(JFrame f, int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity, long record) throws InterruptedException {
 		this.f = f;
+		this.f.addKeyListener(this);
+		this.frameWidth = this.f.getContentPane().getWidth();
+		this.frameHeight = this.f.getContentPane().getHeight();
+		this.frameBorder = this.f.getHeight() - this.frameHeight;
+		this.game = new GameBuilder(this.frameWidth, this.frameHeight, this.frameBorder, selectedSkin, spriteSheet, bananaQuantity, record);
 	}	
 	
-	int getColectedBananas() {
-		return game.colectedBananas;
+	int getBananaQuantity() {
+		return this.game.bananaQuantity;
 	}
 	
-	char getGameState() {
-		return game.gameState;
+	char getState() {
+		return this.game.state;
 	}
 	
-	long getDistance() {
-		if(game.distance < GameView.record) {
-			return GameView.record;
+	long getRecord() {
+		if (this.game.distance > this.game.record) {
+			this.game.record = this.game.distance;
 		}
-		//renderizar new record
-		return game.distance;
+		return this.game.record;
 	}
 	
 	private void slownessGame(int slowness) {
-		if(slowness == game.counter) {
+		if (slowness == game.counter) {
 			game.distance += 1;
 			game.counter = 0;
 			return;
@@ -60,121 +67,120 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 //	}
 	
 	private void framesGameOver() {
-		game.framesMessageGameOver++;
-		if(game.framesMessageGameOver == 25) {
-			game.framesMessageGameOver = 0;
-			if(game.showMessageGameOver) {
-				game.showMessageGameOver = false;
-			} else {
-				game.showMessageGameOver = true;
-			}
+		this.game.framesMessageGameOver++;
+		if (this.game.framesMessageGameOver >= 25) {
+			this.game.framesMessageGameOver = 0;
+			this.game.showMessageGameOver = !this.game.showMessageGameOver;
 		}
 	}
 
 	private void tick() {
-		//Update the AppMonkeynautas
-		switch(game.gameState) {
+		switch (this.game.state) {
 		case 'N':
-			game.colectedBananas += game.space.tick();
-			if (game.monkey.isDefeated()) {
-				game.gameState = 'G';
+			this.game.bananaQuantity += this.game.space.tick();
+			if (this.game.monkey.isDefeated()) {
+				this.game.state = 'G';
 			}
 			slownessGame(game.slowness); 
 			break;
-
 		case 'P':
 			pause(); 
 			break;
-
-			
 		case 'G':
 			framesGameOver();
 			break;
-			
 		case 'O':
 			stop();
+			break;
+		default:
 			break;
 		}
 	}
 
 	public synchronized void start() throws InterruptedException { //synchronized para evitar que a thread use/mude o mesmo recurso ao mesmo tempo
-		game.isRunning = true;
-		game.thread = new Thread(this);
-		game.thread.start();
+		this.game.isRunning = true;
+		this.game.thread = new Thread(this);
+		this.game.thread.start();
 	}
 
 	private synchronized void pause() {
-		if(game.gameUp) {
-			game.gameUp = false;
-			game.currentOption--;
-			if(game.currentOption < 0) {
-				game.currentOption = game.MAX_OPTIONS;
+		if (this.game.goUp) {
+			this.game.goUp = false;
+			this.game.currentPauseMenuOption--;
+			if (this.game.currentPauseMenuOption < 0) {
+				this.game.currentPauseMenuOption = this.game.pauseMenuOptions.length - 1;
 			}
 		}
-		if(game.gameDown) {
-			game.gameDown = false;
-			game.currentOption++;
-			if(game.currentOption > game.MAX_OPTIONS) {
-				game.currentOption = 0;
+		if (this.game.goDown) {
+			this.game.goDown = false;
+			this.game.currentPauseMenuOption++;
+			if (this.game.currentPauseMenuOption >= this.game.pauseMenuOptions.length) {
+				this.game.currentPauseMenuOption = 0;
 			}
 		}
-		if(game.enter) {
-			game.enter = false;
-			if(game.currentOption == 0) {
-				game.gameState = 'N';
-			} else if(game.currentOption == 1) {
-				game.gameState = 'O';
+		if (this.game.select) {
+			this.game.select = false;
+			switch (this.game.currentPauseMenuOption) {
+			case 0:
+				this.game.state = 'N';
+				break;
+			case 1:
+				this.game.state = 'O';
+				break;
+			default:
+				break;
 			}
 		}
 	}
 
 	public synchronized void stop() {
-		game.isRunning = false;
+		this.game.isRunning = false;
 	}
-	
-	private void renderStringsEspaco(Graphics g, String s, int p_x, int p_y, Color c) {
-		g.setFont(new Font("arial", Font.BOLD, game.SIZE_STRING_GAME));
-		g.setColor(c);
-		g.drawString(s, p_x, p_y);	
-	}
-	
-	private void renderPause(Graphics g) {
+
+	private void renderPauseMenu(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setColor(new Color(180, 180, 180, 50)); //transparencia
+		g2.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder - 115, 300, 230);
+		
 		g.setFont(new Font("arial", Font.BOLD, 45));
 		g.setColor(Color.WHITE);
-		g.drawString("PAUSED", game.WIDTH * game.SCALE/2 - 100, (game.HEIGHT * game.SCALE - game.BORDER)/2 - 90);
+		g.drawString("PAUSED", this.frameWidth / 2 - (150 - 5), this.frameHeight / 2 + this.frameBorder - 115 + 45);
 		
 		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
-		g.drawString("Resume", game.WIDTH * game.SCALE/2 - 57, (game.HEIGHT * game.SCALE - game.BORDER)/2 - 10);
-		
-		g.setColor(Color.WHITE);
-		g.drawString("Menu", game.WIDTH * game.SCALE/2 - 50, (game.HEIGHT * game.SCALE - game.BORDER)/2 + 70);
+		g.drawString(this.game.pauseMenuOptions[0], this.frameWidth / 2 - (150 - 30 - 5),  this.frameHeight / 2 + this.frameBorder - 115 + 110);
+		g.drawString(this.game.pauseMenuOptions[1], this.frameWidth / 2 - (150 - 30 - 5),  this.frameHeight / 2 + this.frameBorder - 115 + 175);
 	}
 	
-	private void moveArrow(Graphics g) {
-		if(game.currentOption == 0) {
-			g.drawString(">", game.WIDTH * game.SCALE/2 - 57 - 30 , (game.HEIGHT * game.SCALE - game.BORDER)/2 - 10);
-		} else if(game.currentOption == 1) {
-			g.drawString(">", game.WIDTH * game.SCALE/2 - 50 - 30 , (game.HEIGHT * game.SCALE - game.BORDER)/2 + 70);
+	private void renderPauseMenuArrow(Graphics g) {
+		switch (this.game.currentPauseMenuOption) {
+		case 0:
+			g.drawString(">", this.frameWidth / 2 - (150 - 5),  this.frameHeight / 2 + this.frameBorder - 115 + 110);
+			break;
+		case 1:
+			g.drawString(">", this.frameWidth / 2 - (150 - 5),  this.frameHeight / 2 + this.frameBorder - 115 + 175);
+			break;
+		default:
+			break;
 		}
 	}
 	
 	private void renderGameOver(Graphics g) {
 		//TELA GAME OVER
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(new Color(0,0,0,180)); //transparencia
-		g2.fillRect(0, game.BORDER, game.WIDTH * game.SCALE, game.HEIGHT * game.SCALE - game.BORDER);
+		g2.setColor(new Color(0, 0, 0, 180)); //transparencia
+		g2.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight);
 
 		//FRASE GAME OVER
 		g.setFont(new Font("arial", Font.BOLD, 70));
-		g.setColor(Color.WHITE);
-		g.drawString("GAME OVER", game.WIDTH * game.SCALE/2 - 220 , (game.HEIGHT * game.SCALE - game.BORDER)/2 - 100);
+		g.setColor(Color.white);
+		g.drawString("GAME OVER", this.frameWidth / 2 - 230, this.frameHeight / 2 + this.frameBorder - 100);
 		g.setFont(new Font("arial", Font.BOLD, 25));
-		g.drawString("Collected bananas: " + game.colectedBananas, game.WIDTH * game.SCALE/2 - 120 , (game.HEIGHT * game.SCALE - game.BORDER)/2 - 20);
-		g.drawString("Traveled distance: " + game.distance + " m", game.WIDTH * game.SCALE/2 - 120 , (game.HEIGHT * game.SCALE - game.BORDER)/2 + 60);
+		g.drawString("Bananas: " + this.game.bananaQuantity, this.frameWidth / 2 - 70, this.frameHeight / 2 + this.frameBorder - 20);
+		g.drawString("Distância percorrida: " + this.game.distance + " m", this.frameWidth / 2 - 170, this.frameHeight / 2 + this.frameBorder + 60);
 		//fazer comparacao do recorde aqui
-		if(game.showMessageGameOver) {
-			g.drawString(">> Press ENTER to go to the Menu <<", game.WIDTH * game.SCALE/2 - 200 , (game.HEIGHT * game.SCALE - game.BORDER)/2 + 140);
+		if (this.game.showMessageGameOver) {
+			g.drawString("(Aperte ENTER para ir ao Menu Principal)", this.frameWidth / 2 - 240, this.frameHeight / 2 + this.frameBorder + 140);
 		}
 	}
 
@@ -189,136 +195,38 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 		//fundo
 		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
 		g.setColor(Color.black);
-		g.fillRect(0, game.BORDER, game.WIDTH * game.SCALE, game.HEIGHT * game.SCALE - game.BORDER); //aparece um retangulo na tela (x,y,largura,altura)
-		game.space.render(g);
+		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); //aparece um retangulo na tela (x,y,largura,altura)
+		
+		this.game.space.render(g);
+
+		g.setColor(Color.gray);
+		g.fillRect(0, this.frameHeight + this.frameBorder - 40, this.frameWidth, 40);
+
+		g.setFont(new Font("arial", Font.BOLD, 15));
+		g.setColor(Color.lightGray);
 		//banana
-		String stringBanana = "Bananas: " + (game.colectedBananas + GameView.bananaQuantity);
-		renderStringsEspaco(g, stringBanana, game.WIDTH * game.SCALE - (stringBanana.length())*game.SIZE_STRING_GAME, game.HEIGHT * game.SCALE, Color.LIGHT_GRAY);
+		g.drawString("Bananas: " + this.game.bananaQuantity, this.frameWidth / 2 - 45, this.frameHeight + this.frameBorder - 15);
 		
 		//distance
-		String stringDistance = game.distance + " m";
-		renderStringsEspaco(g, stringDistance, (game.WIDTH * game.SCALE - (stringDistance.length())*game.SIZE_STRING_GAME)/2, game.SIZE_STRING_GAME + game.BORDER, Color.LIGHT_GRAY);
+		g.drawString(this.game.distance + " m", this.frameWidth / 2, this.frameBorder + 15);
 		
-		if(game.gameState == 'P') {
-			renderPause(g);
-			moveArrow(g);
-		}
-		
-		if (game.gameState == 'G') {
+		switch (this.game.state) {
+		case 'P':
+			renderPauseMenu(g);
+			renderPauseMenuArrow(g);
+			break;
+		case 'G':
 			renderGameOver(g);
-		} 
+			break;
+		default:
+			break;
+		}
+
 		bs.show();
 	}
-	
-//	private void transformGorilla() {
-//		tempoDeGorila();
-//		returnToMonkey();
-//	}
-	
-//	private void virarGorila() {
-//		game.monkey.setContadorGorila(0);
-//		game.monkey.setIsGorila(true);
-//		game.monkey.setSize(game.monkey.getGorilaWidth(), game.monkey.getGorilaHeight());
-//	}
-	
-//	private void returnToMonkey() {
-//		if (game.monkey.IsGorila() && game.monkey.getContadorGorila() == game.monkey.getTempoDeGorila()) {
-//			game.monkey.setContadorGorila(0);
-//			game.monkey.setIsGorila(false);
-//			game.monkey.setSize(game.monkey.getMonkeyWidth(), game.monkey.getMonkeyHeight());
-//		}
-//	}
-//
-//	private boolean checkCollisionAsteroid() {
-//		Rectangle shapeMonkey = game.monkey.getBounds();
-//		Rectangle shapeAsteroid = null;
-//		for (int i = 0; i < game.space.getAsteroidsInSection(); i++) {
-//			shapeAsteroid = game.space.getAsteroids().get(i).getBounds();
-//			if (shapeMonkey.intersects(shapeAsteroid)) {
-//				ArrayList<Asteroid> obstaculos = game.space.getAsteroids();
-//				obstaculos.remove(i);
-//				game.space.setAsteroids(obstaculos); //remocao do whey
-//				game.space.setAsteroidsInSection(game.space.getAsteroidsInSection() - 1);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	private boolean checkCollisionAlien() {
-//		Rectangle shapeMonkey = game.monkey.getBounds();
-//		Rectangle shapeAlien = null;
-//		for (int i = 0; i < game.space.getAliensInSection(); i++) {
-//			shapeAlien = game.space.getAliens().get(i).getBounds();
-//			if (shapeMonkey.intersects(shapeAlien)) {
-//				ArrayList<Alien> aliens = game.space.getAliens();
-//				aliens.remove(i);
-//				game.space.setAliens(aliens); //remocao do whey
-//				game.space.setAliensInSection(game.space.getAliensInSection() - 1);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	private boolean checkCollisionLaser() {
-//		Rectangle shapeMonkey = game.monkey.getBounds();
-//		Rectangle shapeLaser = null;
-//		for (int i = 0; i < Alien.getLasers().size(); i++) {
-//			shapeLaser = Alien.getLasers().get(i).getBounds();
-//			if (shapeMonkey.intersects(shapeLaser)) {
-//				ArrayList<Laser> lasers = Alien.getLasers();
-//				lasers.remove(i);
-//				Alien.setLasers(lasers); //remocao da banana
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	private void checkCollisionBanana() {
-//		Rectangle shapeMonkey = game.monkey.getBounds();
-//		Rectangle shapeBanana = null;
-//		for (int i = 0; i < game.space.getBananasInSection(); i++) {
-//			shapeBanana = game.space.getBananas().get(i).getBounds();
-//			if (shapeMonkey.intersects(shapeBanana)) {
-//				ArrayList<Banana> bananas = game.space.getBananas();
-//				bananas.remove(i);
-//				game.space.setBananas(bananas); //remocao da banana
-//				game.space.setBananasInSection(game.space.getBananasInSection() - 1); //sem isso o game pifa
-//				game.colectedBananas += 1;
-//			}
-//		}
-//	}
-//	
-//	private boolean checkCollisionWhey() {
-//		Rectangle shapeMonkey = game.monkey.getBounds();
-//		Rectangle shapeWhey = null;
-//		for (int i = 0; i < game.space.getWheyInSection(); i++) {
-//			shapeWhey = game.space.getWhey().get(i).getBounds();
-//			if (shapeMonkey.intersects(shapeWhey)) {
-//				ArrayList<WheyProtein> whey = game.space.getWhey();
-//				whey.remove(i);
-//				game.space.setWhey(whey); //remocao do whey
-//				game.space.setWheyInSection(game.space.getWheyInSection() - 1);
-//				return true;
-//			}
-//		}
-//		return false;
-//	}
-//
-//	private void checarColisoes() { 
-//		if((checkCollisionAsteroid() || checkCollisionAlien() || checkCollisionLaser()) && !game.monkey.IsGorila()){
-//			game.gameState = 'G';
-//		}
-//		if (checkCollisionWhey() && !game.monkey.IsGorila()) {
-//			virarGorila();
-//		}
-//		checkCollisionBanana();
-//	}
 
 	public void run() {
-		while (game.isRunning) {
+		while (this.game.isRunning) {
 			tick();
 			render();
 			try {
@@ -337,24 +245,23 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			game.monkey.setIsGoingUp(true);
+		if (this.game.state == 'N' && e.getKeyCode() == KeyEvent.VK_SPACE) {
+			this.game.monkey.setIsGoingUp(true);
 		}
 		//voltar menu quadno perde
-		if(game.gameState == 'G' && e.getKeyCode() == KeyEvent.VK_ENTER) {
-			game.gameState = 'O';
+		if (this.game.state == 'G' && e.getKeyCode() == KeyEvent.VK_ENTER) {
+			this.game.state = 'O';
+		} else if (this.game.state == 'N' && e.getKeyCode() == KeyEvent.VK_P) {
+			this.game.state = 'P';
 		}
-		if(game.gameState == 'N' && e.getKeyCode() == KeyEvent.VK_P) {
-			game.gameState = 'P';
-		}
-		if(game.gameState == 'P') {
-			if(e.getKeyCode() == KeyEvent.VK_UP) {
-				game.gameUp = true;
-			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-				game.gameDown = true;
+		if (this.game.state == 'P') {
+			if (e.getKeyCode() == KeyEvent.VK_UP) {
+				game.goUp = true;
+			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+				game.goDown = true;
 			}
-			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-				game.enter = true;
+			if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				game.select = true;
 			}
 		}
 	}

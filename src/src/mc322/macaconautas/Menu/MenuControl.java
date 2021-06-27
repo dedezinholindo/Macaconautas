@@ -18,106 +18,119 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 	
 	private MenuBuilder menu;
 	private JFrame f;
+	private int frameWidth;
+	private int frameHeight;
+	private int frameBorder;
 	
-	public MenuControl(JFrame f) {
-		menu = new MenuBuilder();
-		f.addKeyListener(this);
+	public MenuControl(JFrame f, int bananaQuantity, long record) {
 		this.f = f;
+		this.f.addKeyListener(this);
+		this.frameWidth = this.f.getContentPane().getWidth();
+		this.frameHeight = this.f.getContentPane().getHeight();
+		this.frameBorder = this.f.getHeight() - this.frameHeight;
+		this.menu = new MenuBuilder(bananaQuantity, record);
 	}
 	
 	char getMenuState() {
-		return menu.menuState;
+		return this.menu.state;
 	}
 	
 	private void executeMenu() {
-		if(menu.menuUp) {
-			menu.menuUp = false;
-			menu.currentOption--;
-			if(menu.currentOption < 0) {
-				menu.currentOption = menu.MAX_OPTIONS;
+		if (this.menu.goUp) {
+			this.menu.goUp = false;
+			this.menu.currentOption--;
+			if(this.menu.currentOption < 0) {
+				this.menu.currentOption = this.menu.options.length - 1;
 			}
 		}
-		if(menu.menuDown) {
-			menu.menuDown = false;
-			menu.currentOption++;
-			if(menu.currentOption > menu.MAX_OPTIONS) {
-				menu.currentOption = 0;
+		if (this.menu.goDown) {
+			this.menu.goDown = false;
+			this.menu.currentOption++;
+			if (this.menu.currentOption >= this.menu.options.length) {
+				this.menu.currentOption = 0;
 			}
 		}
-		if(menu.enter) {
-			menu.enter = false;
-			if(menu.currentOption == 0) {
-				menu.menuState = 'J';
-			} else if(menu.currentOption == 1) {
-				menu.menuState = 'L';
-			} else if(menu.currentOption == 2) {
-				menu.menuState = 'F';
+		if (this.menu.select) {
+			this.menu.select = false;
+			switch (this.menu.currentOption) {
+			case 0:
+				this.menu.state = 'G';
+				break;
+			case 1:
+				this.menu.state = 'S';
+				break;
+			case 2:
+				this.menu.state = 'O';
+				break;
+			default:
+				break;
 			}
 		}
 	}
 	
 	private void tick() {
 		//Update the AppMacaconautas
-		switch(menu.menuState) {
+		switch(this.menu.state) {
 		case 'N':
 			executeMenu();
 			//normal
 			break;
-
-		case 'L':
-			Control.setAppState('L');
+		case 'S':
 			stop();
 			break;
-
-		case 'J':
-			Control.setAppState('L');
+		case 'G':
 			stop();
 			break;
-			
-		case 'F':
+		case 'O':
 			stop();
 			break;
 		}
 	}
 
 	public synchronized void start() throws InterruptedException { //synchronized para evitar que a thread use/mude o mesmo recurso ao mesmo tempo
-		menu.isRunning = true;
-		menu.thread = new Thread(this);
-		menu.thread.start();
+		this.menu.isRunning = true;
+		this.menu.thread = new Thread(this);
+		this.menu.thread.start();
 	}
 	
 	
 	private synchronized void stop() {
-		menu.isRunning = false;
+		this.menu.isRunning = false;
 	}
 	
 	private void renderOptions(Graphics g) {
 		g.setFont(new Font("oslo", Font.BOLD, 85));
 		g.setColor(Color.BLUE);
-		g.drawString("MACACONAUTAS", 0, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 - 90);
+		g.drawString("MACACONAUTAS", 0, this.frameHeight / 2 + this.frameBorder - 90); // título do jogo.
 		
 		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
-		g.drawString(menu.OPTIONS[0], menu.WIDTH * menu.SCALE/2 - 57, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 - 10);
-		g.drawString(menu.OPTIONS[1], menu.WIDTH * menu.SCALE/2 - 67, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 70);
-		g.drawString(menu.OPTIONS[2], menu.WIDTH * menu.SCALE/2 - 130, (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 150);
+		g.drawString(this.menu.options[0], this.frameWidth / 2 - 57, this.frameHeight / 2 + this.frameBorder - 10);
+		g.drawString(this.menu.options[1], this.frameWidth / 2 - 52, this.frameHeight / 2 + this.frameBorder + 70);
+		g.drawString(this.menu.options[2], this.frameWidth / 2 - 120, this.frameHeight / 2 + this.frameBorder + 150); // opções.
 	}
-	
-	private void moveArrow(Graphics g) {
-		if(menu.currentOption == 0) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (57 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 - 10);
-		} else if(menu.currentOption == 1) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (67 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 70);
-		} else if(menu.currentOption == 2) {
-			g.drawString(">", menu.WIDTH * menu.SCALE/2 - (130 + 30), (menu.HEIGHT * menu.SCALE - menu.BORDER)/2 + 150);
+
+	private void renderArrow(Graphics g) {
+		switch (this.menu.currentOption) {
+		case 0:
+			g.drawString(">", this.frameWidth / 2 - (57 + 30), this.frameHeight / 2 + this.frameBorder - 10);
+			break;
+		case 1:
+			g.drawString(">", this.frameWidth / 2 - (52 + 30), this.frameHeight / 2 + this.frameBorder + 70);
+			break;
+		case 2:
+			g.drawString(">", this.frameWidth / 2 - (120 + 30), this.frameHeight / 2 + this.frameBorder + 150);
+			break;
+		default:
+			break;
 		}
 	}
 	
-	private void renderBottom(Graphics g){
+	private void renderInfo(Graphics g){
 		g.setFont(new Font("arial",Font.PLAIN, 30));
 		g.setColor(Color.yellow);
-		g.drawString("Record: " + MenuView.record + " m",  0, menu.HEIGHT * menu.SCALE - 30);
-		g.drawString("Bananas: " + MenuView.bananaQuantity,  0, menu.HEIGHT * menu.SCALE);
+		g.drawString("Recorde: " + this.menu.record + " m",  0, this.frameHeight + this.frameBorder - 30);
+		g.drawString("Bananas: " + this.menu.bananaQuantity,  0, this.frameHeight + this.frameBorder);
 	}
 	
 	private void render() {
@@ -130,12 +143,12 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 		//fundo
 		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, menu.WIDTH * menu.SCALE, menu.HEIGHT * menu.SCALE); //aparece um retangulo na tela (x,y,largura,altura)
+		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); //aparece um retangulo na tela (x,y,largura,altura)
 		
-		//options
+		// options
 		renderOptions(g);
-		moveArrow(g);
-		renderBottom(g);
+		renderArrow(g);
+		renderInfo(g);
 		bs.show(); //mostra o grafico
 	}
 
@@ -147,14 +160,14 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(menu.menuState == 'N') {
+		if(this.menu.state == 'N') {
 			if(e.getKeyCode() == KeyEvent.VK_UP) {
-				menu.menuUp = true;
+				this.menu.goUp = true;
 			} else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-				menu.menuDown = true;
+				this.menu.goDown = true;
 			}
 			if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-				menu.enter = true;
+				this.menu.select = true;
 			}
 		}
 	}
@@ -167,7 +180,7 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void run() {
-		while (menu.isRunning) {
+		while (this.menu.isRunning) {
 			tick();
 			render();
 			try {

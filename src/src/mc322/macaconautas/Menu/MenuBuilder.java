@@ -5,27 +5,29 @@ import javax.swing.JFrame;
 import mc322.macaconautas.app.Control;
 
 public class MenuBuilder {
-	final static int WIDTH = Control.WIDTH; //criar classe superior
-	final static int HEIGHT = Control.HEIGHT;
-	final static int BORDER = Control.BORDER;
-	final static int SCALE = Control.SCALE;
-	final static String[] OPTIONS = {"Play", "Store", " Save and exit"};
-	final static int MAX_OPTIONS = OPTIONS.length - 1;
-	
-	char menuState; //N normal, L ir loja, J ir jogo, F para sair
+
+	private final static String[] MENU_OPTIONS = {"Jogar", "Loja", "Salvar e Sair"};
+
+	char state; // N normal, S ir loja, G ir jogo, O para sair
 	boolean isRunning;
 	Thread thread;
+	int bananaQuantity;
+	long record;
+	String options[];
 	int currentOption;
-	boolean menuUp;
-	boolean menuDown;
-	boolean enter;
+	boolean goUp;
+	boolean goDown;
+	boolean select;
 	
-	public MenuBuilder() {
-		menuState = 'N';
-		isRunning = true;
-		currentOption = 0;
-		menuUp = false;
-		menuDown = false;
-		enter = false;
+	public MenuBuilder(int bananaQuantity, long record) {
+		this.state = 'N';
+		this.isRunning = true;
+		this.bananaQuantity = bananaQuantity;
+		this.record = record;
+		this.options = MENU_OPTIONS;
+		this.currentOption = 0;
+		this.goUp = false;
+		this.goDown = false;
+		this.select = false;
 	}
 }

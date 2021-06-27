@@ -56,11 +56,10 @@ public class Alien extends RegularEntity {
 	 */
 	public void tick() {
 		super.tick();
-		if (this.x <= Control.WIDTH * Control.SCALE) {
-			if (this.distanceWithoutShooting == MAX_DISTANCE_WITHOUT_SHOOTING) { // atira um laser.
-				this.space.generateLaser(this.x - this.width - this.speed, this.y + GUN_HEIGHT_LASER_ADJUST);
-				this.distanceWithoutShooting = 0;
-			}
+		if (this.distanceWithoutShooting == MAX_DISTANCE_WITHOUT_SHOOTING) { // atira um laser.
+			this.space.generateLaser(this.x - this.width - this.speed, this.y + GUN_HEIGHT_LASER_ADJUST);
+			this.distanceWithoutShooting = 0;
+		} else {
 			this.distanceWithoutShooting += this.speed;
 		}
 	}

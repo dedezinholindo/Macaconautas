@@ -16,28 +16,24 @@ import mc322.macaconautas.app.SpriteSheet;
 public class GameView extends Canvas implements IGame{
 	
 	private GameControl conGame;
-	static long record;
-	static int bananaQuantity;
 	
-	public GameView(JFrame f, SpriteSheet spriteSheet, int selectedSkin) throws InterruptedException {
-		conGame = new GameControl(f, spriteSheet, selectedSkin); 
-		record = Control.getRecord();
-		bananaQuantity = Control.getBananaQuantity();
+	public GameView(JFrame f, int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity, long record) throws InterruptedException {
+		this.conGame = new GameControl(f, selectedSkin, spriteSheet, bananaQuantity, record); 
 	}
 	
 	public void shows() throws InterruptedException {
-		conGame.start();
+		this.conGame.start();
 	}
 	
 	public int getBananaQuantity() {
-		return conGame.getColectedBananas();
+		return this.conGame.getBananaQuantity();
 	}
 	
 	public char getState() {
-		return conGame.getGameState();
+		return this.conGame.getState();
 	}
 	
-	public long getDistance() {
-		return conGame.getDistance();
+	public long getRecord() {
+		return this.conGame.getRecord();
 	}
 }
