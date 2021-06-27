@@ -13,7 +13,7 @@ public class Alien extends RegularEntity {
 	private final static int SPRITE_Y = 2;
 	private final static int SPRITE_QUANTITY = 1;
 	
-	private final static int GUN_HEIGHT_LASER_ADJUST = 8; // ajuste da coordenada y do laser a fim de que este seja gerado a partir da boca do cano da arma.
+	private final static int GUN_HEIGHT = 11; // ajuste da coordenada y do laser a fim de que este seja gerado a partir da boca do cano da arma.
 
 	private final static int MAX_DISTANCE_WITHOUT_SHOOTING = 120; // distância máxima que o alien pode percorrer sem disparar um laser.
 
@@ -30,19 +30,11 @@ public class Alien extends RegularEntity {
 	}
 	
 	/**
-	 * Retorna a largura constante estática do alien.
-	 * @return largura do alien.
+	 * Pede ao space que gere um laser correspondente a um tiro do alien.
 	 */
-	public static int getStaticWidth() {
-		return WIDTH;
-	}
-
-	/**
-	 * Retorna a altura constante estática do alien.
-	 * @return altura do alien.
-	 */
-	public static int getStaticHeight() {
-		return HEIGHT;
+	private void shoot() {
+		this.space.generateLaser(this.x - this.width - this.speed, this.y + GUN_HEIGHT);
+		this.distanceWithoutShooting = 0;
 	}
 
 	/**
@@ -51,8 +43,7 @@ public class Alien extends RegularEntity {
 	public void tick() {
 		super.tick();
 		if (this.distanceWithoutShooting == MAX_DISTANCE_WITHOUT_SHOOTING) { // atira um laser.
-			this.space.generateLaser(this.x - this.width - this.speed, this.y + GUN_HEIGHT_LASER_ADJUST);
-			this.distanceWithoutShooting = 0;
+			shoot();
 		} else {
 			this.distanceWithoutShooting += this.speed;
 		}

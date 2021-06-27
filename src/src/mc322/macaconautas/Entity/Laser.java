@@ -20,8 +20,8 @@ public class Laser extends Entity {
 	 * @param x coordenada x do laser.
 	 * @param y coordenada y do laser.
 	 */
-	public Laser(int x, int y, Space space, SpriteSheet spriteSheet) {
-		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
+	public Laser(int gunX, int gunY, Space space, SpriteSheet spriteSheet) {
+		super(gunX, (gunY - (HEIGHT / 2)), WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 		this.speed = SPEED;
 	}
 

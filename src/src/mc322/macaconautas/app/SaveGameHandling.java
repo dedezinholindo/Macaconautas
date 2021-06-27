@@ -10,40 +10,61 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.Random;
 
-import mc322.macaconautas.Interface.ISaveGame;
+import mc322.macaconautas.Interface.ISaveGameHandling;
 
-public class SaveGame implements ISaveGame {
+public class SaveGameHandling implements ISaveGameHandling {
 
 	private final static String[] KEYS = {"u9mf9we98fmwf9mweunqenhwqds9k90dk", "984rh3hr9384r9834j89rj49r3jj894j9jfj9", "dsft2e36e7g23e56re5f32fe5f6", "23tfe67g3e7geg3g26eg732e", "67g3466g7g67fgf63ge6d", "783nenf7n38nfe7nnenf7eu", "dnyed73nd783ne7nfn8nef", "du3ned3n8enn83473rfnufhhfhe8", "di202dwjj298denfb2hswhj"};
-	private long record;
+	private final static String SAVE_FILE_NAME = "save.txt";
+
+	private String gameInfo;
+	private String[] keys;
 	private boolean[] ownedSkins;//trocar controle
 	private int selectedSkin;
 	private int bananaQuantity;
-	private String gameInfo;
+	private long record;
 
-	public SaveGame(){
-		gameInfo = ""; 
+	/**
+	 * Inicializa um SaveGameHandling.
+	 */
+	public SaveGameHandling(){
+		this.gameInfo = ""; 
+		this.keys = KEYS;
 	}
 
+	/**
+	 * Seleciona uma chave de encodamento aleatória.
+	 * @return chave de encodamento
+	 */
 	private String selectKey() {
 		Random aleatorio = new Random();
-		int index = aleatorio.nextInt(KEYS.length);
-		return KEYS[index];
+		return this.keys[aleatorio.nextInt(this.keys.length)];
 	}
 
-	private String ownedSkinsToString() {
-		String ownedSkinsString = "";
-		for (int i = 0; i < this.ownedSkins.length; i++) {
-			ownedSkinsString += (this.ownedSkins[i] ? "1" : "0");
+	/**
+	 * Converte um array de booleans em uma String de números.
+	 * @param booleanArray array de booleans.
+	 * @return números correspondente.
+	 */
+	private String booleanArrayToNumbersString(boolean[] booleanArray) {
+		String numbersString = "";
+		for (int i = 0; i < booleanArray.length; i++) {
+			numbersString += (booleanArray[i] ? "1" : "0");
 		}
-		return ownedSkinsString;
+		return numbersString;
 	}
 
+	/**
+	 * Escreve os dados salvos encodados em um arquivo.
+	 * @param write escritor correspondente ao arquivo.
+	 */
 	private void writeSaveFile(BufferedWriter write) {
-		String content = (selectKey() + " " + "ownedSkins:" + ownedSkinsToString() +
+		String content = (selectKey() +
+							" " + "ownedSkins:" + booleanArrayToNumbersString(this.ownedSkins) +
 							" " + "selectedSkin:" + this.selectedSkin +
 							" " + "bananas:" + this.bananaQuantity +
-							" " + "record:" + this.record + " " + selectKey());
+							" " + "record:" + this.record +
+							" " + selectKey());
 		byte[] encodedBytes = Base64.getEncoder().encode(content.getBytes()); // encodamento do save.
 		try {
 			write.write(new String(encodedBytes));
@@ -52,6 +73,13 @@ public class SaveGame implements ISaveGame {
 		}
 	}
 
+	/**
+	 * Salva um jogo.
+	 * @param ownedSkins skins possuídas.
+	 * @param selectedSkin skin selecionada.
+	 * @param bananaQuantity quantidade de bananas possuídas.
+	 * @param record recorde de distância percorrida.
+	 */
 	public void saveGame(boolean[] ownedSkins, int selectedSkin, int bananaQuantity, long record) {
 		this.ownedSkins = ownedSkins;
 		this.selectedSkin = selectedSkin;
@@ -59,7 +87,7 @@ public class SaveGame implements ISaveGame {
 		this.record = record;
 		BufferedWriter write = null;
 		try {
-			write = new BufferedWriter(new FileWriter("save.txt"));
+			write = new BufferedWriter(new FileWriter(SAVE_FILE_NAME));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -72,17 +100,24 @@ public class SaveGame implements ISaveGame {
 		}
 	}
 
+	/**
+	 * Verifica se o arquivo de save existe.
+	 * @return true, caso exista.
+	 */
 	private boolean fileExists() {
-		File f = new File("save.txt");
+		File f = new File(SAVE_FILE_NAME);
 		if(f.exists()) {
 			return true;
 		}
 		return false;
 	}
 
+	/**
+	 * Carrega os dados de um jogo salvo.
+	 */
 	private void loadGame() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("save.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(SAVE_FILE_NAME));
 			this.gameInfo += reader.readLine();
 			reader.close();
 		} catch (FileNotFoundException e) {
@@ -95,6 +130,10 @@ public class SaveGame implements ISaveGame {
 
 //	public boolean checkFile();
 
+	/**
+	 * Retorna os dados do jogo salvo.
+	 * @return dados do jogo salvo. null, caso não exista um.
+	 */
 	public String[] getSavedInfo() {
 		String info[];
 		if (fileExists()) {
