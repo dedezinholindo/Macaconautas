@@ -1,11 +1,8 @@
 package mc322.macaconautas.Store;
 
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IStore;
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class StoreView implements IStore{

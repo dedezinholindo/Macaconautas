@@ -2,21 +2,14 @@ package mc322.macaconautas.Game;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Entity.*;
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class GameControl extends Canvas implements Runnable, KeyListener {
@@ -61,10 +54,6 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 		}
 		game.counter += 1;
 	}
-	
-//	private void gorillaTime() {
-//		game.monkey.setContadorGorila(game.monkey.getContadorGorila() + 1);
-//	}
 	
 	private void framesGameOver() {
 		this.game.framesMessageGameOver++;
@@ -138,14 +127,15 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 	}
 
 	private void renderPauseMenu(Graphics g) {
+		//render fundo
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(new Color(180, 180, 180, 50)); //transparencia
 		g2.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder - 115, 300, 230);
-		
+		//render pause
 		g.setFont(new Font("arial", Font.BOLD, 45));
 		g.setColor(Color.WHITE);
 		g.drawString("PAUSED", this.frameWidth / 2 - (150 - 5), this.frameHeight / 2 + this.frameBorder - 115 + 45);
-		
+		//render options
 		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
 		g.drawString(this.game.pauseMenuOptions[0], this.frameWidth / 2 - (150 - 30 - 5),  this.frameHeight / 2 + this.frameBorder - 115 + 110);
@@ -170,7 +160,6 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(new Color(0, 0, 0, 180)); //transparencia
 		g2.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight);
-
 		//FRASE GAME OVER
 		g.setFont(new Font("arial", Font.BOLD, 70));
 		g.setColor(Color.white);
@@ -178,36 +167,30 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 		g.setFont(new Font("arial", Font.BOLD, 25));
 		g.drawString("Bananas: " + this.game.bananaQuantity, this.frameWidth / 2 - 70, this.frameHeight / 2 + this.frameBorder - 20);
 		g.drawString("Distância percorrida: " + this.game.distance + " m", this.frameWidth / 2 - 170, this.frameHeight / 2 + this.frameBorder + 60);
-		//fazer comparacao do recorde aqui
 		if (this.game.showMessageGameOver) {
 			g.drawString("(Aperte ENTER para ir ao Menu Principal)", this.frameWidth / 2 - 240, this.frameHeight / 2 + this.frameBorder + 140);
 		}
 	}
 
-	//TIRAR DAQUI??
 	private void render() {
-		//renderizar the AppMonkeynautas
 		BufferStrategy bs = f.getBufferStrategy();
-		if (bs == null) { //significa que ainda nao existe nenhum buffer strategy
+		if (bs == null) { 
 			this.createBufferStrategy(3);//sequencia de buffers que colocamos na tela para otimizar a renderizacao (entre 2 ou 3)	
-			return; //"break"
+			return; 
 		}
 		//fundo
-		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
+		Graphics g = bs.getDrawGraphics(); 
 		g.setColor(Color.black);
-		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); //aparece um retangulo na tela (x,y,largura,altura)
-		
+		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); 
+		//renderespaco
 		this.game.space.render(g);
-
+		//render bottom
 		g.setColor(Color.gray);
 		g.fillRect(0, this.frameHeight + this.frameBorder - 40, this.frameWidth, 40);
-
 		g.setFont(new Font("arial", Font.BOLD, 15));
 		g.setColor(Color.lightGray);
-		//banana
 		g.drawString("Bananas: " + this.game.bananaQuantity, this.frameWidth / 2 - 45, this.frameHeight + this.frameBorder - 15);
-		
-		//distance
+		//render distance
 		g.drawString(this.game.distance + " m", this.frameWidth / 2, this.frameBorder + 15);
 		
 		switch (this.game.state) {
@@ -248,7 +231,7 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 		if (this.game.state == 'N' && e.getKeyCode() == KeyEvent.VK_SPACE) {
 			this.game.monkey.setIsGoingUp(true);
 		}
-		//voltar menu quadno perde
+		//voltar menu quando perde
 		if (this.game.state == 'G' && e.getKeyCode() == KeyEvent.VK_ENTER) {
 			this.game.state = 'O';
 		} else if (this.game.state == 'N' && e.getKeyCode() == KeyEvent.VK_P) {

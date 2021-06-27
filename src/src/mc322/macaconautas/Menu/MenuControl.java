@@ -2,17 +2,13 @@ package mc322.macaconautas.Menu;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
-
-import mc322.macaconautas.app.Control;
 
 public class MenuControl extends Canvas implements Runnable, KeyListener{
 	
@@ -73,7 +69,6 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 		switch(this.menu.state) {
 		case 'N':
 			executeMenu();
-			//normal
 			break;
 		case 'S':
 			stop();
@@ -99,15 +94,16 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 	}
 	
 	private void renderOptions(Graphics g) {
+		// título do jogo
 		g.setFont(new Font("oslo", Font.BOLD, 85));
 		g.setColor(Color.BLUE);
-		g.drawString("MACACONAUTAS", 0, this.frameHeight / 2 + this.frameBorder - 90); // título do jogo.
-		
+		g.drawString("MACACONAUTAS", 0, this.frameHeight / 2 + this.frameBorder - 90);
+		//opcoes
 		g.setFont(new Font("arial", Font.BOLD, 30));
 		g.setColor(Color.WHITE);
 		g.drawString(this.menu.options[0], this.frameWidth / 2 - 57, this.frameHeight / 2 + this.frameBorder - 10);
 		g.drawString(this.menu.options[1], this.frameWidth / 2 - 52, this.frameHeight / 2 + this.frameBorder + 70);
-		g.drawString(this.menu.options[2], this.frameWidth / 2 - 120, this.frameHeight / 2 + this.frameBorder + 150); // opções.
+		g.drawString(this.menu.options[2], this.frameWidth / 2 - 120, this.frameHeight / 2 + this.frameBorder + 150); 
 	}
 
 	private void renderArrow(Graphics g) {
@@ -134,28 +130,24 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 	}
 	
 	private void render() {
-		//renderizar the AppMacaconautas
 		BufferStrategy bs = f.getBufferStrategy();
-		if (bs == null) { //significa que ainda nao existe nenhum buffer strategy
+		if (bs == null) { 
 			this.createBufferStrategy(3); //sequencia de buffers que colocamos na tela para otimizar a renderizacao (entre 2 ou 3)	
-			return; //"break"
+			return; 
 		}
 		//fundo
-		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
+		Graphics g = bs.getDrawGraphics(); 
 		g.setColor(Color.BLACK);
-		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); //aparece um retangulo na tela (x,y,largura,altura)
-		
+		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); 
 		// options
 		renderOptions(g);
 		renderArrow(g);
 		renderInfo(g);
-		bs.show(); //mostra o grafico
+		bs.show(); 
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -174,8 +166,6 @@ public class MenuControl extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

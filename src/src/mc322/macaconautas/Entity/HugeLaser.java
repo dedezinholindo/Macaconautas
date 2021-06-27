@@ -1,8 +1,6 @@
 package mc322.macaconautas.Entity;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-
 import mc322.macaconautas.Game.Space;
 import mc322.macaconautas.app.SpriteSheet;
 

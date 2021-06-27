@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class AlienFleet extends Entity {

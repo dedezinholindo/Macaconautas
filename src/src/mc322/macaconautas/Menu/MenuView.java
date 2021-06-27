@@ -3,7 +3,6 @@ package mc322.macaconautas.Menu;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IMenu;
-import mc322.macaconautas.app.Control;
 
 public class MenuView implements IMenu {
 

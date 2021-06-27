@@ -1,16 +1,9 @@
 package mc322.macaconautas.Game;
 
 import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.image.BufferStrategy;
-
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IGame;
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class GameView extends Canvas implements IGame{

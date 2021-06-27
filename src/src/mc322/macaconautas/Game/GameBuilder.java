@@ -1,18 +1,6 @@
 package mc322.macaconautas.Game;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferStrategy;
-import java.util.ArrayList;
-
-import javax.swing.JFrame;
-
 import mc322.macaconautas.Entity.Monkey;
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class GameBuilder {

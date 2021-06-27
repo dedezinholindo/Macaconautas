@@ -1,9 +1,5 @@
 package mc322.macaconautas.Menu;
 
-import javax.swing.JFrame;
-
-import mc322.macaconautas.app.Control;
-
 public class MenuBuilder {
 
 	private final static String[] MENU_OPTIONS = {"Jogar", "Loja", "Salvar e Sair"};

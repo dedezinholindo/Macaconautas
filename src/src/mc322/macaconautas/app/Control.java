@@ -4,7 +4,6 @@ import mc322.macaconautas.Game.*;
 import mc322.macaconautas.Interface.*;
 
 import java.awt.Canvas;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
@@ -18,7 +17,7 @@ public class Control extends Canvas implements IInit {
 	private final static int FRAME_HEIGHT = 120;
 	private final static int FRAME_SCALE = 5;
 
-	private final static int THREAD_SLEEP_TIME = 400;
+	private final static int THREAD_SLEEP_TIME = 400; // alterar baseado no processamento do computador (erro de renderizacao).
 
 	private final static String SPRITE_SHEET_PATH = "/res/spritesheet.png";
 	private final static int SPRITE_WIDTH = 40;
@@ -67,14 +66,14 @@ public class Control extends Canvas implements IInit {
 		this.frameWidth = FRAME_WIDTH;
 		this.frameHeigth = FRAME_HEIGHT;
 		this.frameScale = FRAME_SCALE;
-		f = new JFrame("MACACONAUTAS"); //titulo do game ou setTitle()
-		f.add(this); //adicionar o que criamos para ficar visível
+		f = new JFrame("MACACONAUTAS"); 
+		f.add(this); 
 		f.setLayout(null);
 		f.setSize(this.frameWidth * this.frameScale, this.frameHeigth * this.frameScale);
-		f.setResizable(false); //nao pode redimensionar 
-		f.setLocationRelativeTo(null); //centro (tem que estar depois do pack)
-		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //fechar quando clicar no x e parar de vez
-		f.setVisible(true); //deixar ele visivel
+		f.setResizable(false); 
+		f.setLocationRelativeTo(null); 
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+		f.setVisible(true); 
 	}
 	
 	private boolean[] numbersToBoolean(String numbers) {
@@ -130,7 +129,7 @@ public class Control extends Canvas implements IInit {
 			menu.shows();
 			isMenuCreated = true;
 		}
-		Thread.currentThread().sleep(THREAD_SLEEP_TIME); // alterar baseado no processamento do computador (erro de renderizacao).
+		Thread.currentThread().sleep(THREAD_SLEEP_TIME); 
 		switch(menu.getState()) {
 		case 'S':
 			appState = 'S';
@@ -155,7 +154,7 @@ public class Control extends Canvas implements IInit {
 			store.shows();
 			isStoreCreated = true;
 		} 
-		Thread.currentThread().sleep(THREAD_SLEEP_TIME); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(THREAD_SLEEP_TIME); 
 		if (store.getState() == 'M') {
 			appState = 'M';
 			isStoreCreated = false;
@@ -171,7 +170,7 @@ public class Control extends Canvas implements IInit {
 			game.shows();
 			isGameCreated = true;
 		} 
-		Thread.currentThread().sleep(THREAD_SLEEP_TIME); //operacoes imediatas ocasionam erros inesperaveis
+		Thread.currentThread().sleep(THREAD_SLEEP_TIME); 
 		if (game.getState() == 'O') {
 			appState = 'M';
 			isGameCreated = false;

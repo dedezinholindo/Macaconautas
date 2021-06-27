@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 import mc322.macaconautas.Entity.*;
 

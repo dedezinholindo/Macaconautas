@@ -2,20 +2,14 @@ package mc322.macaconautas.Store;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Menu.MenuView;
-import mc322.macaconautas.app.Control;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class StoreControl extends Canvas implements Runnable, KeyListener{
@@ -93,7 +87,6 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 		switch(this.store.state) {
 		case 'N':
 			executeStore();
-			//normal
 			break;
 		case 'M':
 			//ir para o menu
@@ -138,14 +131,15 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 	private void render() {
 		//renderizar the AppMacaconautas
 		BufferStrategy bs = f.getBufferStrategy();
-		if (bs == null) { //significa que ainda nao existe nenhum buffer strategy
-			this.createBufferStrategy(3); //sequencia de buffers que colocamos na tela para otimizar a renderizacao (entre 2 ou 3)	
-			return; //"break"
+		if (bs == null) { 
+			this.createBufferStrategy(3); //sequencia de buffers que colocamos na tela para otimizar a renderizacao 	
+			return; 
 		}
 		//fundo
-		Graphics g = bs.getDrawGraphics(); //podemos gerar imagem, retangulo, string
+		Graphics g = bs.getDrawGraphics(); 
 		g.setColor(Color.black);
-		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); //aparece um retangulo na tela (x,y,largura,altura)
+		g.fillRect(0, this.frameBorder, this.frameWidth, this.frameHeight); 
+		//render skins
 		g.setColor(Color.gray);
 		g.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder - (180 + 60), 300, 60);
 		g.fillRect(this.frameWidth / 2 - 150, this.frameHeight / 2 + this.frameBorder + 180, 300, 60);
@@ -166,8 +160,6 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -187,8 +179,6 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
