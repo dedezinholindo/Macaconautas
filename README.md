@@ -33,8 +33,8 @@
 
 # Destaques de Código
 
-## Heranças e Classes Abstratas
-Utilizamos o artifício da herança e da classe abstrata para facilitar a expansão e compreensão do código.
+## Heranças  
+Utilizamos o artifício da herança para facilitar a expansão, compreensão e manipulação do código.
 
 ~~~java
 public abstract class Entity extends Rectangle {
