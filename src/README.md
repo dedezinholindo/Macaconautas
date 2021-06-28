@@ -4,7 +4,6 @@
 Oláááááá Gamers!! Animados para uma aventura incrível no espaço cheia de aliens, asteroides, espaçonaves e muita ação?¿! Temos tudo isso aqui! Se prepare para desviar de lasers mortais, asteroides sinistros e para comer muita banana!! Tente ir o mais longe possível nesse universo que esconde inúmeros segredos!
 
 ## Instalação do jogo
-### Linux
 1. Abra o terminal.
 2. Execute o comando `$ git clone https://github.com/dedezinholindo/Macaconautas.git`.
 3. Compile e rode o jogo (Macaconautas/src/src/mc322.macaconautas..App.AppMacaconautas).
