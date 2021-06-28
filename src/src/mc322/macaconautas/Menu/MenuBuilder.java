@@ -14,7 +14,12 @@ public class MenuBuilder {
 	boolean goUp;
 	boolean goDown;
 	boolean select;
-	
+
+	/**
+	 * Inicializa um MenuBuilder.
+	 * @param bananaQuantity quantidade de bananas possuídas.
+	 * @param record recorde de distância percorrida.
+	 */
 	public MenuBuilder(int bananaQuantity, long record) {
 		this.state = 'N';
 		this.isRunning = true;

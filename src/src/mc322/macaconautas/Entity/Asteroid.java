@@ -6,6 +6,8 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class Asteroid extends RegularEntity {
 
+	private static final long serialVersionUID = 748335128935111472L;
+
 	public final static int WIDTH = 40;
 	public final static int HEIGHT = 40;
 
@@ -14,19 +16,21 @@ public class Asteroid extends RegularEntity {
 	private final static int SPRITE_QUANTITY = 1;
 
 	/**
-	 * Inicializa um obstáculo.
-	 * @param x coordenada x do obstáculo.
-	 * @param y coordenada y do obstáculo.
+	 * Inicializa um asteroid.
+	 * @param x coordenada x do asteroid.
+	 * @param y coordenada y do asteroid.
+	 * @param space space no qual está inserido.
+	 * @param spriteSheet sprite sheet do jogo.
 	 */
 	public Asteroid(int x, int y, Space space, SpriteSheet spriteSheet) {
 		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 	}
 
 	/**
-	 * Renderiza o obstáculo na tela.
-	 * @param g
+	 * Renderiza o asteroid.
+	 * @param g gráficos utilizados.
 	 */
-	public void render(Graphics g) {
+	public void render(@SuppressWarnings("exports") Graphics g) {
 		g.drawImage(this.sprites[0], this.x, this.y, null);
 	}
 }

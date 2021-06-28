@@ -8,7 +8,4 @@ public class AppMacaconautas {
 		IInit controle = new Control();
 		controle.init();
 	}
-		
 }
-
-

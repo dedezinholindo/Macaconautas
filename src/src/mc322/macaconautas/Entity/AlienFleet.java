@@ -10,12 +10,14 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class AlienFleet extends Entity {
 
-	private final static int SHIP_QUANTITY = 5; // quantidade de naves na frota.
+	private static final long serialVersionUID = 667672651225816724L;
+
+	private final static int SHIP_QUANTITY = 5; // quantidade de nave na alien fleet.
 
 	private final static int SHIP_WIDTH = 40;
 	private final static int SHIP_HEIGHT = 40; // dimensões de cada nave.
-	private final static int WIDTH = SHIP_WIDTH; // largura total da frota.
-	private final static int CANNON_HEIGHT = 26; // coordenada y do centro do cannon relativa à coordenada y de uma ship qualquer.
+	private final static int WIDTH = SHIP_WIDTH; // largura total da alien fleet.
+	private final static int CANNON_HEIGHT = 26; // coordenada y do centro de um cannon relativa à coordenada y da nave respectiva.
 
 	private final static int SPRITE_X = 0;
 	private final static int SPRITE_Y = 5;
@@ -24,37 +26,43 @@ public class AlienFleet extends Entity {
 	private final static int CHARGING_ANIMATION_PERIOD = 60; // quantidade de frames do jogo para cada frame da animação.
 	private final static int MAX_CHARGING_ANIMATION_FRAMES = 4;
 
-	private final static int MAX_SHOOTERS_QUANTITY = 2; // quantidade de máxima naves que atiram simultaneamente.
+	private final static int MAX_SHOOTER_QUANTITY = 2; // quantidade de máxima naves que atiram simultaneamente.
 	private final static int REFRESH_PERIOD = 2 * 60; // quantidade de frames do jogo antes de atirar.
 	private final static int SHOOTING_PERIOD = 5 * 60; // quantidade de frames do jogo atirando.
+	private final static int MAX_SHOT_QUANTITY = 3; // quantidade de máxima de tiros que a alien fleet dispara antes de destruir.
 
 	private Random randomGenerator; // gerador randômico utilizado em algumas escolhas.
 	private int shipSpacing;
-	private boolean isDestroyed; // indica se a frota alien está destruída.
+	private boolean isDestroyed; // indica se a alien fleet está destruída.
 	private boolean isCharging; // indica se há naves carregando.
 	private boolean isShooting; // indica se há naves atirando.
 	private boolean shooters[]; // indica quais naves estão atirando/carregando (sempre duas).
-	private int maxShotsQuantity; // indica quantas vezes a frota pode atirar.
 	private int shotsQuantity; // indica quantas vezes a frota atirou.
+
 	/**
-	 * Inicializa uma frota alien.
-	 * @param x coordenada x da frota alien.
-	 * @param y coordenada y da frota alien.
+	 * Inicializa uma alien fleet.
+	 * @param x coordenada x da alien fleet.
+	 * @param y coordenada y da alien fleet.
+	 * @param space space no qual está inserido.
+	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public AlienFleet(int x, int y, Space space, SpriteSheet spriteSheet, int maxShotsQuantity) {
+	public AlienFleet(int x, int y, Space space, SpriteSheet spriteSheet) {
 		super(x, y, WIDTH, 0, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 		this.shipSpacing = (((int) this.space.getHeight()) - (SHIP_QUANTITY * SHIP_HEIGHT)) / (SHIP_QUANTITY - 1); // espaço entre duas naves consecutivas.
-		this.setSize(WIDTH, (SHIP_HEIGHT + this.shipSpacing) * (SHIP_QUANTITY) - this.shipSpacing); // atualiza a altura total da frota (subtração ao final, pois há espaço apenas entre naves).
+		this.setSize(WIDTH, (SHIP_HEIGHT + this.shipSpacing) * (SHIP_QUANTITY) - this.shipSpacing); // atualiza a altura total da alien fleet (subtração ao final, pois há espaço apenas entre naves).
 		this.randomGenerator= new Random();
 		this.isDestroyed = false;
 		this.isCharging = false;
 		this.isShooting = false;
 		this.shooters = new boolean[SHIP_QUANTITY];
 		Arrays.fill(this.shooters, false); // inicializa todos como false.
-		this.maxShotsQuantity = maxShotsQuantity;
 		this.shotsQuantity = 0;
 	}
-	
+
+	/**
+	 * Indica se a alien fleet está destruída.
+	 * @return true, caso esteja destruída.
+	 */
 	public boolean isDestroyed() {
 		return this.isDestroyed;
 	}
@@ -63,11 +71,14 @@ public class AlienFleet extends Entity {
 	 * Atualiza o atributo shooters com atiradores aleatoriamente escolhidos.
 	 */
 	private void chooseShooters() {
-		for (int i = 0; i < MAX_SHOOTERS_QUANTITY; i++) { // note que é possível (propositalmente) apenas uma nave ser escolhida.
+		for (int i = 0; i < MAX_SHOOTER_QUANTITY; i++) { // note que é possível (propositalmente) apenas uma nave ser escolhida.
 			this.shooters[this.randomGenerator.nextInt(SHIP_QUANTITY)] = true;
 		}
 	}
-	
+
+	/**
+	 * Atira um HugeLaser.
+	 */
 	private void shoot() {
 		for (int i = 0; i < shooters.length; i++) {
 			if (this.shooters[i]) {
@@ -79,10 +90,10 @@ public class AlienFleet extends Entity {
 	}
 
 	/**
-	 * Atualiza o estado da frota alien em um frame.
+	 * Atualiza a alien fleet em um frame.
 	 */
 	public void tick() {
-		if (this.shotsQuantity == this.maxShotsQuantity) {
+		if (this.shotsQuantity == MAX_SHOT_QUANTITY) {
 			this.isDestroyed = true;
 			return;
 		}
@@ -104,10 +115,10 @@ public class AlienFleet extends Entity {
 	}
 
 	/**
-	 * Renderiza a frota alien na tela.
-	 * @param g
+	 * Renderiza a alien fleet.
+	 * @param g gráficos utilizados.
 	 */
-	public void render(Graphics g) {
+	public void render(@SuppressWarnings("exports") Graphics g) {
 		BufferedImage sprite;
 		for (int i = 0; i < SHIP_QUANTITY; i++) {
 			if (!this.shooters[i]) {
@@ -123,5 +134,4 @@ public class AlienFleet extends Entity {
 			g.drawImage(sprite, this.x, (this.y + (i * (SHIP_HEIGHT + this.shipSpacing))), null);
 		}
 	}
-
 }

@@ -7,25 +7,48 @@ import mc322.macaconautas.Interface.IGame;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class GameView extends Canvas implements IGame{
-	
+
+	private static final long serialVersionUID = 4883349660039876621L;
+
 	private GameControl conGame;
-	
-	public GameView(JFrame f, int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity, long record) throws InterruptedException {
-		this.conGame = new GameControl(f, selectedSkin, spriteSheet, bananaQuantity, record); 
+
+	/**
+	 * Inicializa um GameView.
+	 * @param bananaQuantity quantidade de bananas possuídas.
+	 * @param record recorde de distância percorrida.
+	 * @param selectedSkin skin selecionada.
+	 * @param f JFrame utilizado.
+	 * @param spriteSheet sprite sheet do jogo.
+	 * @throws InterruptedException
+	 */
+	public GameView(int bananaQuantity, long record, int selectedSkin, @SuppressWarnings("exports") JFrame f, SpriteSheet spriteSheet) throws InterruptedException {
+		this.conGame = new GameControl(bananaQuantity, record, selectedSkin, f, spriteSheet); 
 	}
-	
-	public void shows() throws InterruptedException {
-		this.conGame.start();
-	}
-	
-	public int getBananaQuantity() {
-		return this.conGame.getBananaQuantity();
-	}
-	
+
+	/**
+	 * Retorna o estado do game.
+	 */
 	public char getState() {
 		return this.conGame.getState();
 	}
-	
+
+	/**
+	 * Mostra o game.
+	 */
+	public void shows() throws InterruptedException {
+		this.conGame.start();
+	}
+
+	/**
+	 * Retorna a quantidade de bananas possuídas.
+	 */
+	public int getBananaQuantity() {
+		return this.conGame.getBananaQuantity();
+	}
+
+	/**
+	 * Retorna o recorde de distância percorrida.
+	 */
 	public long getRecord() {
 		return this.conGame.getRecord();
 	}

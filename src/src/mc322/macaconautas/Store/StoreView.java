@@ -6,31 +6,53 @@ import mc322.macaconautas.Interface.IStore;
 import mc322.macaconautas.app.SpriteSheet;
 
 public class StoreView implements IStore{
+
 	private StoreControl conStore;
-	
-	public StoreView(JFrame f, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity) {
-		this.conStore = new StoreControl(f, ownedSkins, selectedSkin, spriteSheet, bananaQuantity);
+
+	/**
+	 * Inicializa um StoreView.
+	 * @param bananaQuantity quantidade de bananas possuídas.
+	 * @param ownedSkins indica skins possuídas.
+	 * @param selectedSkin skin selecionada.
+	 * @param f JFrame utilizado.
+	 * @param spriteSheet sprite sheet do jogo.
+	 */
+	public StoreView(int bananaQuantity, boolean ownedSkins[], int selectedSkin, @SuppressWarnings("exports") JFrame f, SpriteSheet spriteSheet) {
+		this.conStore = new StoreControl(bananaQuantity, ownedSkins, selectedSkin, f, spriteSheet);
 	}
-	
-	public void shows() throws InterruptedException {
-		this.conStore.start();
-	}
-	
+
+	/**
+	 * Retorna o estado da store.
+	 */
 	public char getState() {
 		return this.conStore.getState();
 	}
 
-	@Override
-	public int getSelectedSkin() {
-		return this.conStore.getSelectedSkin();
+	/**
+	 * Mostra a store.
+	 */
+	public void shows() throws InterruptedException {
+		this.conStore.start();
 	}
-	
+
+	/**
+	 * Retorna a quantidade de bananas possuídas.
+	 */
 	public int getBananaQuantity() {
 		return this.conStore.getBananaQuantity();
 	}
 
-	@Override
+	/**
+	 * Retorna as skins possuídas.
+	 */
 	public boolean[] getOwnedSkins() {
 		return this.conStore.getOwnedSkins();
+	}
+
+	/**
+	 * Retorna a skin selecionada.
+	 */
+	public int getSelectedSkin() {
+		return this.conStore.getSelectedSkin();
 	}
 }

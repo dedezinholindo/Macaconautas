@@ -11,6 +11,8 @@ import mc322.macaconautas.Store.StoreView;
 
 public class Control extends Canvas implements IInit {
 
+	private static final long serialVersionUID = -8313130418438606868L;
+
 	private final static int FRAME_WIDTH = 800;
 	private final static int FRAME_HEIGHT = 600;
 
@@ -142,7 +144,7 @@ public class Control extends Canvas implements IInit {
 	 */
 	public void openMenu() throws InterruptedException {
 		if (!this.isMenuCreated) {
-			this.menu = new MenuView(this.f, this.bananaQuantity, this.record);
+			this.menu = new MenuView(this.bananaQuantity, this.record, this.f);
 			this.isMenuCreated = true;
 			this.menu.shows();
 		}
@@ -172,7 +174,7 @@ public class Control extends Canvas implements IInit {
 	 */
 	public void openJogo() throws InterruptedException {
 		if (!this.isGameCreated) {
-			this.game = new GameView(f, this.selectedSkin, this.spriteSheet, this.bananaQuantity, this.record);
+			this.game = new GameView(this.bananaQuantity, this.record, this.selectedSkin, this.f, this.spriteSheet);
 			this.isGameCreated = true;
 			this.game.shows();
 		} 
@@ -192,7 +194,7 @@ public class Control extends Canvas implements IInit {
 	 */
 	public void openStore() throws InterruptedException {
 		if (!this.isStoreCreated) {
-			this.store = new StoreView(f, this.ownedSkins, this.selectedSkin, this.spriteSheet, this.bananaQuantity);
+			this.store = new StoreView(this.bananaQuantity, this.ownedSkins, this.selectedSkin, this.f, this.spriteSheet);
 			this.store.shows();
 			this.isStoreCreated = true;
 		}

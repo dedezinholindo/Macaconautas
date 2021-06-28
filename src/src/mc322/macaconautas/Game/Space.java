@@ -1,5 +1,6 @@
 package mc322.macaconautas.Game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -9,6 +10,8 @@ import mc322.macaconautas.app.SpriteSheet;
 import mc322.macaconautas.Entity.*;
 
 public class Space extends Rectangle {
+
+	private static final long serialVersionUID = 3013529014592626566L;
 
 	private final static int TERMINAL_X = -40; // valor de coordenada x para o qual entities são destruídas (não aparecem mais na tela).
 
@@ -22,10 +25,10 @@ public class Space extends Rectangle {
 	private final static double OBSTACLE_GEN_PROBABILITY = 0.6;
 	private final static double ALIEN_GEN_PROBABILITY = 0.5;
 	private final static double BANANA_GEN_PROBABILITY = 0.01;
-	private final static double WHEY_PROTEIN_GEN_PROBABILITY = 0.7; // probabilidades de geração das entities.
+	private final static double WHEY_PROTEIN_GEN_PROBABILITY = 0.7; // probabilidades de geração das entities (altas para fim de demonstração).
 
-	private int jFrameBorder;
-	private int distanceToFloor;
+	private int jFrameBorder; // tamanho da borda do JFrame em que o espaço será renderizado.
+	private int distanceToFloor; // distância a ser considerada para não gerar entities parcialmente cobertas pelo chão.
 	private int frame;
 	private Monkey monkey;
 	private ArrayList<RegularEntity> peacefulRegularEntities;
@@ -41,6 +44,7 @@ public class Space extends Rectangle {
 	 * Inicializa um novo space.
 	 * @param width largura do space.
 	 * @param height altura do space.
+	 * @param jFrameBorder tamanho da borda do JFrame em que o espaço será renderizado.
 	 * @param distanceToFloor distância a ser mantida do chão para não gerar entities parcialmente escondidas.
 	 * @param spriteSheet sprite sheet com sprites a serem utilizados por entities no space.
 	 */
@@ -59,21 +63,37 @@ public class Space extends Rectangle {
 		this.spriteSheet = spriteSheet;
 		this.randomGenerator = new Random();
 	}
-	
+
+	/**
+	 * Retorna o tamanho da borda do JFrame.
+	 * @return tamanho da borda do JFrame.
+	 */
 	public int getJFrameBorder () {
 		return this.jFrameBorder;
 	}
-	
+
+	/**
+	 * Adiciona um monkey ao space.
+	 * @param monkey Monkey a adicionar.
+	 */
 	public void setMonkey(Monkey monkey) {
 		this.monkey = monkey;
 	}
-	
+
+	/**
+	 * Gera um número de 0 a 1 aleatório com até 3 casas decimais.
+	 * @return número aleatório.
+	 */
 	private double getRandomPercentage() {
 		return ((double) this.randomGenerator.nextInt(1001)) / 1000;
 	}
-	
+
+	/**
+	 * Gera uma coordenada y aleatória dentro do space.
+	 * @return coordenada y aleatória.
+	 */
 	private int getRandomY() {
-		return this.randomGenerator.nextInt(this.height) + this.jFrameBorder - this.distanceToFloor;
+		return this.randomGenerator.nextInt(this.height - this.distanceToFloor) + this.jFrameBorder;
 	}
 
 	/**
@@ -101,11 +121,11 @@ public class Space extends Rectangle {
 
 	/**
 	 * Gera um laser atirado por um alien (método chamado por aliens).
-	 * @param x coordenada x do laser.
-	 * @param y coordenada y do laser.
+	 * @param gunX coordenada x da arma do alien.
+	 * @param gunY coordenada y da arma do alien.
 	 */
-	public void generateLaser(int x, int y) {
-		Laser laser = new Laser(x, y, this, this.spriteSheet);
+	public void generateLaser(int gunX, int gunY) {
+		Laser laser = new Laser(gunX, gunY, this, this.spriteSheet);
 		this.lasers.add(laser);
 	}
 
@@ -113,15 +133,17 @@ public class Space extends Rectangle {
 	 * Gera uma alien fleet no space.
 	 */
 	private void generateAlienFleet() {
-		this.alienFleet = new AlienFleet(this.width - 40, this.jFrameBorder, this, this.spriteSheet, 3);
+		this.alienFleet = new AlienFleet(this.width - 40, this.jFrameBorder, this, this.spriteSheet);
 	}
-	
+
+	/**
+	 * Gera um huge laser atirado por uma alien fleet (método chamado por alien
+	 * fleet).
+	 * @param cannonX coordenada x do canhão da alien fleet.
+	 * @param cannonY coordenada y do canhão da alien fleet.
+	 */
 	public void generateHugeLaser(int cannonX, int cannonY) {
 		this.hugeLasers.add(new HugeLaser(cannonX, cannonY, this, this.spriteSheet));
-	}
-	
-	public void destroyHugeLasers() {
-		this.hugeLasers.clear();
 	}
 
 	/**
@@ -152,6 +174,13 @@ public class Space extends Rectangle {
 				break;
 			}
 		}
+	}
+
+	/**
+	 * Remove os huge lasers.
+	 */
+	public void destroyHugeLasers() {
+		this.hugeLasers.clear();
 	}
 
 	/**
@@ -221,24 +250,6 @@ public class Space extends Rectangle {
 			}
 		}
 	}
-	
-	private void tickEntities() {
-		if (this.monkey != null) {
-			this.monkey.tick();
-		}
-		for (int i = 0; i < this.peacefulRegularEntities.size(); i++) {
-			this.peacefulRegularEntities.get(i).tick();
-		}
-		for (int i = 0; i < this.hostileRegularEntities.size(); i++) {
-			this.hostileRegularEntities.get(i).tick();
-		}
-		for (int i = 0; i < this.lasers.size(); i++) {
-			this.lasers.get(i).tick();
-		}
-		if (this.alienFleet != null) {
-			this.alienFleet.tick();
-		}
-	}
 
 	/**
 	 * Atualiza o estado do space em um frame.
@@ -271,10 +282,31 @@ public class Space extends Rectangle {
 	}
 
 	/**
+	 * Atualiza o estado das entities em um frame.
+	 */
+	private void tickEntities() {
+		if (this.monkey != null) {
+			this.monkey.tick();
+		}
+		for (int i = 0; i < this.peacefulRegularEntities.size(); i++) {
+			this.peacefulRegularEntities.get(i).tick();
+		}
+		for (int i = 0; i < this.hostileRegularEntities.size(); i++) {
+			this.hostileRegularEntities.get(i).tick();
+		}
+		for (int i = 0; i < this.lasers.size(); i++) {
+			this.lasers.get(i).tick();
+		}
+		if (this.alienFleet != null) {
+			this.alienFleet.tick();
+		}
+	}
+
+	/**
 	 * Renderiza as entities contidas no space na tela.
 	 * @param g
 	 */
-	public void render(Graphics g) {
+	public void render(@SuppressWarnings("exports") Graphics g) {
 		if (this.monkey != null) {
 			this.monkey.render(g);
 		}
@@ -293,22 +325,7 @@ public class Space extends Rectangle {
 		for (int i = 0; i < this.hugeLasers.size(); i++) {
 			this.hugeLasers.get(i).render(g);
 		}
+		g.setColor(Color.gray);
+		g.fillRect(0, this.height + this.jFrameBorder, this.width, 40);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

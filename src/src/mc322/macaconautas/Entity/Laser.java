@@ -6,6 +6,8 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class Laser extends Entity {
 
+	private static final long serialVersionUID = 6698309442675665914L;
+
 	private final static int WIDTH = 36;
 	private final static int HEIGHT = 8;
 
@@ -17,8 +19,10 @@ public class Laser extends Entity {
 
 	/**
 	 * Inicializa um laser.
-	 * @param x coordenada x do laser.
-	 * @param y coordenada y do laser.
+	 * @param gunX coordenada x da arma que dispara o laser.
+	 * @param gunY coordenada y da arma que dispara o laser.
+	 * @param space space no qual está inserido.
+	 * @param spriteSheet sprite sheet do jogo.
 	 */
 	public Laser(int gunX, int gunY, Space space, SpriteSheet spriteSheet) {
 		super(gunX, (gunY - (HEIGHT / 2)), WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
@@ -36,7 +40,7 @@ public class Laser extends Entity {
 	 * Renderiza o laser na tela.
 	 * @param g
 	 */
-	public void render(Graphics g) {
+	public void render(@SuppressWarnings("exports") Graphics g) {
 		g.drawImage(this.sprites[0], this.x, this.y, null);
 	}
 }

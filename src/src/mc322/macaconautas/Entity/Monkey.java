@@ -8,13 +8,15 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class Monkey extends Entity {
 
+	private static final long serialVersionUID = 4085755067974167449L;
+
 	private final static int WIDTH = 24;
 	private final static int HEIGHT = 32;
 	private final static int GORILLA_WIDTH = 32;
 	private final static int GORILLA_HEIGHT = 40;
 
 	private final static int SPRITE_X = 0;
-	private final static int SPRITE_Y = 8; // indica onde começam as skins do macaco.
+	private final static int SPRITE_Y = 8; // indica onde começam as skins do monkey.
 	private final static int GORILLA_SPRITE_X = 0;
 	private final static int GORILLA_SPRITE_Y = 7;
 
@@ -28,22 +30,23 @@ public class Monkey extends Entity {
 	
 	private final static int GORILLA_PERIOD = 10 * 60;
 
-	private int selectedSkin;
-	private boolean isDefeated;
-	private boolean isGoingUp; // indica se o macaco está indo para cima.
-	private boolean isWalking; // indica se o macaco está andando no chão.
+	private boolean isDefeated; // indica se o monkey está derrotado.
+	private boolean isGoingUp; // indica se o monkey está indo para cima.
+	private boolean isWalking; // indica se o monkey está andando no chão.
 	private BufferedImage gorillaSprites[];
 	private boolean isGorilla;
 	private int gorillaFrame;
 
 	/**
-	 * Inicializa um macaco.
-	 * @param x coordenada x do macaco.
-	 * @param y coordenada y do macaco.
+	 * Inicializa um monkey.
+	 * @param x coordenada x do monkey.
+	 * @param y coordenada y do monkey.
+	 * @param space space no qual está inserido.
+	 * @param spriteSheet sprite sheet do jogo.
+	 * @param selectedSkin skin selecionada.
 	 */
 	public Monkey(int x, int y, Space space, SpriteSheet spriteSheet, int selectedSkin) {
 		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, (SPRITE_Y + selectedSkin), SPRITE_QUANTITY);
-		this.selectedSkin = selectedSkin;
 		this.gorillaSprites = new BufferedImage[this.spriteQuantity];
 		for (int i = 0; i < this.spriteQuantity; i++) {
 			this.gorillaSprites[i] = spriteSheet.getSprite(GORILLA_SPRITE_X + i, GORILLA_SPRITE_Y);
@@ -54,15 +57,26 @@ public class Monkey extends Entity {
 		this.isGorilla = false;
 		this.gorillaFrame = 0;
 	}
-	
+
+	/**
+	 * Indica se o monkey está derrotado.
+	 * @return true, caso esteja derrotado.
+	 */
 	public boolean isDefeated() {
 		return this.isDefeated;
 	}
-	
+
+	/**
+	 * Torna o monkey derrotado.
+	 */
 	public void admitDefeat() {
 		this.isDefeated = true;
 	}
 
+	/**
+	 * Indica se o monkey está no estado de monkey gorilla.
+	 * @return true, caso esteja no estado de monkey gorilla.
+	 */
 	public boolean isGorilla() {
 		return isGorilla;
 	}
@@ -77,7 +91,7 @@ public class Monkey extends Entity {
 	}
 
 	/**
-	 * Retorna o monkey ao estado regular.
+	 * Retorna o monkey ao estado de monkey regular.
 	 */
 	private void returnToMonkey() {
 		this.isGorilla = false;
@@ -85,17 +99,17 @@ public class Monkey extends Entity {
 		this.height = HEIGHT;
 		this.gorillaFrame = 0;
 	}
-	
+
 	/**
-	 * Altera o estado de movimento para cima do macaco.
-	 * @param isGoingUp novo estado de movimento para cima do macaco.
+	 * Altera o estado de movimento para cima do monkey.
+	 * @param isGoingUp novo estado de movimento para cima do monkey.
 	 */
 	public void setIsGoingUp(boolean isGoingUp) {
 		this.isGoingUp = isGoingUp;
 	}
 
 	/**
-	 * Atualiza o estado do macaco em um frame.
+	 * Atualiza o monkey em um frame.
 	 */
 	public void tick() {
 		this.isWalking = false;
@@ -123,10 +137,10 @@ public class Monkey extends Entity {
 	}
 
 	/**
-	 * Renderiza o macaco na tela.
-	 * @param g
+	 * Renderiza o monkey na tela.
+	 * @param g gráficos utilizados.
 	 */
-	public void render (Graphics g) {
+	public void render (@SuppressWarnings("exports") Graphics g) {
 		BufferedImage sprites[] = (this.isGorilla ? this.gorillaSprites : this.sprites);
 		BufferedImage sprite;
 		if (this.isGoingUp) {

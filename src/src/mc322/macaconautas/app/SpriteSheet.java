@@ -30,6 +30,7 @@ public class SpriteSheet {
 	 * @param y coordenada y do sprite.
 	 * @return determinado sprite.
 	 */
+	@SuppressWarnings("exports")
 	public BufferedImage getSprite(int x, int y) {
 		return this.spriteSheet.getSubimage(x * this.spriteWidth, y * this.spriteHeight, this.spriteWidth, this.spriteHeight);
 	}

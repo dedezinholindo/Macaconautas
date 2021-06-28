@@ -15,7 +15,7 @@ import mc322.macaconautas.Interface.ISaveGameHandling;
 public class SaveGameHandling implements ISaveGameHandling {
 
 	private final static String[] KEYS = {"u9mf9we98fmwf9mweunqenhwqds9k90dk", "984rh3hr9384r9834j89rj49r3jj894j9jfj9", "dsft2e36e7g23e56re5f32fe5f6", "23tfe67g3e7geg3g26eg732e", "67g3466g7g67fgf63ge6d", "783nenf7n38nfe7nnenf7eu", "dnyed73nd783ne7nfn8nef", "du3ned3n8enn83473rfnufhhfhe8", "di202dwjj298denfb2hswhj"};
-	private final static String SAVE_FILE_NAME = "save.txt";
+	private final static String SAVE_FILE_NAME = "save/save.txt";
 
 	private String gameInfo;
 	private String[] keys;

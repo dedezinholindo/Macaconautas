@@ -6,7 +6,7 @@ import mc322.macaconautas.app.SpriteSheet;
 public class GameBuilder {
 
 	private final static String[] PAUSE_MENU_OPTIONS = {"Voltar ao Jogo", "Menu Principal"};
-	
+
 	int slowness = 12;
 	SpriteSheet spriteSheet;
 	char state; //N para normal, P para pausado (uso do pause), G para game over parcial e O para Game Over
@@ -27,7 +27,17 @@ public class GameBuilder {
 	boolean goDown;
 	boolean select;
 
-	public GameBuilder(int frameWidth, int frameHeight, int frameBorder, int selectedSkin, SpriteSheet spriteSheet, int bananaQuantity, long record){
+	/**
+	 * Inicializa um GameBuilder.
+	 * @param bananaQuantity quantidade de bananas possuídas.
+	 * @param record recorde de distância percorrida.
+	 * @param selectedSkin skin selecionada.
+	 * @param frameWidth largura do JFrame utilizado.
+	 * @param frameHeight altura do JFrame utilizado.
+	 * @param frameBorder tamanho da borda do JFrame utilizado.
+	 * @param spriteSheet sprite sheet do jogo.
+	 */
+	public GameBuilder(int bananaQuantity, long record, int selectedSkin, int frameWidth, int frameHeight, int frameBorder, SpriteSheet spriteSheet){
 		this.spriteSheet = spriteSheet;
 		this.space = new Space(frameWidth, frameHeight, frameBorder, 40, this.spriteSheet);
 		this.monkey = new Monkey(frameWidth / 16, frameHeight / 4 + frameBorder, this.space, this.spriteSheet, selectedSkin);
@@ -46,6 +56,5 @@ public class GameBuilder {
 		this.goUp = false;
 		this.goDown = false;
 		this.select = false;
-	}	
-	
+	}
 }

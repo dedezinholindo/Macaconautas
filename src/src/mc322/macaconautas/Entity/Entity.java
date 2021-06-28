@@ -9,6 +9,8 @@ import mc322.macaconautas.app.SpriteSheet;
 
 public class Entity extends Rectangle {
 
+	private static final long serialVersionUID = 4244516020791898234L;
+
 	protected Space space;
 	protected int speed;
 	protected int spriteQuantity;
@@ -16,11 +18,16 @@ public class Entity extends Rectangle {
 	protected int frame;
 
 	/**
-	 * Inicializa um componente.
-	 * @param x coordenada x do componente.
-	 * @param y coordenada y do componente.
-	 * @param width largura do componente.
-	 * @param height altura do componente.
+	 * Inicializa uma entity.
+	 * @param x coordenada x da entity.
+	 * @param y coordenada y da entity.
+	 * @param width largura da entity.
+	 * @param height altura da entity.
+	 * @param space space no qual está inserido.
+	 * @param spriteSheet sprite sheet do jogo.
+	 * @param spriteX coordenada x do sprite inicial na sprite sheet.
+	 * @param spriteY corrdenada y do sprite inicial na sprite sheet.
+	 * @param spriteQuantity quantidade de sprites.
 	 */
 	public Entity(int x, int y, int width, int height, Space space, SpriteSheet spriteSheet, int spriteX, int spriteY, int spriteQuantity) {
 		super(x, y, width, height);
@@ -33,20 +40,15 @@ public class Entity extends Rectangle {
 		}
 		this.frame = 0;
 	}
-	
-	public int getSpeed() {
-		return this.speed;
-	}
 
 	/**
-	 * Atualiza o estado do componente em um frame.
+	 * Atualiza a entity em um frame.
 	 */
 	public void tick() {}
 
 	/**
-	 * Renderiza o componente na tela.
-	 * @param g
+	 * Renderiza a entity.
+	 * @param g gráficos utilizados.
 	 */
-	public void render(Graphics g) {}
-
+	public void render(@SuppressWarnings("exports") Graphics g) {}
 }

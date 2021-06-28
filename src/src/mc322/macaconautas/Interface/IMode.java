@@ -1,6 +1,14 @@
 package mc322.macaconautas.Interface;
 
 public interface IMode {
-	void shows() throws InterruptedException;
+
+	/**
+	 * Retorna o estado do modo.
+	 */
 	char getState();
+
+	/**
+	 * Mostra o estado do modo.
+	 */
+	void shows() throws InterruptedException;
 }

@@ -8,15 +8,27 @@ public class MenuView implements IMenu {
 
 	private MenuControl conMenu;
 
-	public MenuView(JFrame f, int bananaQuantity, long record) {
-		this.conMenu = new MenuControl(f, bananaQuantity, record);
+	/**
+	 * Inicializa um MenuView.
+	 * @param bananaQuantity quantidade de bananas possuídas.
+	 * @param record recorde de distância percorrida.
+	 * @param f JFrame utilizado.
+	 */
+	public MenuView(int bananaQuantity, long record, @SuppressWarnings("exports") JFrame f) {
+		this.conMenu = new MenuControl(bananaQuantity, record, f);
 	}
 
-	public void shows() throws InterruptedException {
-		this.conMenu.start();
-	}
-
+	/**
+	 * Retorna o estado do menu.
+	 */
 	public char getState() {
 		return this.conMenu.getMenuState();
+	}
+
+	/**
+	 * Mostra o menu.
+	 */
+	public void shows() throws InterruptedException {
+		this.conMenu.start();
 	}
 }
