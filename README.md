@@ -16,7 +16,7 @@
  [Link para o vídeo.](https://drive.google.com/file/d/1qr5MKYpSwSPLfJ39C_fErArR71p2KT8u/view?usp=sharing)
 
 ## Vídeo do Jogo
-> <Coloque um link para o vídeo em que é demonstrada a versão final do jogo. Esse vídeo deve ter em torno de 5 minutos. Este vídeo não apresenta slides, nem substitui a apresentação final do projeto, que será feita por conferência. Ele mostra apenas o jogo em funcionamento.>
+[Link para o vídeo.](https://drive.google.com/file/d/1RhbMGJKTdTPvcQ3jO_ZZ_jCUwFCiFkVQ/view?usp=sharing)
 
 # Slides do Projeto
 
@@ -24,7 +24,7 @@
 [Link para os slides.](https://drive.google.com/file/d/1KMDmPCyxy-PK8IQgqy-QHjUKPX5Bcj9d/view?usp=sharing)
 
 ## Slides da Apresentação Final
-`<Coloque um link para os slides da apresentação final do projeto.>`
+[Link para os slides.](https://drive.google.com/file/d/1Zxc6Fipw2lnWn-Lt5Pkfug7gOk9ViPCB/view?usp=sharing)
 
 ## Relatório de Evolução
 
@@ -88,7 +88,7 @@ private void writeSaveFile(BufferedWriter write) {
 }
 ~~~
 
-## Visibilidade package
+## Visibilidade de package
 Como criamos uma estrutura bem definida para cada funcionalidade (dividida em pacotes), decidimos deixar a visibilidade de todos os Builder como package, para que as classes que tem que manipular o mesmo componente possa manipulá-lo de forma livre.
 
 ~~~java
