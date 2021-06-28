@@ -1,4 +1,4 @@
-package mc322.macaconautas.Control;
+package mc322.macaconautas.SaveGameHandling;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

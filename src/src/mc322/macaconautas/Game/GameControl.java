@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class GameControl extends Canvas implements Runnable, KeyListener {
 
@@ -31,7 +31,7 @@ public class GameControl extends Canvas implements Runnable, KeyListener {
 	 * @param spriteSheet sprite sheet do jogo.
 	 * @throws InterruptedException
 	 */
-	public GameControl(int bananaQuantity, long record, int selectedSkin, @SuppressWarnings("exports") JFrame f, SpriteSheet spriteSheet) throws InterruptedException {
+	public GameControl(int bananaQuantity, long record, int selectedSkin, @SuppressWarnings("exports") JFrame f, @SuppressWarnings("exports") SpriteSheet spriteSheet) throws InterruptedException {
 		this.f = f;
 		this.f.addKeyListener(this);
 		this.frameWidth = this.f.getContentPane().getWidth();

@@ -2,7 +2,7 @@ package mc322.macaconautas.Store;
 
 import java.awt.image.BufferedImage;
 
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class StoreBuilder {
 
@@ -32,7 +32,7 @@ public class StoreBuilder {
 	 * @param selectedSkin skin selecionada.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public StoreBuilder(int bananaQuantity, boolean ownedSkins[], int selectedSkin, SpriteSheet spriteSheet) {
+	public StoreBuilder(int bananaQuantity, boolean ownedSkins[], int selectedSkin, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		this.state = 'N';
 		this.isRunning = true;
 		this.bananaQuantity = bananaQuantity;

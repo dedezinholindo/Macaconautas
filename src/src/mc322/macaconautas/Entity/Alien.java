@@ -2,7 +2,7 @@ package mc322.macaconautas.Entity;
 
 import java.awt.Graphics;
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class Alien extends RegularEntity {
 
@@ -27,7 +27,7 @@ public class Alien extends RegularEntity {
 	 * @param space space no qual está inserido.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public Alien(int x, int y, Space space, SpriteSheet spriteSheet) {
+	public Alien(int x, int y, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 		this.distanceWithoutShooting = MAX_DISTANCE_WITHOUT_SHOOTING; // atira a partir do momento que chegar na tela
 	}

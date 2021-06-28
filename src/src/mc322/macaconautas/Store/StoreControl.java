@@ -10,7 +10,7 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class StoreControl extends Canvas implements Runnable, KeyListener{
 
@@ -30,7 +30,7 @@ public class StoreControl extends Canvas implements Runnable, KeyListener{
 	 * @param f JFrame utilizado.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public StoreControl(int bananaQuantity, boolean ownedSkins[], int selectedSkin, @SuppressWarnings("exports") JFrame f, SpriteSheet spriteSheet) {
+	public StoreControl(int bananaQuantity, boolean ownedSkins[], int selectedSkin, @SuppressWarnings("exports") JFrame f, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		this.f = f;
 		this.f.addKeyListener(this);
 		this.frameWidth = this.f.getContentPane().getWidth();

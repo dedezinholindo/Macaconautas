@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Random;
 
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class AlienFleet extends Entity {
 
@@ -46,7 +46,7 @@ public class AlienFleet extends Entity {
 	 * @param space space no qual está inserido.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public AlienFleet(int x, int y, Space space, SpriteSheet spriteSheet) {
+	public AlienFleet(int x, int y, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		super(x, y, WIDTH, 0, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 		this.shipSpacing = (((int) this.space.getHeight()) - (SHIP_QUANTITY * SHIP_HEIGHT)) / (SHIP_QUANTITY - 1); // espaço entre duas naves consecutivas.
 		this.setSize(WIDTH, (SHIP_HEIGHT + this.shipSpacing) * (SHIP_QUANTITY) - this.shipSpacing); // atualiza a altura total da alien fleet (subtração ao final, pois há espaço apenas entre naves).

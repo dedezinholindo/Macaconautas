@@ -1,8 +1,9 @@
 package mc322.macaconautas.Entity;
 
 import java.awt.Graphics;
+
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class WheyProtein extends RegularEntity {
 
@@ -22,7 +23,7 @@ public class WheyProtein extends RegularEntity {
 	 * @param space space no qual está inserido.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public WheyProtein(int x, int y, Space space, SpriteSheet spriteSheet) {
+	public WheyProtein(int x, int y, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 	}
 

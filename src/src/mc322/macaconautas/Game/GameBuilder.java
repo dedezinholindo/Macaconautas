@@ -1,7 +1,7 @@
 package mc322.macaconautas.Game;
 
 import mc322.macaconautas.Entity.Monkey;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class GameBuilder {
 
@@ -37,7 +37,7 @@ public class GameBuilder {
 	 * @param frameBorder tamanho da borda do JFrame utilizado.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public GameBuilder(int bananaQuantity, long record, int selectedSkin, int frameWidth, int frameHeight, int frameBorder, SpriteSheet spriteSheet){
+	public GameBuilder(int bananaQuantity, long record, int selectedSkin, int frameWidth, int frameHeight, int frameBorder, @SuppressWarnings("exports") SpriteSheet spriteSheet){
 		this.spriteSheet = spriteSheet;
 		this.space = new Space(frameWidth, frameHeight, frameBorder, 40, this.spriteSheet);
 		this.monkey = new Monkey(frameWidth / 16, frameHeight / 4 + frameBorder, this.space, this.spriteSheet, selectedSkin);

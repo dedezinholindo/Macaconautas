@@ -5,9 +5,9 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
-public class Entity extends Rectangle {
+public abstract class Entity extends Rectangle {
 
 	private static final long serialVersionUID = 4244516020791898234L;
 
@@ -29,7 +29,7 @@ public class Entity extends Rectangle {
 	 * @param spriteY corrdenada y do sprite inicial na sprite sheet.
 	 * @param spriteQuantity quantidade de sprites.
 	 */
-	public Entity(int x, int y, int width, int height, Space space, SpriteSheet spriteSheet, int spriteX, int spriteY, int spriteQuantity) {
+	public Entity(int x, int y, int width, int height, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet, int spriteX, int spriteY, int spriteQuantity) {
 		super(x, y, width, height);
 		this.space = space;
 		this.speed = 0;

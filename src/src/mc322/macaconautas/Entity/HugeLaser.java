@@ -1,8 +1,9 @@
 package mc322.macaconautas.Entity;
 
 import java.awt.Graphics;
+
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class HugeLaser extends Entity {
 
@@ -24,7 +25,7 @@ public class HugeLaser extends Entity {
 	 * @param space space no qual está inserido.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public HugeLaser(int cannonX, int cannonY, Space space, SpriteSheet spriteSheet) {
+	public HugeLaser(int cannonX, int cannonY, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		super(0, (cannonY - (HEIGHT / 2)), cannonX, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY); // a largura é o cannonX, pois vai do cannon até o lado esquerdo da tela (x = 0).
 		this.unitQuantity = this.width / UNIT_WIDTH;
 	}

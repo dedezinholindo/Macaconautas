@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 import mc322.macaconautas.Entity.*;
 
 public class Space extends Rectangle {
@@ -48,7 +48,7 @@ public class Space extends Rectangle {
 	 * @param distanceToFloor distância a ser mantida do chão para não gerar entities parcialmente escondidas.
 	 * @param spriteSheet sprite sheet com sprites a serem utilizados por entities no space.
 	 */
-	public Space(int width, int height, int jFrameBorder, int distanceToFloor, SpriteSheet spriteSheet) {
+	public Space(int width, int height, int jFrameBorder, int distanceToFloor, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		super(0, jFrameBorder, width, height - distanceToFloor);
 		this.jFrameBorder = jFrameBorder;
 		this.distanceToFloor = distanceToFloor;

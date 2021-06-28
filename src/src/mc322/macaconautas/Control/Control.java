@@ -5,6 +5,8 @@ import java.util.Arrays;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.*;
+import mc322.macaconautas.SaveGameHandling.SaveGameHandling;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 import mc322.macaconautas.Menu.MenuView;
 import mc322.macaconautas.Game.GameView;
 import mc322.macaconautas.Store.StoreView;

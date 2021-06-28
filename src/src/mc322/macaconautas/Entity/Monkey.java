@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class Monkey extends Entity {
 
@@ -45,7 +45,7 @@ public class Monkey extends Entity {
 	 * @param spriteSheet sprite sheet do jogo.
 	 * @param selectedSkin skin selecionada.
 	 */
-	public Monkey(int x, int y, Space space, SpriteSheet spriteSheet, int selectedSkin) {
+	public Monkey(int x, int y, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet, int selectedSkin) {
 		super(x, y, WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, (SPRITE_Y + selectedSkin), SPRITE_QUANTITY);
 		this.gorillaSprites = new BufferedImage[this.spriteQuantity];
 		for (int i = 0; i < this.spriteQuantity; i++) {

@@ -1,8 +1,9 @@
 package mc322.macaconautas.Entity;
 
 import java.awt.Graphics;
+
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class Laser extends Entity {
 
@@ -24,7 +25,7 @@ public class Laser extends Entity {
 	 * @param space space no qual está inserido.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public Laser(int gunX, int gunY, Space space, SpriteSheet spriteSheet) {
+	public Laser(int gunX, int gunY, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		super(gunX, (gunY - (HEIGHT / 2)), WIDTH, HEIGHT, space, spriteSheet, SPRITE_X, SPRITE_Y, SPRITE_QUANTITY);
 		this.speed = SPEED;
 	}

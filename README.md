@@ -2,7 +2,7 @@
 
 # Descrição Resumida do Projeto/Jogo
 
- Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve desviar de aliens, lasers e obstáculos para coletar bananas e percorrer a maior distância possível. Ele pode comprar skins diferentes para o macaco com as bananas em nossa magnífica loja e tentar quebrar seus recordes de distância, com o jogo cada vez mais difícil com o aumento da distância! <br>
+ Em _Macaconautas_ o jogador controla um macaco com uma mochila a jato que deve desviar de aliens, lasers e obstáculos para coletar bananas e percorrer a maior distância possível. Ele pode comprar skins diferentes para o macaco com as bananas em nossa magnífica loja e tentar quebrar seus recordes de distância! <br>
 <b>OBS:</b> whey protein de banana pode ser um ótimo suplemento para um primata!
 
 # Equipe
@@ -32,6 +32,43 @@
 **Lições:** Aprendemos que estruturar o jogo antes de começar a programar é extremamente importante e poderia ter nos poupado muito mais tempo, pois ficamos “consertando” o código para obedecer corretamente as regras básicas de POO (encapsulamento, polimorfismo, heranças, etc). Aprendemos também que é muito importante a ferramenta de pesquisa individual, pesquisando vários assuntos e estudando e buscando informações encontramos várias técnicas e sugestões que nos ajudaram a desenvolver o nosso código de forma eficiente e totalmente profissional!
 
 # Destaques de Código
+
+## Heranças e Classes Abstratas
+Utilizamos o artifício da herança e da classe abstrata para facilitar a expansão e compreensão do código.
+
+~~~java
+public abstract class Entity extends Rectangle {
+...
+public class RegularEntity extends Entity {
+...
+public class Banana extends RegularEntity {
+...
+public class HugeLaser extends Entity {
+...
+~~~
+
+## Polimorfismo
+Com o polimorfismo, facilitamos a adição de novas Entities no jogo através do Space.
+
+~~~java
+public class Space extends Rectangle {
+  ...
+	private ArrayList<RegularEntity> peacefulRegularEntities;
+	private ArrayList<RegularEntity> hostileRegularEntities;
+  ...
+~~~
+
+## Interfaces
+Por meio de interfaces, facilitamos a comunicação entre os componentes do programa. Além disso a forma que as organizamos facilita a compreensão do código.
+
+~~~java
+public interface IMode {
+	char getState();
+	void shows() throws InterruptedException;
+}
+...
+public interface IGame extends IGameInformation, IMode{}
+~~~
 
 ## Codificação
 Utilizamos o código abaixo para codificação do nosso arquivo de save para evitar manipulação do usuário. Criamos algumas chaves internas e, aleatoriamente colocamos uma delas no início e outra no final e depois encodamos em base64. Para verificar se houve ou não manipulação verificamos se as chaves estão na nossa lista (ou se foram manipuladas).
@@ -90,6 +127,27 @@ public void init() throws InterruptedException {
 	}
 ~~~
 
+## Dinamicidade
+Utilizando constantes, tornamos o jogo mais fácil de ser alterado, evitando a necessidade de alterar vários trechos apenas para aplicar uma mudança.
+
+~~~java
+public class AlienFleet extends Entity {
+	private final static int SHIP_QUANTITY = 6;
+	private final static int SHIP_WIDTH = 40;
+	private final static int SHIP_HEIGHT = 40;
+	private final static int WIDTH = SHIP_WIDTH;
+	private final static int CANNON_HEIGHT = 26;
+	private final static int SPRITE_X = 0;
+	private final static int SPRITE_Y = 5;
+	private final static int SPRITE_QUANTITY = 5;
+	private final static int CHARGING_ANIMATION_PERIOD = 60;
+	private final static int MAX_CHARGING_ANIMATION_FRAMES = 4;
+	private final static int MAX_SHOOTER_QUANTITY = 3;
+	private final static int REFRESH_PERIOD = 2 * 60;
+	private final static int SHOOTING_PERIOD = 5 * 60;
+	private final static int MAX_SHOT_QUANTITY = 3;
+  ~~~
+
 # Destaques de Pattern
 `<Destaque de patterns adotados pela equipe. Sugestão de estrutura:>`
 
@@ -116,9 +174,9 @@ Para projetos futuros tivemos incontáveis ideias:
 * **Mudar derrota da frota:** disponibilizar armas para o macaco poder utilizar em sua batalha com a frota alien.
 * **Mudar spawner de entidades:** evitar sobreposição de elementos no jogo e melhorar a lógica de surgimento deles.
 * **Responsividade do jogo:** alterar para que o jogo seja responsivo, isto é, mantenha-se nas mesmas proporções para todo formato de telas (incluindo de celular).
-* **Novos itens na loja:** novas coisas além de skins, como chapéus, calças, trocar apenas o jetpack, etc.
+* **Novos itens na loja:** novos itens além de skins, como chapéus, calças, trocar apenas o jetpack, etc.
 * **Melhorar design:** Melhorar o design no geral, como um jogo com gráficos melhores, uma melhor apresentação das informações (como informar quando se obteve um novo recorde, entre outros), além de deixar o jogo mais interativo (eventos com o mouse, digitar e salvar o nome de quem está jogando, etc).
-* **Múltiplos saves e Novo Jogo:** permitir o usuário ter vários saves para escolher qual ele vai querer iniciar.
+* **Múltiplos saves:** permitir o usuário ter vários saves para escolher qual ele vai querer iniciar.
 
 # Documentação dos Componentes
 
@@ -144,11 +202,37 @@ O AppMacaconautas inicializa o Control. Então o Control inicializa algum dos tr
 
 ![Diagrama Loja](assets/diagrama-componentes-Store.png)
 
+## Componente Control
+
+O Control é responsável pela administração total do jogo, comunicando-se com os outros três componentes de acordo com o estado do jogo.
+
+**Ficha Técnica**
+item | detalhamento
+----- | -----
+Classe |  mc322.macaconautas.Control.* 
+Autores | André Ricardo e Pedro Gadêlha
+Interfaces | IInit
+
+### Interfaces
+
+Interfaces associadas a esse componente:
+
+![Diagrama Interfaces](assets/diagrama-interfaces-Control.png)
+
+Interface agregadora do componente em Java:
+
+~~~java
+public interface IInit {
+	void init() throws InterruptedException;
+}
+~~~
+
 ## Componente Game
 
 O Game é responsável pela administração, visualização e criação de elementos e do ambiente de jogo. Foi utilizado o pattern Model-View-Control para a sua arquitetura interna.
 
 ![Componente](assets/diagrama-componentes-Game.png)
+![Componente](assets/diagrama-componentes-Game-detalhado.png)
 
 **Ficha Técnica**
 item | detalhamento
@@ -166,9 +250,7 @@ Interfaces associadas a esse componente:
 Interface agregadora do componente em Java:
 
 ~~~java
-public interface IGame extends IGameInformation, IMode{
-
-}
+public interface IGame extends IGameInformation, IMode{}
 ~~~
 
 ## Componente Menu
@@ -193,9 +275,7 @@ Interfaces associadas a esse componente:
 Interface agregadora do componente em Java:
 
 ~~~java
-public interface IMenu extends IMode {
-
-}
+public interface IMenu extends IMode {}
 ~~~
 
 ## Componente Store
@@ -220,9 +300,7 @@ Interfaces associadas a esse componente:
 Interface agregadora do componente em Java:
 
 ~~~java
-public interface IStore extends IMode, IStoreInformation{
-
-}
+public interface IStore extends IMode, IStoreInformation{}
 ~~~
 
 ## Detalhamento das Interfaces
@@ -276,9 +354,7 @@ long getRecord() | devolve a distância percorrida do jogador para setar, se for
 Interface agregadora que une IMode e IGameInformation para interagir com o componente Jogo.
 
 ~~~java
-public interface IGame extends IGameInformation, IMode {
- 
-}
+public interface IGame extends IGameInformation, IMode {}
 ~~~
 
 ### Interface IMenu
@@ -312,9 +388,7 @@ int getSelectedSkin() | devolve a skin que o usuário selecionou por último.
 Interface agregadora que une IMode e IStoreInformation para interagir com o componente Store.
 
 ~~~java
-public interface IStore extends IStoreInformation, IMode {
- 
-}
+public interface IStore extends IStoreInformation, IMode {}
 ~~~
 
 ### Interface ISaveGameHandling
@@ -362,6 +436,3 @@ Classe | Descrição
 InterruptedException | Ocorre quando a thread é interrompida por algum motivo.
 FileNotFoundException | ocorre quando um arquivo requerido não existe.
 IOException | pega todos os casos gerais de erros desconhecidos.
-
-
-

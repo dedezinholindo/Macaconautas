@@ -4,7 +4,7 @@ import java.awt.Canvas;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IGame;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class GameView extends Canvas implements IGame{
 
@@ -21,7 +21,7 @@ public class GameView extends Canvas implements IGame{
 	 * @param spriteSheet sprite sheet do jogo.
 	 * @throws InterruptedException
 	 */
-	public GameView(int bananaQuantity, long record, int selectedSkin, @SuppressWarnings("exports") JFrame f, SpriteSheet spriteSheet) throws InterruptedException {
+	public GameView(int bananaQuantity, long record, int selectedSkin, @SuppressWarnings("exports") JFrame f, @SuppressWarnings("exports") SpriteSheet spriteSheet) throws InterruptedException {
 		this.conGame = new GameControl(bananaQuantity, record, selectedSkin, f, spriteSheet); 
 	}
 

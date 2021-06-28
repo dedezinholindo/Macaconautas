@@ -3,7 +3,7 @@ package mc322.macaconautas.Store;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IStore;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class StoreView implements IStore{
 
@@ -17,7 +17,7 @@ public class StoreView implements IStore{
 	 * @param f JFrame utilizado.
 	 * @param spriteSheet sprite sheet do jogo.
 	 */
-	public StoreView(int bananaQuantity, boolean ownedSkins[], int selectedSkin, @SuppressWarnings("exports") JFrame f, SpriteSheet spriteSheet) {
+	public StoreView(int bananaQuantity, boolean ownedSkins[], int selectedSkin, @SuppressWarnings("exports") JFrame f, @SuppressWarnings("exports") SpriteSheet spriteSheet) {
 		this.conStore = new StoreControl(bananaQuantity, ownedSkins, selectedSkin, f, spriteSheet);
 	}
 

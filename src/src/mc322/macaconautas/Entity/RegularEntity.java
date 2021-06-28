@@ -1,7 +1,7 @@
 package mc322.macaconautas.Entity;
 
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.Control.SpriteSheet;
+import mc322.macaconautas.SpriteSheet.SpriteSheet;
 
 public class RegularEntity extends Entity {
 
@@ -21,7 +21,7 @@ public class RegularEntity extends Entity {
 	 * @param spriteY corrdenada y do sprite inicial na sprite sheet.
 	 * @param spriteQuantity quantidade de sprites.
 	 */
-	public RegularEntity(int x, int y, int width, int height, Space space, SpriteSheet spriteSheet, int spriteX, int spriteY, int spriteQuantity) {
+	public RegularEntity(int x, int y, int width, int height, Space space, @SuppressWarnings("exports") SpriteSheet spriteSheet, int spriteX, int spriteY, int spriteQuantity) {
 		super(x, y, width, height, space, spriteSheet, spriteX, spriteY, spriteQuantity);
 		this.speed = REGULAR_ENTITY_SPEED;
 	}

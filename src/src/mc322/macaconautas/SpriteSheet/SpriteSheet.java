@@ -1,4 +1,4 @@
-package mc322.macaconautas.Control;
+package mc322.macaconautas.SpriteSheet;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -30,7 +30,6 @@ public class SpriteSheet {
 	 * @param y coordenada y do sprite.
 	 * @return determinado sprite.
 	 */
-	@SuppressWarnings("exports")
 	public BufferedImage getSprite(int x, int y) {
 		return this.spriteSheet.getSubimage(x * this.spriteWidth, y * this.spriteHeight, this.spriteWidth, this.spriteHeight);
 	}
