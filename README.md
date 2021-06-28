@@ -187,7 +187,7 @@ public class MenuBuilder {
 	...
 ~~~
 
-> <Explicação de como o pattern foi adotado e quais suas vantagens, referenciando o diagrama.>
+Os componentes Menu, Game e Store adotam um design pattern semelhante ao model-view-controller alterado para nossa implementação. O model, representado pelas classes Builder, apenas armazena informações úteis ao componente. O control, representado pelas classes Control, é responsável pela lógica do componente e recebimento de comandos, utilizando os dados do model e alterando-os conforme. Já o view, representado pelas classes View, é adotado para realizar a conversação do componente com a classe superior Control, apenas mostrando (renderizando) o componente e fornecendo algumas informações necessárias para atualizar o Control ao final do uso do view.
 
 # Conclusões e Trabalhos Futuros
 
