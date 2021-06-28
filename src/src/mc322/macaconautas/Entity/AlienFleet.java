@@ -12,7 +12,7 @@ public class AlienFleet extends Entity {
 
 	private static final long serialVersionUID = 667672651225816724L;
 
-	private final static int SHIP_QUANTITY = 5; // quantidade de nave na alien fleet.
+	private final static int SHIP_QUANTITY = 6; // quantidade de nave na alien fleet.
 
 	private final static int SHIP_WIDTH = 40;
 	private final static int SHIP_HEIGHT = 40; // dimensões de cada nave.
@@ -26,7 +26,7 @@ public class AlienFleet extends Entity {
 	private final static int CHARGING_ANIMATION_PERIOD = 60; // quantidade de frames do jogo para cada frame da animação.
 	private final static int MAX_CHARGING_ANIMATION_FRAMES = 4;
 
-	private final static int MAX_SHOOTER_QUANTITY = 2; // quantidade de máxima naves que atiram simultaneamente.
+	private final static int MAX_SHOOTER_QUANTITY = 3; // quantidade de máxima naves que atiram simultaneamente.
 	private final static int REFRESH_PERIOD = 2 * 60; // quantidade de frames do jogo antes de atirar.
 	private final static int SHOOTING_PERIOD = 5 * 60; // quantidade de frames do jogo atirando.
 	private final static int MAX_SHOT_QUANTITY = 3; // quantidade de máxima de tiros que a alien fleet dispara antes de destruir.
