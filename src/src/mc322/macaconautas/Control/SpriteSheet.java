@@ -1,4 +1,4 @@
-package mc322.macaconautas.app;
+package mc322.macaconautas.Control;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

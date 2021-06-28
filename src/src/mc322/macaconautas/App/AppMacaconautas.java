@@ -1,6 +1,7 @@
-package mc322.macaconautas.app;
+package mc322.macaconautas.App;
 
 import mc322.macaconautas.Interface.IInit;
+import mc322.macaconautas.Control.Control;
 
 public class AppMacaconautas {
 

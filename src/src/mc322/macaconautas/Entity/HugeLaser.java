@@ -2,7 +2,7 @@ package mc322.macaconautas.Entity;
 
 import java.awt.Graphics;
 import mc322.macaconautas.Game.Space;
-import mc322.macaconautas.app.SpriteSheet;
+import mc322.macaconautas.Control.SpriteSheet;
 
 public class HugeLaser extends Entity {
 

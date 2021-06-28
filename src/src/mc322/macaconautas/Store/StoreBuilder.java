@@ -2,7 +2,7 @@ package mc322.macaconautas.Store;
 
 import java.awt.image.BufferedImage;
 
-import mc322.macaconautas.app.SpriteSheet;
+import mc322.macaconautas.Control.SpriteSheet;
 
 public class StoreBuilder {
 

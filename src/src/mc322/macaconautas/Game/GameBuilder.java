@@ -1,7 +1,7 @@
 package mc322.macaconautas.Game;
 
 import mc322.macaconautas.Entity.Monkey;
-import mc322.macaconautas.app.SpriteSheet;
+import mc322.macaconautas.Control.SpriteSheet;
 
 public class GameBuilder {
 

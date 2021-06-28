@@ -3,7 +3,7 @@ package mc322.macaconautas.Store;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IStore;
-import mc322.macaconautas.app.SpriteSheet;
+import mc322.macaconautas.Control.SpriteSheet;
 
 public class StoreView implements IStore{
 

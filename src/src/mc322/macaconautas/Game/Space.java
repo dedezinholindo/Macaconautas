@@ -6,7 +6,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Random;
 
-import mc322.macaconautas.app.SpriteSheet;
+import mc322.macaconautas.Control.SpriteSheet;
 import mc322.macaconautas.Entity.*;
 
 public class Space extends Rectangle {

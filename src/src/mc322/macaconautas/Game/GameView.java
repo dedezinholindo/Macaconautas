@@ -4,7 +4,7 @@ import java.awt.Canvas;
 import javax.swing.JFrame;
 
 import mc322.macaconautas.Interface.IGame;
-import mc322.macaconautas.app.SpriteSheet;
+import mc322.macaconautas.Control.SpriteSheet;
 
 public class GameView extends Canvas implements IGame{
 
