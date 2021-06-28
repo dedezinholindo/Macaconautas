@@ -24,7 +24,7 @@
 [Link para os slides.](https://drive.google.com/file/d/1KMDmPCyxy-PK8IQgqy-QHjUKPX5Bcj9d/view?usp=sharing)
 
 ## Slides da Apresentação Final
-[Link para os slides.](https://drive.google.com/file/d/1c1IzNniw1mVdWDUOOnBnG2Vw0FC789aP/view?usp=sharing)
+[Link para os slides.](https://drive.google.com/file/d/1QIK0mggxyQRj-dlKePUOX19Kj72D0mBQ/view?usp=sharing)
 
 ## Relatório de Evolução
 
