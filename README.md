@@ -149,18 +149,42 @@ public class AlienFleet extends Entity {
   ~~~
 
 # Destaques de Pattern
-`<Destaque de patterns adotados pela equipe. Sugestão de estrutura:>`
 
 ## Diagrama do Pattern
-`<Diagrama do pattern dentro do contexto da aplicação.>`
+![Diagrama Game](assets/diagrama-componentes-Menu.png)
 
 ## Código do Pattern
 ~~~java
-// Recorte do código do pattern seguindo as mesmas diretrizes de outros destaques
-public void algoInteressante(…) {
-   …
-   trechoInteressante = 100;
-}
+public class MenuView implements IMenu {
+	private MenuControl conMenu;
+	public MenuView(int bananaQuantity, long record, @SuppressWarnings("exports") JFrame f) {
+		this.conMenu = new MenuControl(bananaQuantity, record, f);
+	}
+...
+public class MenuControl extends Canvas implements Runnable, KeyListener{
+	private MenuBuilder menu;
+	private JFrame f;
+	public MenuControl(int bananaQuantity, long record, @SuppressWarnings("exports") JFrame f) {
+		this.f = f;
+		...
+		this.menu = new MenuBuilder(bananaQuantity, record);
+	}
+...
+public class MenuBuilder {
+	char state;
+	boolean isRunning;
+	Thread thread;
+	int bananaQuantity;
+	long record;
+	...
+	public MenuBuilder(int bananaQuantity, long record) {
+		this.state = 'N';
+		this.isRunning = true;
+		this.bananaQuantity = bananaQuantity;
+		this.record = record;
+		...
+	}
+	...
 ~~~
 
 > <Explicação de como o pattern foi adotado e quais suas vantagens, referenciando o diagrama.>
