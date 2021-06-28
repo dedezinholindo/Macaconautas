@@ -155,6 +155,20 @@ public class AlienFleet extends Entity {
 
 ## Código do Pattern
 ~~~java
+public class Control extends Canvas implements IInit {
+	...
+	public void openMenu() throws InterruptedException {
+		if (!this.isMenuCreated) {
+			this.menu = new MenuView(this.bananaQuantity, this.record, this.f);
+			this.isMenuCreated = true;
+			this.menu.shows();
+		}
+		...
+		switch(this.menu.getState()) {
+		....
+		}		
+	}
+...
 public class MenuView implements IMenu {
 	private MenuControl conMenu;
 	public MenuView(int bananaQuantity, long record, @SuppressWarnings("exports") JFrame f) {
