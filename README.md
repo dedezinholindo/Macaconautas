@@ -33,14 +33,61 @@
 
 # Destaques de Código
 
-> <Escolha trechos relevantes e/ou de destaque do seu código. Apresente um recorte (você pode usar reticências para remover partes menos importantes). Veja como foi usado o highlight de Java para o código.>
+## Codificação
+Utilizamos o código abaixo para codificação do nosso arquivo de save para evitar manipulação do usuário. Criamos algumas chaves internas e, aleatoriamente colocamos uma delas no início e outra no final e depois encodamos em base64. Para verificar se houve ou não manipulação verificamos se as chaves estão na nossa lista (ou se foram manipuladas).
 
 ~~~java
-// Recorte do seu código
-public void algoInteressante(…) {
-   …
-   trechoInteressante = 100;
+private void writeSaveFile(BufferedWriter write) {
+		String content = (selectKey() +
+				" " + "ownedSkins:" + booleanArrayToNumbersString(this.ownedSkins) +
+				" " + "selectedSkin:" + this.selectedSkin +
+				" " + "bananas:" + this.bananaQuantity +
+				" " + "record:" + this.record +
+				" " + selectKey());
+		byte[] encodedBytes = Base64.getEncoder().encode(content.getBytes()); // encodamento do save.
+		try {
+			write.write(new String(encodedBytes));
+	...
 }
+~~~
+
+## Visibilidade package
+Como criamos uma estrutura bem definida para cada funcionalidade (dividida em pacotes), decidimos deixar a visibilidade de todos os Builder como package, para que as classes que tem que manipular o mesmo componente possa manipulá-lo de forma livre.
+
+~~~java
+public class StoreBuilder {
+	...
+	char state; // N normal, M para ir para o menu
+	boolean isRunning;
+	Thread thread;
+	int bananaQuantity;
+	boolean ownedSkins[];
+	int selectedSkin;
+	...
+}
+~~~
+
+## Threading dentro de loops
+Conseguimos administrar com excelência os modos do jogo e as mudanças de estado, por meio de threadings dentro de um loop while principal. O while sempre fazia a verificação do estado do jogo, para, assim, saber e decidir qual ação ele deve tomar. <br>
+**OBS:** em cada modo (game, store e menu) é gerada uma thread, a qual é terminada após a mudança de estado do app.
+
+~~~java
+public void init() throws InterruptedException {	
+	while (this.appState != 'O') {
+		switch(this.appState) {
+		case 'M':
+			openMenu();
+			break;
+
+		case 'S':
+			openStore();
+			break;
+
+		case 'G':
+			openJogo();
+			break;
+		...
+	}
 ~~~
 
 # Destaques de Pattern
