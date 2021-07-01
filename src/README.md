@@ -6,9 +6,11 @@ Oláááááá Gamers!! Animados para uma aventura incrível no espaço cheia de
 ## Instalação do jogo
 1. Abra o terminal.
 2. Execute o comando `$ git clone https://github.com/dedezinholindo/Macaconautas.git`.
-3. Compile e rode o jogo (Macaconautas/src/src/mc322.macaconautas..App.AppMacaconautas).
+3. Importe o projeto para o Eclipse.
+4. Execute o app ('Macaconautas/src/src/mc322.macaconautas..App.AppMacaconautas').
 
-**OBS:** Garantimos o funcionamento do jogo para o JRE 11, execute o jogo com ele.
+**OBS1:** Garantimos o funcionamento do jogo para o JRE 11, execute o jogo com ele.
+**OBS2:** Caso queira jogar sem utilizar o Eclipse, configure seu ambiente para reconhecer a pasta de saves ('Macaconautas/src/save').
 
 ## Funcionamento do Jogo
 
