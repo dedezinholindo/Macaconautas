@@ -8,8 +8,8 @@ public class StoreBuilder {
 
 	private final static int SKIN_SPRITE_X = 0;
 	private final static int SKIN_SPRITE_Y = 8;
-	private final static String SKIN_OPTIONS[] = {"Albert", "Macaco 47", "Mico Leão Dourado", "Ninjacaco", "Macaconauta"};
-	private final static int SKIN_PRICES[] = {0, 5, 10, 18, 30};
+	private final static String SKIN_OPTIONS[] = {"Albert", "Macaco 47", "Mico Leão Dourado", "Ninjacaco", "Macaconauta", "CyberMunk", "Drip"};
+	private final static int SKIN_PRICES[] = {0, 5, 10, 18, 30, 50, 100};
 
 	char state; // N normal, M para ir para o menu
 	boolean isRunning;
